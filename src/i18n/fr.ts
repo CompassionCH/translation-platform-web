@@ -1,9 +1,9 @@
 export default {
   // Menu
-  home: 'accueil',
-  texts: 'textes',
-  users: 'utilisateurs',
-  translations: 'Traductions',
-  profile: 'Profil',
-  "log out": 'déconnexion',
+  Home: 'Accueil',
+  Texts: 'Textes',
+  Users: 'Utilisateurs',
+  Translations: 'Traductions',
+  Profile: 'Profil',
+  "Log Out": 'Déconnexion',
 } as Record<string, string>;

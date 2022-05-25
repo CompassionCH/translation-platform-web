@@ -1,7 +1,4 @@
-<menu class="flex bg-white">
-  <t t-foreach="props.routes" t-as="route" t-key="route.name">
-    <RouterLink to="route.path">
-      <span t-esc="route.name" class="pl-5" />
-    </RouterLink>
-  </t>
+<menu class="flex">
+  <RouterLink to="'/'"><span class="pl-5">Home</span></RouterLink>
+  <RouterLink to="'/users/1'"><span class="pl-5">Users</span></RouterLink>
 </menu>

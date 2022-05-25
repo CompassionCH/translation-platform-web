@@ -6,9 +6,6 @@ export default class RouterLink extends Component {
   static props = ["to"];
 
   moveTo() {
-    window.history.pushState({
-      
-    }, "", this.props.to);
-    console.log(this.props.to);
+    window.history.pushState({}, "", this.props.to);
   }
 }

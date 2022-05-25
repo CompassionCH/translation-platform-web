@@ -22,6 +22,7 @@ export default class Router extends Component<Props> {
   setup(): void {
 
     const defaultPushState = window.history.pushState;
+    const loadRouteListener = () => this.loadRoute();
 
     onMounted(() => {
       this.loadRoute();
@@ -34,12 +35,12 @@ export default class Router extends Component<Props> {
         },
       });
 
-      window.addEventListener('popstate', this.loadRoute);
+      window.addEventListener('popstate', loadRouteListener);
     });
 
     onWillDestroy(() => {
       window.history.pushState = defaultPushState;
-      window.removeEventListener('popstate', this.loadRoute);
+      window.removeEventListener('popstate', loadRouteListener);
     });
   }
 
