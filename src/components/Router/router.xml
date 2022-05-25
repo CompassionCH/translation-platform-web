@@ -1,1 +1,6 @@
-<div t-ref="routerBody" />
+<t>
+  <t
+    t-if="state.currentRoute"
+    t-component="state.currentRoute.component"
+    t-props="state.currentProps || {}" />
+</t>

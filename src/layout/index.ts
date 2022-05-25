@@ -5,6 +5,7 @@ import Router, { Route } from '../components/Router';
 
 import Home from '../pages/Home';
 import Users from '../pages/Users';
+import TextEdit from '../pages/TextEdit';
 
 export default class Root extends Component {
   static template = template;
@@ -24,5 +25,10 @@ export default class Root extends Component {
       name: 'users',
       path: '/users',
     },
+    {
+      component: TextEdit,
+      name: 'text-edit',
+      path: '/text-edit/:textId',
+    }
   ];
 }

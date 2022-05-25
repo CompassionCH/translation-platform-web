@@ -1,4 +1,4 @@
-import { Component, mount, onMounted, onWillDestroy, useRef } from "@odoo/owl";
+import { Component, onMounted, onWillDestroy, useState } from "@odoo/owl";
 import template from './router.xml';
 import pathMatch from "./pathMatch";
 
@@ -13,11 +13,19 @@ type Props = {
   basePath?: string;
 };
 
+type State = {
+  currentRoute: Route | null,
+  currentProps: Record<string, string> | null,
+};
+
 export default class Router extends Component<Props> {
   static template = template;
   static props = ['routes'];
 
-  routerBodyRef = useRef('routerBody');
+  state = useState<State>({
+    currentRoute: null,
+    currentProps: null,
+  });
 
   setup(): void {
 
@@ -45,19 +53,19 @@ export default class Router extends Component<Props> {
   }
 
   loadRoute() {
-    if (!this.routerBodyRef.el) return;
     const { pathname } = new URL(window.location.href);
     const currentPath = pathname.replace(this.props.basePath || '', '');
 
     for (const route of this.props.routes) {
       const routeProps = pathMatch(currentPath, route.path);
-      console.log(route.path, routeProps);
       if (routeProps) {
-        this.routerBodyRef.el.innerHTML = "";
-        mount(route.component, this.routerBodyRef.el as HTMLElement, {
-          props: routeProps,
-        });
+        this.state.currentRoute = route;
+        this.state.currentProps = routeProps;
+        return;
       }
     }
-  }
+
+    this.state.currentRoute = null;
+    this.state.currentProps = null;
+}
 }
