@@ -1,0 +1,3 @@
+<a t-on-click="moveTo">
+  <t t-slot="default" />
+</a>

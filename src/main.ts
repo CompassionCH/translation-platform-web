@@ -1,5 +1,8 @@
 import { mount } from "@odoo/owl";
-import { Root } from "./components/Root";
+import Layout from "./layout";
+import translateFn from './i18n';
 import './style.css';
 
-mount(Root, document.body);
+mount(Layout, document.body, {
+  translateFn,
+});

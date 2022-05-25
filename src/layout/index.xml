@@ -1,0 +1,13 @@
+<div>
+  <header>
+    <div class="container mx-auto flex justify-between items-center">
+      <div>
+        <img src="/logo.png" class="w-40 py-3" />
+      </div>
+      <MainMenu routes="routes" />
+    </div>
+  </header>
+  <div>
+    <Router routes="routes" />
+  </div>
+</div>
