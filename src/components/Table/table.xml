@@ -1,0 +1,12 @@
+<table>
+  <thead>
+    <tr>
+      <td t-foreach="props.columns" t-as="col" t-key="col.name" t-esc="col.header || col.name" />
+    </tr>
+  </thead>
+  <tbody>
+    <t t-foreach="props.data" t-as="row">
+      <Row columns="props.columns" data="row" />
+    </t>
+  </tbody>
+</table>

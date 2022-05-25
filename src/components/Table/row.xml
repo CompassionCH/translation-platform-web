@@ -1,0 +1,9 @@
+<tr t-on-click="props.onClick" t-att-class="props.class">
+  <t t-foreach="columns" t-as="col" t-key="col.name">
+    <t t-if="col.name in props.data">
+      <td t-if="col.formatter" t-esc="col.formatter(props.data[col.name])" />
+      <td t-else="" t-esc="props.data[col.name]" />
+    </t>
+    <td t-else=""></td>
+  </t>
+</tr>
