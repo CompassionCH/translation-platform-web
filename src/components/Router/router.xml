@@ -1,6 +1,6 @@
 <t>
   <t
-    t-if="state.currentRoute"
-    t-component="state.currentRoute.component"
-    t-props="state.currentProps || {}" />
+    t-if="state.route"
+    t-component="state.component"
+    t-props="state.routeProps || {}" />
 </t>

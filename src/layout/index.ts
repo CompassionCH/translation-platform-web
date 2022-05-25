@@ -3,10 +3,6 @@ import template from './index.xml';
 import MainMenu from './Menu';
 import Router, { Route } from '../components/Router';
 
-import Home from '../pages/Home';
-import Users from '../pages/Users';
-import TextEdit from '../pages/TextEdit';
-
 export default class Root extends Component {
   static template = template;
   static components = {
@@ -16,17 +12,17 @@ export default class Root extends Component {
 
   routes: Route[] = [
     {
-      component: Home,
+      component: () => import('../pages/Home'),
       name: 'home',
       path: '/',
     },
     {
-      component: Users,
+      component: () => import('../pages/Users'),
       name: 'users',
       path: '/users',
     },
     {
-      component: TextEdit,
+      component: () => import('../pages/TextEdit'),
       name: 'text-edit',
       path: '/text-edit/:textId',
     }
