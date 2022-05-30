@@ -1,0 +1,26 @@
+<!-- tab pages -->
+<div class="rounded-lg overflow-hidden mt-10 border border-solid border-slate-300">
+  <div class="tabs flex justify-between bg-white border-b border-solid border-slate-300">
+    <div class="flex items-center">
+      <t t-foreach="editor.pages" t-as="page" t-key="page.id">
+        <div class="tab bg-white border-r border-solid border-slate-300">
+          <div t-att-class="{'bg-slate-300': page.id === editor.currentPage}" t-on-click="() => editor.currentPage = page.id">
+            <div class="py-2 px-3 flex">
+              <div t-if="$as_index gt 0" class="">◂</div>
+              <span t-att-class="{'text-slate-800': page.id === currentPage, 'text-slate-600': page.id !== currentPage}">
+                <t t-esc="page.name || 'Page' + page.id" />
+              </span>
+              <div t-if="$as_index lt editor.pages.length">▸</div>
+            </div>
+          </div>
+        </div>
+      </t>
+      <button
+        class="ml-2 rounded-full bg-slate-100 hover:bg-slate-700 text-slate-700 hover:text-white text-2xl h-6 w-6 flex items-center justify-center"
+        t-on-click="addPage">
+        <span class="relative bottom-0.5">+</span>
+      </button>
+    </div>
+  </div>
+  <div class="tab-content p-5"></div>
+</div>

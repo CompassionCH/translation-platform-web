@@ -83,5 +83,5 @@ export default class Router extends Component<Props> {
     this.state.route = null;
     this.state.component = null;
     this.state.routeProps = null;
-}
+  }
 }

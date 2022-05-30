@@ -1,11 +1,20 @@
 import { Component, onMounted, useRef, useState } from "@odoo/owl";
 import template from './textEdit.xml';
+import PageEditor from "./PageEditor";
 
 export default class TextEdit extends Component {
   static template = template;
+  static components = {
+    PageEditor,
+  };
 
   letterPanel = useRef('letterPanel');
   panelDrag = useRef('panelDrag');
+
+  editor = useState({
+    page: 0,
+    pages: [],
+  });
 
   resizing = useState({
     dx: 0,
