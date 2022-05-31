@@ -1,11 +1,15 @@
 import { Component, onMounted, useRef, useState } from "@odoo/owl";
 import template from './textEdit.xml';
 import PageEditor from "./PageEditor";
+import Button from "../../components/Button";
+import TopInformationPiece from "./TopInformationPiece";
 
 export default class TextEdit extends Component {
   static template = template;
   static components = {
     PageEditor,
+    Button,
+    InfoPiece: TopInformationPiece,
   };
 
   letterPanel = useRef('letterPanel');
@@ -63,6 +67,6 @@ export default class TextEdit extends Component {
     const drag = this.panelDrag.el as HTMLDivElement;
 
     drag.style.left = (drag.offsetLeft - dx) + 'px';
-    panel.style.width = drag.style.left;
+    panel.style.width = `${drag.offsetLeft + drag.clientWidth}px`;
   }
 }

@@ -1,7 +1,6 @@
-import { Component, onMounted, onWillDestroy, useState } from "@odoo/owl";
+import { Component, onMounted, onWillDestroy, useState, xml } from "@odoo/owl";
 import { ComponentConstructor } from "@odoo/owl/dist/types/component/component";
 
-import template from './router.xml';
 import pathMatch from "./pathMatch";
 
 export type Route = {
@@ -22,7 +21,15 @@ type State = {
 };
 
 export default class Router extends Component<Props> {
-  static template = template;
+  static template = xml`
+    <t>
+      <t
+        t-if="state.route"
+        t-component="state.component"
+        t-props="state.routeProps || {}" />
+    </t>
+  `;
+
   static props = ['routes'];
 
   state = useState<State>({

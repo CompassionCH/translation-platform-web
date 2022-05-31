@@ -1,5 +1,0 @@
-<menu class="flex">
-  <RouterLink to="'/'"><span class="pl-5">Home</span></RouterLink>
-  <RouterLink to="'/text-edit/1'"><span class="pl-5">Texts</span></RouterLink>
-  <RouterLink to="'/users/1'"><span class="pl-5">Users</span></RouterLink>
-</menu>

@@ -4,8 +4,8 @@ import template from './row.xml';
 export type Column = {
   header?: string;
   name: string;
-  formatter?: <T>(item: T) => string | number;
-};
+  formatter?: (item: any) => string | number;
+} | string;
 
 type Props = {
   class?: string;
@@ -17,10 +17,15 @@ type Props = {
 export default class Row extends Component<Props> {
 
   static template = template;
-  static defaultProps = {
-    onClick: () => null,
-    class: '',
+
+  static props = {
+    data: { type: Object },
+    columns: { type: Array },
+    class: { type: String, optional: true },
+    onClick: { type: Function, optional: true },
   };
 
-  static props = ['data', 'columns', 'class', 'onClick'];
+  setup(): void {
+    console.log(JSON.stringify(this.props));
+  }
 }

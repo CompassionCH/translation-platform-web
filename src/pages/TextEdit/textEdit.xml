@@ -5,71 +5,45 @@
         <t t-if="resizing.active === false">
           <iframe src="/text.pdf" class="w-full h-full" />
         </t>
-        <div t-ref="panelDrag" class="absolute right-0 w-2 h-full bg-gray-400 hover:bg-blue-500 cursor-ew-resize select-none" />
+        <div class="w-2 h-full" />
+        <div t-ref="panelDrag" class="absolute right-0 w-2 h-full bg-slate-400 z-30 hover:bg-blue-500 cursor-ew-resize select-none" />
       </div>
     </div>
-    <div class="flex-1 pl-4">
-      <div class="mb-4 p-4">
-        <!--
-        <h3 class="text-2xl text-gray-800">Original Text</h3>
-        <div class="flex items-center">
-          <a href="/text.pdf" class="px-2 py-1 bg-gray-800 hover:bg-blue-600 text-white rounded">Download PDF</a>
-          <a href="/text.pdf" class="px-2 py-1 bg-gray-800 hover:bg-blue-600 text-white rounded ml-2">Open in new Window</a>
+    <div class="flex-1 flex flex-col">
+      <div class="flex bg-white shadow-lg relative z-10 border-b border-solid border-slate-200">
+        <div class="py-3 px-4 mr-10">
+          <h4 class="font-semibold text-gray-800 border-b border-solid border-gray-100 mb-2">Child Data</h4>
+          <InfoPiece label="'First Name'" value="'Iren'" />
+          <InfoPiece label="'Last Name'" value="'Iren'" />
+          <InfoPiece label="'Sex'" value="'Woman'" />
+          <InfoPiece label="'Age'" value="'10 Years Old'" />
         </div>
-        -->
+        <div class="py-3 px-4 mr-10">
+          <h4 class="font-semibold text-gray-800 border-b border-solid border-gray-100 mb-2">Sponsor Data</h4>
+          <InfoPiece label="'First Name'" value="'Natanaele'" />
+          <InfoPiece label="'Last Name'" value="'Di Sabatino'" />
+          <InfoPiece label="'Sex'" value="'Man'" />
+        </div>
+        <div class="py-3 px-4 flex-1">
+          <h4 class="font-semibold text-gray-800 border-b border-solid border-gray-100 mb-2">Translation</h4>
+          <InfoPiece label="'Translator'" value="'Sergi Alessandro e Sonia'" />
+          <InfoPiece label="'Identifier'" value="'1501077'" />
+          <InfoPiece label="'Language'" value="'Italiano'" />
+        </div>
+      </div>
+      <div class="flex-1 overflow-auto relative shadow-inner">
+        <div class="absolute w-full">
+          <PageEditor />
+        </div>
+      </div>
+      <div class="bg-white p-4 shadow flex justify-between border-t border-solid border-slate-200">
+        <div>
+          <Button level="'secondary'" icon="'download'">Download PDF</Button>
+        </div>
         <div class="flex">
-          <div class="rounded-lg bg-white py-3 px-4 mr-4 shadow-lg">
-            <h4 class="text-lg text-gray-800 border-b border-solid border-gray-100 mb-2">Child Data</h4>
-            <div class="flex text-sm">
-              <p class="w-32 font-semibold text-gray-800">First Name</p>
-              <p class="">Iren</p>
-            </div>
-            <div class="flex text-sm">
-              <p class="w-32 font-semibold text-gray-800">Last Name</p>
-              <p class="">Iren</p>
-            </div>
-            <div class="flex text-sm">
-              <p class="w-32 font-semibold text-gray-800">Sex</p>
-              <p class="">Woman</p>
-            </div>
-            <div class="flex text-sm">
-              <p class="w-32 font-semibold text-gray-800">Age</p>
-              <p class="">10 Years old</p>
-            </div>
-          </div>
-          <div class="rounded-lg bg-white py-3 px-4 mr-4 shadow-lg">
-            <h4 class="text-lg text-gray-800 border-b border-solid border-gray-100 mb-2">Sponsor Data</h4>
-            <div class="flex text-sm">
-              <p class="w-32 font-semibold text-gray-800">First Name</p>
-              <p class="">Natanaele</p>
-            </div>
-            <div class="flex text-sm">
-              <p class="w-32 font-semibold text-gray-800">Last Name</p>
-              <p class="">Di Sabatino</p>
-            </div>
-            <div class="flex text-sm">
-              <p class="w-32 font-semibold text-gray-800">Sex</p>
-              <p class="">Man</p>
-            </div>
-          </div>
-          <div class="rounded-lg bg-white py-3 px-4 flex-1 shadow-lg">
-            <h4 class="text-lg text-gray-800 border-b border-solid border-gray-100 mb-2">Translation</h4>
-            <div class="flex text-sm">
-              <p class="w-32 font-semibold text-gray-800">Translator</p>
-              <p class="">Sergi Alessandro e Sonia</p>
-            </div>
-            <div class="flex text-sm">
-              <p class="w-32 font-semibold text-gray-800">Identifier</p>
-              <p class="">1501077</p>
-            </div>
-            <div class="flex text-sm">
-              <p class="w-32 font-semibold text-gray-800">Language</p>
-              <p class="">Italiano</p>
-            </div>
-          </div>
+          <Button color="'green'" icon="'floppy-disk'" class="'mr-3'">Save</Button>
+          <Button color="'compassion'" icon="'paper-plane'">Submit</Button>
         </div>
-
-        <PageEditor />
       </div>
     </div>
   </div>

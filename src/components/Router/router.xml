@@ -1,6 +1,0 @@
-<t>
-  <t
-    t-if="state.route"
-    t-component="state.component"
-    t-props="state.routeProps || {}" />
-</t>

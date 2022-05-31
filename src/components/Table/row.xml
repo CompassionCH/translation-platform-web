@@ -1,6 +1,6 @@
-<tr t-on-click="props.onClick" t-att-class="props.class">
-  <t t-foreach="columns" t-as="col" t-key="col.name">
-    <t t-if="col.name in props.data">
+<tr t-on-click="props.onClick" t-att-class="props.class || ''">
+  <t t-foreach="props.columns" t-as="col" t-key="col.name">
+    <t t-if="props.data.hasOwnProperty(col.name)">
       <td t-if="col.formatter" t-esc="col.formatter(props.data[col.name])" />
       <td t-else="" t-esc="props.data[col.name]" />
     </t>

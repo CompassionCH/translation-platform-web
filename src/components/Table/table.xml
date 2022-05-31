@@ -1,12 +1,40 @@
-<table>
-  <thead>
-    <tr>
-      <td t-foreach="props.columns" t-as="col" t-key="col.name" t-esc="col.header || col.name" />
-    </tr>
-  </thead>
-  <tbody>
-    <t t-foreach="props.data" t-as="row">
-      <Row columns="props.columns" data="row" />
-    </t>
-  </tbody>
-</table>
+<div class="relative">
+  <table t-att-class="props.class">
+    <thead>
+      <tr>
+        <td t-foreach="state.columns" t-as="col" t-key="col.name" t-esc="col.header || col.name" />
+      </tr>
+    </thead>
+    <tbody>
+      <t t-foreach="props.data" t-as="row" t-key="row.username">
+        <Row columns="state.columns" data="row" />
+      </t>
+    </tbody>
+  </table>
+  <div class="flex justify-between">
+    <div>
+      Showing 
+      <t t-esc="(state.page * props.data.length) + 1" /> - <t t-esc="(state.page + 1) * props.data.length" />
+      of <t t-esc="props.total" /> Results
+    </div>
+    <div>
+      <div class="flex">
+        
+      </div>
+    </div>
+  </div>
+  <Transition duration="100"
+    active="props.loading"
+    enterFrom="'opacity-0'"
+    enterTo="'opacity-1'"
+    leaveFrom="'opacity-1'"
+    leaveTo="'opacity-0'"
+    enterActive="'transition-all duration-100'"
+    leaveActive="'transition-all duration-100'"
+    t-slot-scope="scope"
+  >
+    <div class="absolute top-0 left-0 w-full h-full bg-white-20 flex justify-center items-center" t-att-class="scope.itemClass">
+      Loading
+    </div>
+  </Transition>
+</div>
