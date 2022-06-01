@@ -11,6 +11,7 @@ import {
   faUserGroup,
   faComments,
   faGear,
+  faCircleNotch,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -25,4 +26,5 @@ library.add(
   faUserGroup,
   faComments,
   faGear,
+  faCircleNotch,
 );

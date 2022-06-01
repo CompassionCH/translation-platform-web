@@ -2,6 +2,8 @@ import { Component, onWillUpdateProps, useState } from "@odoo/owl";
 import Row, { Column } from './Row';
 import template from './table.xml';
 import Transition from '../Transition';
+import PageSelector from './PageSelector';
+import Loader from '../Loader';
 
 type Props = {
   data: Record<string, any>[];
@@ -20,6 +22,7 @@ export type {
 type State = {
   columns: Column[];
   page: number;
+  pageSize: number;
 };
 
 export default class Table extends Component<Props> {
@@ -38,27 +41,34 @@ export default class Table extends Component<Props> {
   static components = {
     Row,
     Transition,
+    PageSelector,
+    Loader,
   }
 
   state = useState<State>({
     columns: [],
     page: 0,
+    pageSize: 10,
   });
 
   setup(): void {
-    this.formatColumns(this.props.columns);
+    this.update(this.props);
     onWillUpdateProps((nextProps) => {
-      this.formatColumns(nextProps.columns);
+      this.update(nextProps);
     });
   }
 
-  private formatColumns(columns: Column[]) {
+  moveToPage(page: number) {
+    this.props.onPageChange(page);
+    this.state.page = page;
+  }
+
+  private update({ columns }: Props) {
     this.state.columns = columns.map((it) => {
       if (typeof it === 'string') {
         return {
           header: it,
           name: it,
-          formatter: val => val,
         };
       } else {
         return it;

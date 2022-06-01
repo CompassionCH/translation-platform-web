@@ -105,7 +105,7 @@ class Button extends Component<Props> {
     // Colors
     const bgColorClass = backgroundClasses[color];
     if (level === 'primary') {
-      classes.push(bgColorClass);
+      classes.push(bgColorClass[0]);
       classes.push('text-white'); // text is white
     } else {
       classes.push(SECONDARY_BG_COLOR);
