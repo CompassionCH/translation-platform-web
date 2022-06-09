@@ -11,6 +11,11 @@
         <Icon prefix="'fas'" icon="'user-group'" class="'text-xl'" />
       </MenuButton>
     </RouterLink>
+    <RouterLink to="'/letters'" t-slot-scope="scope">
+      <MenuButton tooltip="'Letters'" class="{'mb-4': true, 'bg-black-30 hover:bg-black-30': scope.active}">
+        <Icon prefix="'fas'" icon="'envelope'" class="'text-xl'" />
+      </MenuButton>
+    </RouterLink>
     <RouterLink to="'/text-edit/1'" t-slot-scope="scope">
       <MenuButton tooltip="'Texts'" class="{'mb-4': true, 'bg-black-30 hover:bg-black-30': scope.active}">
         <Icon prefix="'fas'" icon="'comments'" class="'text-xl'" />

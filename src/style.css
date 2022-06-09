@@ -16,3 +16,21 @@ body {
   border-width: 7.5px 10px 7.5px 0;
   border-color: transparent rgba(0,0,0,0.8) transparent transparent;
 }
+
+.compassion-input {
+  @apply bg-slate-100;
+  @apply outline-none;
+  @apply focus:outline-none;
+  @apply w-full;
+  @apply rounded;
+  @apply p-2;
+  @apply text-sm;
+  @apply text-slate-800;
+  @apply border;
+  @apply border-solid;
+  @apply border-slate-100;
+  @apply focus:border-compassion;
+  @apply focus:bg-white;
+  @apply focus:shadow-lg;
+  @apply border-none;
+}

@@ -5,7 +5,7 @@ const backgroundClasses = {
   // [primary classes, secondary classes]
   compassion: ['bg-compassion', 'hover:bg-blue-900', 'hover:bg-compassion'],
   green: ['bg-green-600', 'hover:bg-green-800', 'hover:bg-green-600'],
-  red: ['bg-red-600', 'hover:bg-green-800', 'hover:bg-red-600'],
+  red: ['bg-red-600', 'hover:bg-red-800', 'hover:bg-red-600'],
   slate: ['bg-slate-600', 'hover:bg-slate-800', 'hover:bg-slate-700']
 };
 

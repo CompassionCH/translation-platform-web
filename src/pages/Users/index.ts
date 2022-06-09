@@ -2,11 +2,20 @@ import { Component, onMounted, useState } from "@odoo/owl";
 import Table, { Column } from '../../components/Table';
 import template from './users.xml';
 import Button from "../../components/Button";
+import Modal from "../../components/Modal";
 
 const columns: Column[] = [
   'username',
   'age',
-  'translations',
+  {
+    name: 'lastYear',
+    header: 'last year',
+  },
+  {
+    name: 'year',
+    header: 'this year',
+  },
+  'total',
   {
     name: 'available',
     header: 'Available',
@@ -22,7 +31,9 @@ type User = {
   username: string;
   age: number;
   languages: string[];
-  translations: number;
+  total: number;
+  year: number;
+  lastYear: number;
   available: boolean;
 };
 
@@ -31,13 +42,16 @@ type State = {
   loading: boolean;
   columns: Column[];
   selected: [];
+  sendMail: boolean;
 };
 
 const allUsers: User[] = [...Array(100).keys()].map(i => ({
   username: `user-${i}`,
   age: Math.round(Math.random() * 20 + 20),
   languages: ['french', 'english', 'spanish', 'chinese', 'german'].filter(() => Math.random() > 0.5),
-  translations: Math.round(Math.random() * 100 + 10),
+  total: Math.round(Math.random() * 100 + 100),
+  year: Math.round(Math.random() * 10 + 5),
+  lastYear: Math.round(Math.random() * 100 + 50),
   available: Math.random() > 0.3,
 }));
 
@@ -47,6 +61,7 @@ export default class Users extends Component {
   static components = {
     Table,
     Button,
+    Modal,
   };
 
   state = useState<State>({
@@ -54,6 +69,7 @@ export default class Users extends Component {
     loading: false,
     columns,
     selected: [],
+    sendMail: false,
   });
 
   setup() {

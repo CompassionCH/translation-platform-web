@@ -14,6 +14,8 @@ import {
   faCircleNotch,
   faStar,
   faEnvelope,
+  faXmark,
+  faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -31,4 +33,6 @@ library.add(
   faCircleNotch,
   faStar,
   faEnvelope,
+  faXmark,
+  faTriangleExclamation,
 );

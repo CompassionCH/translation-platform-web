@@ -3,12 +3,14 @@ import template from './textEdit.xml';
 import PageEditor from "./PageEditor";
 import Button from "../../components/Button";
 import TopInformationPiece from "./TopInformationPiece";
+import SignalProblem from "./SignalProblem";
 
 export default class TextEdit extends Component {
   static template = template;
   static components = {
     PageEditor,
     Button,
+    SignalProblem,
     InfoPiece: TopInformationPiece,
   };
 
@@ -18,6 +20,7 @@ export default class TextEdit extends Component {
   editor = useState({
     page: 0,
     pages: [],
+    showBugModal: false,
   });
 
   resizing = useState({

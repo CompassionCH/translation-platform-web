@@ -11,12 +11,12 @@ class PageBreak extends Component {
           <div class="col-span-3">
             <h3 class="text-slate-700 text-sm font-medium">Paragraph</h3>
             <p class="text-slate-600 text-xs mb-2">Translated transcription of the text</p>
-            <textarea t-model="state.text" class="bg-slate-100 outline-none focus:outline-none w-full rounded p-2 text-sm text-slate-800 border-2 border-solid border-transparent focus:border-compassion focus:bg-white focus:shadow-lg" />
+            <textarea t-model="state.text" class="compassion-input" />
           </div>
           <div class="col-span-2">
             <h3 class="text-slate-700 text-sm font-medium">Comment</h3>
             <p class="text-slate-600 text-xs mb-2">For any communication</p>
-            <textarea t-model="state.comment" class="bg-slate-100 outline-none focus:outline-none w-full rounded p-2 text-sm text-slate-800 border-2 border-solid border-transparent focus:border-compassion focus:bg-white focus:shadow-lg" />
+            <textarea t-model="state.comment" class="compassion-input" />
           </div>
         </div>
       </div>

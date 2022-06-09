@@ -31,6 +31,17 @@ class Transition extends Component<Props> {
     "*": {},
   };
 
+  static defaultProps = {
+    enterFrom: 'opacity-0',
+    enterTo: 'opacity-1',
+    leaveFrom: 'opacity-1',
+    leaveTo: 'opacity-0',
+    enterActive: 'transition-opacity duration-300',
+    leaveActive: 'transition-opacity duration-300',
+    delay: 100,
+    duration: 300,
+  };
+
   state = useState({
     class: '',
     show: this.props.active,
