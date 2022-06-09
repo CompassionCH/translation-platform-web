@@ -16,7 +16,7 @@
         <Icon prefix="'fas'" icon="'comments'" class="'text-xl'" />
       </MenuButton>
     </RouterLink>
-    <div class="mt-auto">
+    <div class="mt-auto mb-4">
       <MenuButton tooltip="'Settings'" class="'cursor-pointer'">
         <Icon prefix="'fas'" icon="'gear'" class="'text-xl'" />
       </MenuButton>

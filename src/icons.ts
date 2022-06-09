@@ -12,6 +12,8 @@ import {
   faComments,
   faGear,
   faCircleNotch,
+  faStar,
+  faEnvelope,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -27,4 +29,6 @@ library.add(
   faComments,
   faGear,
   faCircleNotch,
+  faStar,
+  faEnvelope,
 );

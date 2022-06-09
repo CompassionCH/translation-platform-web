@@ -1,22 +1,39 @@
-<div class="relative p-10">
+<div class="relative">
+  <div class="flex justify-between p-4 border-b border-solid border-slate-300">
+    <div></div>
+    <div>
+      <input type="text" placeholder="search" class="bg-slate-100 outline-none focus:outline-none w-full rounded px-2 py-1 text-sm text-slate-800 border-2 border-solid border-transparent focus:border-compassion focus:bg-white focus:shadow-lg" />
+    </div>
+  </div>
   <div class="overflow-hidden">
-    <table t-att-class="props.class" class="w-full">
+    <table t-att-class="props.class" class="w-full text-sm">
       <thead>
         <tr>
+          <td t-if="props.onSelect !== undefined" class="font-medium text-slate-800 py-3 px-2 border-b border-solid border-slate-300 bg-slate-100">
+            <!--
+            <input type="checkbox" t-on-change="this.toggleAll" t-att="{'checked': this.state.selectAll}" />
+            -->
+          </td>
           <td t-foreach="state.columns" t-as="col" t-key="col.name"
             t-esc="col.header || col.name"
-            class="font-medium text-slate-800 py-1 px-2" />
+            class="font-medium text-slate-800 py-3 px-2 border-b border-solid border-slate-300 bg-slate-100" />
         </tr>
       </thead>
       <tbody>
-        <t t-foreach="props.data" t-as="row" t-key="row.username">
-          <Row columns="state.columns" data="row" />
+        <t t-foreach="props.data" t-as="row" t-key="row[props.keyCol]">
+          <Row columns="state.columns"
+            data="row"
+            onClick="props.onRowClick"
+            selected="state.selected.includes(row) || this.state.selectAll"
+            selectable="props.onSelect !== undefined"
+            last="row_last"
+            onToggle="() => this.toggleItem(row)" />
         </t>
       </tbody>
     </table>
   </div>
-  <div class="flex justify-between items-center mt-5">
-    <div>
+  <div class="flex justify-between items-center border-t border-solid border-slate-300 p-4">
+    <div class="text-slate-700 text-sm">
       Showing 
       <t t-esc="(state.page * props.data.length) + 1" /> - <t t-esc="(state.page + 1) * props.data.length" />
       of <t t-esc="props.total" /> Results

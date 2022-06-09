@@ -1,0 +1,31 @@
+<div>
+  <div class="container mx-auto">
+    <div class="py-10">
+      <h3 class="text-slate-600 font-semibold text-2xl">Compassion</h3>
+      <h1 class="text-slate-700 font-semibold text-4xl">Registered Translators</h1>
+    </div>
+    <div class="flex gap-10">
+      <div class="w-64">
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+          <div class="bg-slate-100 border-b border-solid border-slate-300 px-4 py-3">
+            <h4 class="font-semibold text-slate-700"><t t-esc="state.selected.length" /> Users</h4>
+            <p class="text-slate-600 text-xs">Currently Selected</p>
+          </div>
+          <div class="p-4">
+            <Button class="'w-full'" icon="'envelope'" color="'compassion'" disabled="state.selected.length === 0">Send E-mail</Button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl shadow-md flex-1">
+        <Table total="100"
+          columns="state.columns"
+          data="state.users"
+          keyCol="'username'"
+          onSelect="(selection) => this.onSelectionChange(selection)"
+          onRowClick="this.onRowClick"
+          onPageChange="(page) => this.getPage(page)"
+          loading="state.loading" />
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,7 @@
-import { Component, onMounted, useState, xml } from "@odoo/owl";
+import { Component, onMounted, useState } from "@odoo/owl";
 import Table, { Column } from '../../components/Table';
+import template from './users.xml';
+import Button from "../../components/Button";
 
 const columns: Column[] = [
   'username',
@@ -8,7 +10,7 @@ const columns: Column[] = [
   {
     name: 'available',
     header: 'Available',
-    formatter: (val: boolean) => val ? 'True' : 'False',
+    formatter: (val: boolean) => val ? 'Yes' : 'No',
   },
   {
     name: 'languages',
@@ -28,6 +30,7 @@ type State = {
   users: User[];
   loading: boolean;
   columns: Column[];
+  selected: [];
 };
 
 const allUsers: User[] = [...Array(100).keys()].map(i => ({
@@ -39,26 +42,32 @@ const allUsers: User[] = [...Array(100).keys()].map(i => ({
 }));
 
 export default class Users extends Component {
-  static template = xml`
-    <div>
-      <Table total="100" columns="state.columns" data="state.users" keyCol="'username'" onPageChange="(page) => this.getPage(page)" loading="state.loading" />
-    </div>
-  `;
+  static template = template;
 
   static components = {
     Table,
+    Button,
   };
 
   state = useState<State>({
     users: [],
     loading: false,
     columns,
+    selected: [],
   });
 
   setup() {
     onMounted(() => {
       this.getPage(0); 
     });
+  }
+
+  onRowClick(item: any) {
+    console.log('ROW CLICKED', item);
+  }
+
+  private onSelectionChange(e: any) {
+    this.state.selected = e;
   }
 
   private getPage(i: number) {

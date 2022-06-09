@@ -3,10 +3,10 @@ import Icon from "./Icon";
 
 const backgroundClasses = {
   // [primary classes, secondary classes]
-  compassion: ['bg-compassion hover:bg-blue-900', 'hover:bg-compassion'],
-  green: ['bg-green-600 hover:bg-green-800', 'hover:bg-green-600'],
-  red: ['bg-red-600 hover:bg-green-800', 'hover:bg-red-600'],
-  slate: ['bg-slate-600 hover:bg-slate-800', 'hover:bg-slate-700']
+  compassion: ['bg-compassion', 'hover:bg-blue-900', 'hover:bg-compassion'],
+  green: ['bg-green-600', 'hover:bg-green-800', 'hover:bg-green-600'],
+  red: ['bg-red-600', 'hover:bg-green-800', 'hover:bg-red-600'],
+  slate: ['bg-slate-600', 'hover:bg-slate-800', 'hover:bg-slate-700']
 };
 
 const SECONDARY_BG_COLOR = 'bg-slate-300';
@@ -38,6 +38,7 @@ type Props = {
   circle?: boolean;
   class?: string;
   onClick: Function;
+  disabled?: boolean;
 };
 
 
@@ -63,6 +64,7 @@ class Button extends Component<Props> {
     class: { type: String, optional: true },
     circle: { type: Boolean, optional: true },
     onClick: { type: Function, optional: true },
+    disabled: { type: Boolean, optional: true },
     "*": {},
   };
 
@@ -83,34 +85,45 @@ class Button extends Component<Props> {
   });
 
   setup(): void {
-    this.defineClass();
-    onWillUpdateProps(() => this.defineClass());
+    this.defineClass(this.props as any);
+    onWillUpdateProps((nextProps) => this.defineClass(nextProps));
   }
 
-  defineClass(): void {
+  defineClass(props: Required<Props>): void {
     const {
       color,
       level,
       size,
       circle,
       icon,
-    } = this.props as Required<Props>;
+      disabled,
+    } = props;
 
     const classes: string[] & string[][] = [];
     const iconClasses: string[] & string[][] = [];
 
     // Initial classes
-    classes.push('transition-colors hover:text-white');
+    classes.push('transition-all hover:text-white');
+
+    if (disabled) {
+      classes.push('opacity-60 cursor-default');
+    }
 
     // Colors
     const bgColorClass = backgroundClasses[color];
     if (level === 'primary') {
       classes.push(bgColorClass[0]);
+      if (!disabled) {
+        classes.push(bgColorClass[1]);
+      }
+
       classes.push('text-white'); // text is white
     } else {
       classes.push(SECONDARY_BG_COLOR);
       classes.push(SECONDARY_TEXT_COLOR);
-      classes.push(bgColorClass[1]);
+      if (!disabled) {
+        classes.push(bgColorClass[2]);
+      }
     }
 
     // Icon

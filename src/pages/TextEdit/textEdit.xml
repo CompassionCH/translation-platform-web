@@ -23,6 +23,7 @@
           <InfoPiece label="'First Name'" value="'Natanaele'" />
           <InfoPiece label="'Last Name'" value="'Di Sabatino'" />
           <InfoPiece label="'Sex'" value="'Man'" />
+          <InfoPiece label="'Age'" value="'42 Years Old'" />
         </div>
         <div class="py-3 px-4 flex-1">
           <h4 class="font-semibold text-gray-800 border-b border-solid border-gray-100 mb-2">Translation</h4>
