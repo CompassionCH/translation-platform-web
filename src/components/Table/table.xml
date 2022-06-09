@@ -35,11 +35,11 @@
   <div class="flex justify-between items-center border-t border-solid border-slate-300 p-4">
     <div class="text-slate-700 text-sm">
       Showing 
-      <t t-esc="(state.page * props.data.length) + 1" /> - <t t-esc="(state.page + 1) * props.data.length" />
+      <t t-esc="(filters.pageNumber * props.data.length) + 1" /> - <t t-esc="(filters.pageNumber + 1) * props.data.length" />
       of <t t-esc="props.total" /> Results
     </div>
     <div>
-      <PageSelector page="state.page" total="props.total" pageSize="state.pageSize" onPageChange="(page) => this.moveToPage(page)" />
+      <PageSelector page="filters.pageNumber" total="props.total" pageSize="filters.pageSize" onPageChange="(page) => this.filters.pageNumber = page" />
     </div>
   </div>
   <Transition duration="100"

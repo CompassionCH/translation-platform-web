@@ -3,6 +3,8 @@ import Table, { Column } from '../../components/Table';
 import template from './users.xml';
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
+import UserDAO, { User } from "../../models/UserDAO";
+import { ListQueryParams } from "../../models/BaseDAO";
 
 const columns: Column[] = [
   'username',
@@ -27,33 +29,14 @@ const columns: Column[] = [
   }
 ];
 
-type User = {
-  username: string;
-  age: number;
-  languages: string[];
-  total: number;
-  year: number;
-  lastYear: number;
-  available: boolean;
-};
-
 type State = {
   users: User[];
+  total: number;
   loading: boolean;
   columns: Column[];
   selected: [];
   sendMail: boolean;
 };
-
-const allUsers: User[] = [...Array(100).keys()].map(i => ({
-  username: `user-${i}`,
-  age: Math.round(Math.random() * 20 + 20),
-  languages: ['french', 'english', 'spanish', 'chinese', 'german'].filter(() => Math.random() > 0.5),
-  total: Math.round(Math.random() * 100 + 100),
-  year: Math.round(Math.random() * 10 + 5),
-  lastYear: Math.round(Math.random() * 100 + 50),
-  available: Math.random() > 0.3,
-}));
 
 export default class Users extends Component {
   static template = template;
@@ -70,11 +53,12 @@ export default class Users extends Component {
     columns,
     selected: [],
     sendMail: false,
+    total: 0,
   });
 
   setup() {
     onMounted(() => {
-      this.getPage(0); 
+      this.updateData({}); 
     });
   }
 
@@ -86,11 +70,12 @@ export default class Users extends Component {
     this.state.selected = e;
   }
 
-  private getPage(i: number) {
+  private updateData(params: Partial<ListQueryParams<User>>) {
     this.state.loading = true;
-    setTimeout(() => {
-      this.state.users = allUsers.slice(i*10, (i+1)*10);
+    UserDAO.list(params).then((res) => {
+      this.state.users = res.data;
+      this.state.total = res.total;
       this.state.loading = false;
-    }, 300 + (Math.random() * 500));
+    });
   } 
 }

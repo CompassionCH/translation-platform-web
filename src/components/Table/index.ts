@@ -5,6 +5,8 @@ import Transition from '../Transition';
 import PageSelector from './PageSelector';
 import Loader from '../Loader';
 import { PropsType } from "../../UtilityTypes";
+import { ListQueryParams } from '../../models/BaseDAO';
+import useWatch from "../../hooks/useWatch";
 
 type Props<T extends Record<string, any>> = {
   data: T[];
@@ -12,7 +14,7 @@ type Props<T extends Record<string, any>> = {
   keyCol: string;
   total: number;
   loading?: boolean;
-  onPageChange: Function;
+  onFilterChange: Function;
   class?: string;
   onSelect?: Function;
 };
@@ -23,7 +25,7 @@ const props = {
   keyCol: { type: String },
   total: { type: Number },
   loading: { type: Boolean, optional: true },
-  onPageChange: { type: Function },
+  onFilterChange: { type: Function },
   onSelect: { type: Function, optional: true },
   class: { type: String, optional: true },
   onRowClick: { type: Function, optional: true },
@@ -35,8 +37,6 @@ export type {
 
 type State<T> = {
   columns: Column[];
-  page: number;
-  pageSize: number;
   selected: T[];
   selectAll: boolean;
 };
@@ -54,11 +54,21 @@ export default class Table<T extends Record<string, any>> extends Component<Prop
 
   state = useState<State<T>>({
     columns: [],
-    page: 0,
-    pageSize: 10,
     selected: [],
     selectAll: false,
   });
+
+  filters = useWatch<ListQueryParams<T>>({
+    pageNumber: 0,
+    pageSize: 10,
+    search: [],
+    sortBy: undefined,
+    sortOrder: 'desc',
+  }, () => this.notifyFilterChange());
+
+  notifyFilterChange() {
+    this.props.onFilterChange(this.filters);
+  }
 
   toggleAll() {
 
@@ -99,11 +109,6 @@ export default class Table<T extends Record<string, any>> extends Component<Prop
     onWillUpdateProps((nextProps) => {
       this.update(nextProps);
     });
-  }
-
-  moveToPage(page: number) {
-    this.props.onPageChange(page);
-    this.state.page = page;
   }
 
   private update({ columns }: Props<T>) {
