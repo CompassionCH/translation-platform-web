@@ -3,10 +3,10 @@ import Row, { Column } from './Row';
 import template from './table.xml';
 import Transition from '../Transition';
 import PageSelector from './PageSelector';
+import SortOrderViewer from "./SortOrderViewer";
 import Loader from '../Loader';
 import { PropsType } from "../../UtilityTypes";
 import { ListQueryParams } from '../../models/BaseDAO';
-import useWatch from "../../hooks/useWatch";
 
 type Props<T extends Record<string, any>> = {
   data: T[];
@@ -39,6 +39,7 @@ type State<T> = {
   columns: Column[];
   selected: T[];
   selectAll: boolean;
+  searchTimeout?: number;
 };
 
 export default class Table<T extends Record<string, any>> extends Component<PropsType<typeof props>> {
@@ -50,21 +51,23 @@ export default class Table<T extends Record<string, any>> extends Component<Prop
     Transition,
     PageSelector,
     Loader,
+    SortOrderViewer,
   };
 
   state = useState<State<T>>({
     columns: [],
     selected: [],
     selectAll: false,
+    searchTimeout: undefined,
   });
 
-  filters = useWatch<ListQueryParams<T>>({
+  filters = useState<ListQueryParams<T>>({
     pageNumber: 0,
     pageSize: 10,
     search: [],
     sortBy: undefined,
     sortOrder: 'desc',
-  }, () => this.notifyFilterChange());
+  });
 
   notifyFilterChange() {
     this.props.onFilterChange(this.filters);
@@ -109,6 +112,52 @@ export default class Table<T extends Record<string, any>> extends Component<Prop
     onWillUpdateProps((nextProps) => {
       this.update(nextProps);
     });
+  }
+
+  changePage(page: number) {
+    this.filters.pageNumber = page;
+    this.notifyFilterChange();
+  }
+
+  searchColumn(colName: string, event: InputEvent) {
+    if (this.state.searchTimeout) {
+      clearTimeout(this.state.searchTimeout);
+    }
+
+    this.state.searchTimeout = setTimeout(() => {
+      const value = (event.target as HTMLInputElement).value;
+      const filterIndex = this.filters.search.findIndex(it => it.column === colName);
+
+      if (value.trim() === '' && filterIndex >= 0) {
+        // Remove search filter if search bar is empty
+        this.filters.search.splice(filterIndex, 1);
+      } else {
+        // Add filter if not existing yet
+        if (filterIndex >= 0) {
+          this.filters.search[filterIndex].term = value;
+        } else {
+          this.filters.search.push({
+            column: colName,
+            term: value,
+          });
+        }
+      }
+
+      clearTimeout(this.state.searchTimeout);
+      this.state.searchTimeout = undefined;
+      this.filters.pageNumber = 0;
+      this.notifyFilterChange();
+    }, 500);
+  }
+
+  updateSortOrder(colName: string) {
+    if (this.filters.sortOrder === 'asc') {
+      this.filters.sortOrder = 'desc';
+    } else {
+      this.filters.sortOrder = 'asc';
+    }
+    this.filters.sortBy = colName;
+    this.notifyFilterChange();
   }
 
   private update({ columns }: Props<T>) {

@@ -16,6 +16,8 @@ import {
   faEnvelope,
   faXmark,
   faTriangleExclamation,
+  faCaretUp,
+  faCaretDown,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -35,4 +37,6 @@ library.add(
   faEnvelope,
   faXmark,
   faTriangleExclamation,
+  faCaretUp,
+  faCaretDown,
 );

@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="relative bg-white rounded-xl shadow-md flex-1 overflow-hidden">
-        <Table total="100"
+        <Table total="state.total"
           columns="state.columns"
           data="state.users"
           keyCol="'username'"

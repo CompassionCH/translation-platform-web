@@ -1,10 +1,4 @@
 <div class="relative">
-  <div class="flex justify-between p-4 border-b border-solid border-slate-300">
-    <div></div>
-    <div>
-      <input type="text" placeholder="search" class="compassion-input" />
-    </div>
-  </div>
   <div class="overflow-hidden">
     <table t-att-class="props.class" class="w-full text-sm">
       <thead>
@@ -15,11 +9,24 @@
             -->
           </td>
           <td t-foreach="state.columns" t-as="col" t-key="col.name"
-            t-esc="col.header || col.name"
-            class="font-medium text-slate-800 py-3 px-2 border-b border-solid border-slate-300 bg-slate-100" />
+            class="py-3 font-medium px-2 border-b border-solid border-slate-300 bg-slate-100" t-att-class="{'cursor-pointer': col.sortable !== false}"
+            t-on-click="() => this.updateSortOrder(col.name)"
+          >
+            <div class="flex">
+              <span t-esc="col.header || col.name" class="font-medium text-slate-800" />
+              <SortOrderViewer t-if="col.sortable !== false" order="filters.sortBy === col.name ? filters.sortOrder : undefined" />
+            </div>
+          </td>
         </tr>
       </thead>
       <tbody>
+        <tr>
+          <td t-if="props.onSelect !== undefined" class="bg-slate-200 border-b border-solid border-slate-300" />
+          <td t-foreach="state.columns" t-as="col" t-key="col.name" class="bg-slate-200 border-b border-solid border-slate-300">
+            <input type="text" placeholder="search" t-if="col.searchable !== false" t-on-input="(e) => this.searchColumn(col.name, e)"
+              class="bg-slate-200 outline-none w-full p-1 text-xs text-slate-800 border border-transparent focus:border-compassion focus:bg-white focus:shadow-lg border-none" />
+          </td>
+        </tr>
         <t t-foreach="props.data" t-as="row" t-key="row[props.keyCol]">
           <Row columns="state.columns"
             data="row"
@@ -39,7 +46,7 @@
       of <t t-esc="props.total" /> Results
     </div>
     <div>
-      <PageSelector page="filters.pageNumber" total="props.total" pageSize="filters.pageSize" onPageChange="(page) => this.filters.pageNumber = page" />
+      <PageSelector page="filters.pageNumber" total="props.total" pageSize="filters.pageSize" onPageChange="(page) => this.changePage(page)" />
     </div>
   </div>
   <Transition duration="100"

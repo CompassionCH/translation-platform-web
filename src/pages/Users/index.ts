@@ -22,10 +22,12 @@ const columns: Column[] = [
     name: 'available',
     header: 'Available',
     formatter: (val: boolean) => val ? 'Yes' : 'No',
+    searchable: false,
   },
   {
     name: 'languages',
     formatter: (val: string[]) => val.join(', '),
+    sortable: false,
   }
 ];
 

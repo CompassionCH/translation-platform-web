@@ -5,6 +5,8 @@ export type Column = {
   header?: string;
   name: string;
   formatter?: (item: any) => string | number;
+  sortable?: boolean;
+  searchable?: boolean;
 } | string;
 
 const props = {

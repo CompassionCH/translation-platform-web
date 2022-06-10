@@ -5,7 +5,8 @@ export function simulateList<T>(allItems: T[], params: Partial<ListQueryParams<T
   const searchParams = params.search || [];
   const filtered = allItems.filter((it) => {
     let match = true;
-    for (const { term, column } of searchParams) {
+    for (let i = 0; i < searchParams.length; i++) {
+      const { term, column } = searchParams[i];
       if (term.trim() !== '') {
         if (!`${it[column]}`.includes(term)) {
           match = false;
@@ -27,6 +28,7 @@ export function simulateList<T>(allItems: T[], params: Partial<ListQueryParams<T
   });
 
   // Then slice
+  console.log(sorted.length);
   const pageNumber = params.pageNumber || 0;
   const pageSize = params.pageSize || 10;
   const response = {
