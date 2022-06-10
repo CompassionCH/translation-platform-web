@@ -1,4 +1,5 @@
 <div>
+  <UserModal userId="state.modalUserId" onClose="() => this.state.modalUserId = undefined" />
   <div class="container mx-auto px-10 lg:px-0">
     <div class="py-10">
       <h3 class="text-slate-600 font-semibold text-2xl">Compassion</h3>
@@ -22,7 +23,7 @@
           data="state.users"
           keyCol="'username'"
           onSelect="(selection) => this.state.selected = selection"
-          onRowClick="this.onRowClick"
+          onRowClick="(item) => this.state.modalUserId = item.username"
           onFilterChange="(params) => this.updateData(params)"
           loading="state.loading" />
       </div>

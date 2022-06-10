@@ -1,5 +1,12 @@
 import { ListQueryParams, ListResponse } from "./BaseDAO";
 
+export function simulateFind<T>(allItems: T[], id: string | number, key: keyof T): Promise<T | undefined> {
+  return new Promise(resolve => setTimeout(() => {
+    const item = allItems.find(it => `${it[key]}` === `${id}`);
+    resolve(item);
+  }, Math.random() * 300 + 300));
+};
+
 export function simulateList<T>(allItems: T[], params: Partial<ListQueryParams<T>>): Promise<ListResponse<T>> {
 
   const searchParams = params.search || [];
@@ -28,7 +35,6 @@ export function simulateList<T>(allItems: T[], params: Partial<ListQueryParams<T
   });
 
   // Then slice
-  console.log(sorted.length);
   const pageNumber = params.pageNumber || 0;
   const pageSize = params.pageSize || 10;
   const response = {

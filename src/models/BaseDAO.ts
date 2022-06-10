@@ -13,6 +13,7 @@ export type ListResponse<T> = {
 }
 
 interface BaseDAO<T> {
+  find(id: number | string): Promise<T | undefined>;
   list(params: Partial<ListQueryParams<T>>): Promise<ListResponse<T>>;
 }
 

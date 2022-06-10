@@ -3,6 +3,7 @@ import Table, { Column } from '../../components/Table';
 import template from './users.xml';
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
+import UserModal from "../../components/UserModal";
 import { models, User } from "../../models";
 import { ListQueryParams } from "../../models/BaseDAO";
 
@@ -38,6 +39,7 @@ type State = {
   columns: Column[];
   selected: [];
   sendMail: boolean;
+  modalUserId?: string;
 };
 
 export default class Users extends Component {
@@ -47,6 +49,7 @@ export default class Users extends Component {
     Table,
     Button,
     Modal,
+    UserModal,
   };
 
   state = useState<State>({
@@ -56,16 +59,13 @@ export default class Users extends Component {
     selected: [],
     sendMail: false,
     total: 0,
+    modalUserId: undefined,
   });
 
   setup() {
     onMounted(() => {
       this.updateData({}); 
     });
-  }
-
-  onRowClick(item: any) {
-    console.log('ROW CLICKED', item);
   }
 
   private updateData(params: Partial<ListQueryParams<User>>) {
