@@ -1,22 +1,11 @@
 import { Component, onMounted, useState } from "@odoo/owl";
 import template from './letters.xml';
 import { models, Letter } from "../../models";
-import { Column } from "../../components/Table";
+import Table, { Column } from "../../components/Table";
 import { ListQueryParams } from "../../models/BaseDAO";
-
-const columns: Column[] = [
-  'title',
-  'status',
-  'priority',
-  'source',
-  'target',
-  'translator',
-  {
-    header: 'date',
-    name: 'date',
-    formatter: (val: Date) => val.toLocaleDateString(),
-  }
-];
+import LetterPriority from "./LetterPriority";
+import TranslatorButton from "./TranslatorButton";
+import UserModal from '../../components/UserModal';
 
 type State = {
   letters: Letter[];
@@ -24,24 +13,53 @@ type State = {
   loading: boolean;
   columns: Column[];
   selected: [];
+  usernameModal?: string;
 };
 
 
 class Letters extends Component {
 
   static template = template;
+  static components = {
+    Table,
+    UserModal,
+  };
 
   state = useState<State>({
     letters: [],
     total: 0,
     loading: false,
-    columns,
     selected: [],
+    usernameModal: undefined,
+    columns: [
+      {
+        name: 'priority',
+        component: (val: number) => ({
+          component: LetterPriority,
+          props: { priority: val },
+        }),
+      },
+      'title',
+      'status',
+      'source',
+      'target',
+      {
+        name: 'translator',
+        component: (username: string) => ({
+          component: TranslatorButton,
+          props: {
+            username,
+            onClick: () => this.state.usernameModal = username,
+          }
+        }),
+      },
+      {
+        header: 'date',
+        name: 'date',
+        formatter: (val: Date) => val.toLocaleDateString(),
+      }
+    ],
   });
-
-  setup(): void {
-    onMounted(() => this.updateData());
-  }
 
   updateData(params: Partial<ListQueryParams<Letter>> = {}) {
     this.state.loading = true;

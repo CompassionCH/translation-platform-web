@@ -22,7 +22,7 @@ const columns: Column[] = [
   {
     name: 'available',
     header: 'Available',
-    formatter: (val: boolean) => val ? 'Yes' : 'No',
+    formatter: (val: User) => val.available ? 'Yes' : 'No',
     searchable: false,
   },
   {

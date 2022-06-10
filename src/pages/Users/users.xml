@@ -19,6 +19,7 @@
       </div>
       <div class="relative bg-white rounded-xl shadow-md flex-1 overflow-hidden">
         <Table total="state.total"
+          key="'users-page-table'"
           columns="state.columns"
           data="state.users"
           keyCol="'username'"

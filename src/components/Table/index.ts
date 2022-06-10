@@ -1,4 +1,4 @@
-import { Component, onWillUpdateProps, useState } from "@odoo/owl";
+import { Component, onMounted, onWillUpdateProps, useState } from "@odoo/owl";
 import Row, { Column } from './Row';
 import template from './table.xml';
 import Transition from '../Transition';
@@ -7,6 +7,7 @@ import SortOrderViewer from "./SortOrderViewer";
 import Loader from '../Loader';
 import { PropsType } from "../../UtilityTypes";
 import { ListQueryParams } from '../../models/BaseDAO';
+import usePersistedState from "../../hooks/usePersistedState";
 
 type Props<T extends Record<string, any>> = {
   data: T[];
@@ -21,6 +22,7 @@ type Props<T extends Record<string, any>> = {
 
 const props = {
   data: { type: Array },
+  key: { type: String, optional: true },
   columns: { type: Array },
   keyCol: { type: String },
   total: { type: Number },
@@ -61,15 +63,16 @@ export default class Table<T extends Record<string, any>> extends Component<Prop
     searchTimeout: undefined,
   });
 
-  filters = useState<ListQueryParams<T>>({
+  filters = usePersistedState<ListQueryParams<T>>({
     pageNumber: 0,
     pageSize: 10,
     search: [],
     sortBy: undefined,
     sortOrder: 'desc',
-  });
+  }, this.props.key);
 
   notifyFilterChange() {
+    console.log(JSON.stringify(this.filters));
     this.props.onFilterChange(this.filters);
   }
 
@@ -109,6 +112,11 @@ export default class Table<T extends Record<string, any>> extends Component<Prop
 
   setup(): void {
     this.update(this.props);
+
+    onMounted(() => {
+      this.notifyFilterChange();
+    });
+
     onWillUpdateProps((nextProps) => {
       this.update(nextProps);
     });

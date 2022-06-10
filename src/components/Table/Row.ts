@@ -1,10 +1,16 @@
 import { Component, xml } from "@odoo/owl";
 import { PropsType } from "../../UtilityTypes";
 
+type ComponentTemplate = {
+  component: typeof Component;
+  props: Record<string, any>;
+};
+
 export type Column = {
   header?: string;
   name: string;
-  formatter?: (item: any) => string | number;
+  formatter?: (value: any, item: any) => string | number;
+  component?: (value: any, item: any) => ComponentTemplate;
   sortable?: boolean;
   searchable?: boolean;
 } | string;
@@ -32,7 +38,11 @@ export default class Row extends Component<PropsType<typeof props>> {
       </td>
       <t t-foreach="props.columns" t-as="col" t-key="col.name">
         <td t-if="props.data.hasOwnProperty(col.name)" class="text-slate-700 py-2 px-2" t-att-class="{'border-b border-solid border-slate-200': !props.last}">
-          <span t-if="col.formatter" t-esc="col.formatter(props.data[col.name])" />
+          <span t-if="col.formatter" t-out="col.formatter(props.data[col.name], props.data)" />
+          <t t-elif="col.component">
+            <t t-set="component" t-value="col.component(props.data[col.name], props.data)" />
+            <t t-component="component.component" t-props="component.props" />
+          </t>
           <span t-else="" t-esc="props.data[col.name]" />
         </td>
         <td t-else=""></td>
