@@ -4,7 +4,7 @@ import { simulateList } from "./simulator";
 type Status = 'done' | 'to do' | 'in process' | 'to review';
 type Priority = 0 | 1 | 2 | 3 | 4;
 
-type Letter = {
+export type Letter = {
   id: number;
   status: Status;
   priority: Priority;

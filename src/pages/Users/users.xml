@@ -21,7 +21,7 @@
           columns="state.columns"
           data="state.users"
           keyCol="'username'"
-          onSelect="(selection) => this.onSelectionChange(selection)"
+          onSelect="(selection) => this.state.selected = selection"
           onRowClick="this.onRowClick"
           onFilterChange="(params) => this.updateData(params)"
           loading="state.loading" />

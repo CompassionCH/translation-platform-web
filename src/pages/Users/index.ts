@@ -3,7 +3,7 @@ import Table, { Column } from '../../components/Table';
 import template from './users.xml';
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
-import UserDAO, { User } from "../../models/UserDAO";
+import { models, User } from "../../models";
 import { ListQueryParams } from "../../models/BaseDAO";
 
 const columns: Column[] = [
@@ -66,13 +66,9 @@ export default class Users extends Component {
     console.log('ROW CLICKED', item);
   }
 
-  private onSelectionChange(e: any) {
-    this.state.selected = e;
-  }
-
   private updateData(params: Partial<ListQueryParams<User>>) {
     this.state.loading = true;
-    UserDAO.list(params).then((res) => {
+    models.users.list(params).then((res) => {
       this.state.users = res.data;
       this.state.total = res.total;
       this.state.loading = false;
