@@ -74,7 +74,6 @@ export default class Table<T extends Record<string, any>> extends Component<Prop
   }, this.props.key);
 
   notifyFilterChange() {
-    console.log(JSON.stringify(this.filters));
     this.props.onFilterChange(this.filters);
   }
 
@@ -94,7 +93,6 @@ export default class Table<T extends Record<string, any>> extends Component<Prop
   }
 
   toggleItem(key: any) {
-    console.log(this);
     const index = this.state.selected.indexOf(key);
     if (index >= 0) {
       this.state.selected.splice(index, 1);

@@ -1,55 +1,22 @@
-<div class="h-full">
-  <SignalProblem active="editor.showBugModal" onClose="() => editor.showBugModal = false" />
-  <div class="flex h-full">
-    <div class="h-full relative bg-blue-300 w-2/5" t-ref="letterPanel">
-      <div class="shadow-sm overflow-hidden h-full border-gray-400 flex">
-        <t t-if="resizing.active === false">
-          <iframe src="/text.pdf" class="w-full h-full" />
-        </t>
-        <div class="w-2 h-full" />
-        <div t-ref="panelDrag" class="absolute right-0 w-2 h-full bg-slate-400 z-30 hover:bg-blue-500 cursor-ew-resize select-none" />
+<LetterViewer>
+  <div class="h-full flex flex-col">
+    <LetterInformationViewer />
+    <div class="flex-1 shadow-inner bg-gradient-to-b from-slate-200 to-slate-200">
+      <div class="w-full h-full relative overflow-auto" style="background-image: url('/grid.png')">
+        <div class="absolute w-full">
+          <PageEditor />
+        </div>
       </div>
     </div>
-    <div class="flex-1 flex flex-col">
-      <div class="flex bg-white shadow-lg relative z-10 border-b border-solid border-slate-200">
-        <div class="py-3 px-4 mr-10">
-          <h4 class="font-semibold text-gray-800 border-b border-solid border-gray-100 mb-2">Child Data</h4>
-          <InfoPiece label="'First Name'" value="'Iren'" />
-          <InfoPiece label="'Last Name'" value="'Iren'" />
-          <InfoPiece label="'Sex'" value="'Woman'" />
-          <InfoPiece label="'Age'" value="'10 Years Old'" />
-        </div>
-        <div class="py-3 px-4 mr-10">
-          <h4 class="font-semibold text-gray-800 border-b border-solid border-gray-100 mb-2">Sponsor Data</h4>
-          <InfoPiece label="'First Name'" value="'Natanaele'" />
-          <InfoPiece label="'Last Name'" value="'Di Sabatino'" />
-          <InfoPiece label="'Sex'" value="'Man'" />
-          <InfoPiece label="'Age'" value="'42 Years Old'" />
-        </div>
-        <div class="py-3 px-4 flex-1">
-          <h4 class="font-semibold text-gray-800 border-b border-solid border-gray-100 mb-2">Translation</h4>
-          <InfoPiece label="'Translator'" value="'Sergi Alessandro e Sonia'" />
-          <InfoPiece label="'Identifier'" value="'1501077'" />
-          <InfoPiece label="'Language'" value="'Italiano'" />
-        </div>
+    <div class="bg-white p-4 shadow-2xl flex justify-between border-t border-solid border-slate-200">
+      <div>
+        <Button level="'secondary'" icon="'download'">Download PDF</Button>
       </div>
-      <div class="flex-1 shadow-inner bg-gradient-to-b from-slate-200 to-slate-200">
-        <div class="w-full h-full relative overflow-auto" style="background-image: url('/grid.png')">
-          <div class="absolute w-full">
-            <PageEditor />
-          </div>
-        </div>
-      </div>
-      <div class="bg-white p-4 shadow-2xl flex justify-between border-t border-solid border-slate-200">
-        <div>
-          <Button level="'secondary'" icon="'download'">Download PDF</Button>
-        </div>
-        <div class="flex gap-3">
-          <Button icon="'triangle-exclamation'" color="'red'" onClick="() => editor.showBugModal = true">Signal a Problem</Button>
-          <Button color="'green'" icon="'floppy-disk'">Save</Button>
-          <Button color="'compassion'" icon="'paper-plane'">Submit</Button>
-        </div>
+      <div class="flex gap-3">
+        <Button icon="'triangle-exclamation'" color="'red'" onClick="() => editor.showBugModal = true">Signal a Problem</Button>
+        <Button color="'green'" icon="'floppy-disk'">Save</Button>
+        <Button color="'compassion'" icon="'paper-plane'">Submit</Button>
       </div>
     </div>
   </div>
-</div>
+</LetterViewer>
