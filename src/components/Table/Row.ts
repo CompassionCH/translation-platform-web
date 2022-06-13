@@ -34,7 +34,7 @@ export default class Row extends Component<PropsType<typeof props>> {
       <td t-if="props.selectable" class="py-1 px-2" t-att-class="{'border-b border-solid border-slate-200': !props.last}">
         <input type="checkbox" t-on-click.stop="this.props.onToggle"
           t-att="{'checked': props.selected}"
-          class="rounded border-gray-300 text-compassion shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" />
+          class="rounded cursor-pointer border-gray-300 text-compassion shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" />
       </td>
       <t t-foreach="props.columns" t-as="col" t-key="col.name">
         <td t-if="props.data.hasOwnProperty(col.name)" class="text-slate-700 py-2 px-2" t-att-class="{'border-b border-solid border-slate-200': !props.last}">
