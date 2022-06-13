@@ -103,10 +103,12 @@ class Button extends Component<Props> {
     const iconClasses: string[] & string[][] = [];
 
     // Initial classes
-    classes.push('transition-all hover:text-white');
+    classes.push('transition-all');
 
     if (disabled) {
-      classes.push('opacity-60 cursor-default');
+      classes.push('opacity-60 cursor-not-allowed');
+    } else {
+      classes.push('hover:text-white');
     }
 
     // Colors
@@ -116,12 +118,11 @@ class Button extends Component<Props> {
       if (!disabled) {
         classes.push(bgColorClass[1]);
       }
-
       classes.push('text-white'); // text is white
     } else {
       classes.push(SECONDARY_BG_COLOR);
-      classes.push(SECONDARY_TEXT_COLOR);
       if (!disabled) {
+        classes.push(SECONDARY_TEXT_COLOR);
         classes.push(bgColorClass[2]);
       }
     }

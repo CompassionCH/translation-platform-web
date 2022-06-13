@@ -7,6 +7,7 @@ import {
   faFloppyDisk,
   faPaperPlane,
   faDownload,
+  faEdit,
   faHome,
   faUserGroup,
   faComments,
@@ -18,6 +19,7 @@ import {
   faTriangleExclamation,
   faCaretUp,
   faCaretDown,
+  faOtter,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -28,6 +30,7 @@ library.add(
   faFloppyDisk,
   faPaperPlane,
   faDownload,
+  faEdit,
   faHome,
   faUserGroup,
   faComments,
@@ -39,4 +42,5 @@ library.add(
   faTriangleExclamation,
   faCaretUp,
   faCaretDown,
+  faOtter,
 );

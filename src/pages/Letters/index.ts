@@ -1,4 +1,4 @@
-import { Component, onMounted, useState } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import template from './letters.xml';
 import { models, Letter } from "../../models";
 import Table, { Column } from "../../components/Table";
@@ -6,6 +6,8 @@ import { ListQueryParams } from "../../models/BaseDAO";
 import LetterPriority from "./LetterPriority";
 import TranslatorButton from "./TranslatorButton";
 import UserModal from '../../components/UserModal';
+import Button from '../../components/Button';
+import TableHeader from '../../components/Table/TableHeader';
 
 type State = {
   letters: Letter[];
@@ -23,6 +25,8 @@ class Letters extends Component {
   static components = {
     Table,
     UserModal,
+    Button,
+    TableHeader,
   };
 
   state = useState<State>({
@@ -54,8 +58,8 @@ class Letters extends Component {
         }),
       },
       {
-        header: 'date',
         name: 'date',
+        searchable: false,
         formatter: (val: Date) => val.toLocaleDateString(),
       }
     ],

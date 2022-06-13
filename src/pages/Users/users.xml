@@ -5,29 +5,19 @@
       <h3 class="text-slate-600 font-semibold text-2xl">Compassion</h3>
       <h1 class="text-slate-700 font-semibold text-4xl">Registered Translators</h1>
     </div>
-    <div class="flex gap-10">
-      <div class="w-64">
-        <div class="bg-white rounded-xl shadow overflow-hidden">
-          <div class="bg-slate-100 border-b border-solid border-slate-300 px-4 py-3">
-            <h4 class="font-semibold text-slate-700"><t t-esc="state.selected.length" /> Users</h4>
-            <p class="text-slate-600 text-xs">Currently Selected</p>
-          </div>
-          <div class="p-4">
-            <Button class="'w-full'" icon="'envelope'" color="'compassion'" onClick="() => state.sendMail = true" disabled="state.selected.length === 0">Send E-mail</Button>
-          </div>
-        </div>
-      </div>
-      <div class="relative bg-white rounded-xl shadow-md flex-1 overflow-hidden">
-        <Table total="state.total"
-          key="'users-page-table'"
-          columns="state.columns"
-          data="state.users"
-          keyCol="'username'"
-          onSelect="(selection) => this.state.selected = selection"
-          onRowClick="(item) => this.state.modalUserId = item.username"
-          onFilterChange="(params) => this.updateData(params)"
-          loading="state.loading" />
-      </div>
+    <div class="relative bg-white rounded-xl shadow-md flex-1 overflow-hidden">
+      <TableHeader selected="state.selected.length" name="state.selected.length === 1 ? 'User' : 'Users'">
+        <Button size="'sm'" color="'compassion'" icon="'envelope'" onClick="() => state.sendMail = true" disabled="state.selected.length === 0">Send E-mail</Button> 
+      </TableHeader>
+      <Table total="state.total"
+        key="'users-page-table'"
+        columns="state.columns"
+        data="state.users"
+        keyCol="'username'"
+        onSelect="(selection) => this.state.selected = selection"
+        onRowClick="(item) => this.state.modalUserId = item.username"
+        onFilterChange="(params) => this.updateData(params)"
+        loading="state.loading" />
     </div>
   </div>
 

@@ -8,6 +8,7 @@ import Loader from '../Loader';
 import { PropsType } from "../../UtilityTypes";
 import { ListQueryParams } from '../../models/BaseDAO';
 import usePersistedState from "../../hooks/usePersistedState";
+import Icon from '../Icon';
 
 type Props<T extends Record<string, any>> = {
   data: T[];
@@ -53,6 +54,7 @@ export default class Table<T extends Record<string, any>> extends Component<Prop
     Transition,
     PageSelector,
     Loader,
+    Icon,
     SortOrderViewer,
   };
 

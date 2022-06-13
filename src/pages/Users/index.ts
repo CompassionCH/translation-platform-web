@@ -6,6 +6,7 @@ import Modal from "../../components/Modal";
 import UserModal from "../../components/UserModal";
 import { models, User } from "../../models";
 import { ListQueryParams } from "../../models/BaseDAO";
+import TableHeader from "../../components/Table/TableHeader";
 
 const columns: Column[] = [
   'username',
@@ -50,6 +51,7 @@ export default class Users extends Component {
     Button,
     Modal,
     UserModal,
+    TableHeader,
   };
 
   state = useState<State>({
@@ -62,13 +64,7 @@ export default class Users extends Component {
     modalUserId: undefined,
   });
 
-  setup() {
-    onMounted(() => {
-      this.updateData({}); 
-    });
-  }
-
-  private updateData(params: Partial<ListQueryParams<User>>) {
+  updateData(params: Partial<ListQueryParams<User>>) {
     this.state.loading = true;
     models.users.list(params).then((res) => {
       this.state.users = res.data;

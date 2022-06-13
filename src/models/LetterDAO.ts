@@ -1,5 +1,5 @@
 import BaseDAO from "./BaseDAO";
-import { simulateList } from "./simulator";
+import { simulateFind, simulateList } from "./simulator";
 
 type Status = 'done' | 'to do' | 'in process' | 'to review';
 type Priority = 0 | 1 | 2 | 3 | 4;
@@ -23,11 +23,15 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => ({
   source: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
   target: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
   translator: `user-${Math.round(Math.random() * 100)}`,
-  date: new Date(Date.now() - (Math.round(Math.random() * 10000000))),
+  date: new Date(Date.now() - (Math.round(Math.random() * 50000000000))),
 }));
 
 
 const LetterDAO: BaseDAO<Letter> = {
+
+  async find(id) {
+    return simulateFind(allLetters, id, 'id');
+  },
 
   async list(params) {
     return simulateList(allLetters, params);
