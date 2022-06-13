@@ -8,6 +8,7 @@ import TranslatorButton from "./TranslatorButton";
 import UserModal from '../../components/UserModal';
 import Button from '../../components/Button';
 import TableHeader from '../../components/Table/TableHeader';
+import BatchEditModal from './BatchEditModal';
 
 type State = {
   letters: Letter[];
@@ -16,6 +17,7 @@ type State = {
   columns: Column[];
   selected: [];
   usernameModal?: string;
+  batchEditModal: boolean;
 };
 
 
@@ -27,6 +29,7 @@ class Letters extends Component {
     UserModal,
     Button,
     TableHeader,
+    BatchEditModal,
   };
 
   state = useState<State>({
@@ -35,6 +38,7 @@ class Letters extends Component {
     loading: false,
     selected: [],
     usernameModal: undefined,
+    batchEditModal: false,
     columns: [
       {
         name: 'priority',

@@ -24,7 +24,7 @@
           <td t-if="props.onSelect !== undefined" class="bg-slate-200 border-b border-solid border-slate-300" />
           <td t-foreach="state.columns" t-as="col" t-key="col.name" class="bg-slate-200 border-b border-solid border-slate-300">
             <t t-set="searchFilter" t-value="this.filters.search.find(it => it.column === col.name)" />
-            <input type="text" t-att-placeholder="'Search ' + col.name" t-if="col.searchable !== false" t-on-input="(e) => this.searchColumn(col.name, e)" t-att-value="searchFilter ? searchFilter.term : ''"
+            <input type="text" t-att-placeholder="'Search ' + (col.header || col.name)" t-if="col.searchable !== false" t-on-input="(e) => this.searchColumn(col.name, e)" t-att-value="searchFilter ? searchFilter.term : ''"
               class="outline-none w-full p-1 text-xs text-slate-800 border border-transparent focus:border-compassion focus:bg-white focus:shadow-lg border-none" t-att-class="{
                 'bg-slate-200': !searchFilter or searchFilter.term.trim() === '',
                 'bg-yellow-300 text-yellow-800': searchFilter and searchFilter.term.trim() !== '',

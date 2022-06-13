@@ -24,7 +24,7 @@ class Modal extends Component {
               <h3 t-if="props.subtitle" class="text-slate-600 font-medium text-sm" t-esc="props.subtitle" />
             </div>
             <div>
-              <button t-if="props.onClose" class="rounded-full hover:text-slate-800 transition-colors text-slate-600 text-xl" t-on-click="props.onClose">
+              <button t-if="props.onClose" class="ml-4 rounded-full hover:text-slate-800 transition-colors text-slate-600 text-xl" t-on-click="props.onClose">
                 <Icon icon="'xmark'" />
               </button>
             </div>
