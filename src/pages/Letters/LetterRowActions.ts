@@ -5,13 +5,13 @@ class LetterRowActions extends Component {
 
   static template = xml`
     <div class="flex">
-      <RouterLink to="'/translation-view/' + props.translation.id">View</RouterLink>
-      <RouterLink to="'/translation-edit/' + props.translation.id">Edit</RouterLink>
+      <RouterLink to="'/letter-view/' + props.letter.id">View</RouterLink>
+      <RouterLink to="'/letter-edit/' + props.letter.id">Edit</RouterLink>
     </div>
   `;
 
   static props = {
-    translation: { type: Object },
+    letter: { type: Object },
   };
 
   static components = {
