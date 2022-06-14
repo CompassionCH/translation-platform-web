@@ -21,6 +21,13 @@ interface PageBreak extends BaseElement {
 
 type Element = Paragraph | PageBreak;
 
+export type Person = {
+  firstName: string;
+  lastName: string;
+  sex: 'M' | 'F';
+  age: number;
+};
+
 export type Letter = {
   id: number;
   status: Status;
@@ -28,9 +35,11 @@ export type Letter = {
   title: string;
   source: string;
   target: string;
-  translator: string;
+  translatorId: string;
   date: Date;
   translatedElements: Element[];
+  child: Person,
+  sponsor: Person,
 };
 
 const loremIpsum = `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
@@ -39,6 +48,17 @@ It is a long established fact that a reader will be distracted by the readable c
 Where does it come from?
 Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
 The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.`;
+
+function personGenerator(): Person {
+  const firstName = ['John', 'Emma', 'Guillaume', 'Michel', 'Olivier', 'David', 'Stephane', 'André', 'Tom'];
+  const lastName = ['Machin', 'Truc', 'Bidule', 'Bouteille', 'Vin', 'Rouge', 'Blanc'];
+  return {
+    firstName: firstName[Math.floor(Math.random() * firstName.length)],
+    lastName: lastName[Math.floor(Math.random() * lastName.length)],
+    age: Math.round(Math.random() * 10 + 15),
+    sex: Math.random() > 0.5 ? 'M' : 'F',
+  };
+};
 
 const allTranslations: Letter[] = [...Array(100).keys()].map((i) => {
 
@@ -71,9 +91,11 @@ const allTranslations: Letter[] = [...Array(100).keys()].map((i) => {
     title: `letter-${i}.pdf`,
     source: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
     target: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
-    translator: `user-${Math.round(Math.random() * 100)}`,
+    translatorId: `user-${Math.round(Math.random() * 100)}`,
     date: new Date(Date.now() - (Math.round(Math.random() * 50000000000))),
     translatedElements: elements,
+    child: personGenerator(),
+    sponsor: personGenerator(),
   };
 });
 

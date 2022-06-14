@@ -1,5 +1,5 @@
 import BaseDAO from "./BaseDAO";
-import { simulateFind, simulateList } from "./simulator";
+import simulator from "./simulator";
 
 type TranslationSkill = {
   source: string;
@@ -8,6 +8,7 @@ type TranslationSkill = {
 
 export type User = {
   username: string;
+  name: string;
   age: number;
   languages: string[];
   total: number;
@@ -19,6 +20,7 @@ export type User = {
 
 const allUsers: User[] = [...Array(100).keys()].map(i => ({
   username: `user-${i}`,
+  name: `Mister User ${i}`,
   age: Math.round(Math.random() * 20 + 20),
   languages: ['french', 'english', 'spanish', 'chinese', 'german'].filter(() => Math.random() > 0.5),
   total: Math.round(Math.random() * 100 + 100),
@@ -31,11 +33,15 @@ const allUsers: User[] = [...Array(100).keys()].map(i => ({
 const UserDAO: BaseDAO<User> = {
 
   async find(id) {
-    return simulateFind(allUsers, id, 'username');
+    return simulator.simulateFind(allUsers, id, 'username');
   },
 
   async list(params) {
-    return simulateList(allUsers, params);
+    return simulator.simulateList(allUsers, params);
+  },
+
+  async listIds(params) {
+    return simulator.simulateListIds(allUsers, params, 'username');
   }
 }
 
