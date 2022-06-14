@@ -22,6 +22,9 @@ module.exports = {
           acc[`black-${it*10}`] = `rgba(0,0,0,0.${it})`;
           return acc;
         }, {}),
+      },
+      spacing: {
+        '128': '32rem',
       }
     },
   },

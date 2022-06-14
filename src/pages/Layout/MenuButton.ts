@@ -1,5 +1,5 @@
 import { Component, useState, xml } from '@odoo/owl';
-import Transition from '../components/Transition';
+import Transition from '../../components/Transition';
 
 type Props = {
   tooltip: string;

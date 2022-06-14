@@ -4,7 +4,7 @@ import { Column } from "../../components/Table/Row";
 import template from './users.xml';
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
-import UserModal from "../../components/UserModal";
+import TranslatorModal from "../../components/TranslatorModal";
 import { models, User } from "../../models";
 import TableHeader from "../../components/Table/TableHeader";
 
@@ -47,7 +47,7 @@ export default class Users extends Component {
     DAOTable,
     Button,
     Modal,
-    UserModal,
+    TranslatorModal,
     TableHeader,
   };
 

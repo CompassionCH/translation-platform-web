@@ -4,7 +4,6 @@ import PageEditor from "./PageEditor";
 import Button from "../../components/Button";
 import SignalProblem from "./SignalProblem";
 import LetterViewer from "../../components/LetterViewer";
-import LetterInformationViewer from "../../components/LetterInformationHeader";
 
 export default class TextEdit extends Component {
   static template = template;
@@ -13,7 +12,6 @@ export default class TextEdit extends Component {
     Button,
     SignalProblem,
     LetterViewer,
-    LetterInformationViewer,
   };
 
   editor = useState({

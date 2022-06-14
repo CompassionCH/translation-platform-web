@@ -5,7 +5,7 @@ import DAOTable from "../../components/Table/DAOTable";
 import { Column } from "../../components/Table/Row";
 import LetterPriority from "./LetterPriority";
 import TranslatorButton from "./TranslatorButton";
-import UserModal from '../../components/UserModal';
+import TranslatorModal from '../../components/TranslatorModal';
 import Button from '../../components/Button';
 import TableHeader from '../../components/Table/TableHeader';
 import BatchEditModal from './BatchEditModal';
@@ -24,7 +24,7 @@ class Letters extends Component {
   static template = template;
   static components = {
     DAOTable,
-    UserModal,
+    TranslatorModal,
     Button,
     TableHeader,
     BatchEditModal,

@@ -12,7 +12,7 @@ type State = {
   title?: string;
 }
 
-class UserModal extends Component {
+class TranslatorModal extends Component {
 
   static template = xml`
     <Modal title="state.title" active="state.active" onClose="props.onClose" empty="state.loading">
@@ -71,4 +71,4 @@ class UserModal extends Component {
   }
 }
 
-export default UserModal;
+export default TranslatorModal;

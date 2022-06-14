@@ -1,4 +1,4 @@
-<UserModal userId="state.usernameModal" onClose="() => this.state.usernameModal = undefined" />
+<TranslatorModal userId="state.usernameModal" onClose="() => this.state.usernameModal = undefined" />
 <BatchEditModal active="state.batchEditModal" onClose="() => this.state.batchEditModal = false" />
 
 <div>

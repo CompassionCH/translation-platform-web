@@ -21,6 +21,11 @@ class LetterViewer extends Component {
     </div>
   `;
 
+  static props = {
+    letterId: { type: String },
+    slots: {}
+  };
+
   letterPanel = useRef('letterPanel');
   panelDrag = useRef('panelDrag');
 
