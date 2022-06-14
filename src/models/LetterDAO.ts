@@ -1,5 +1,5 @@
 import BaseDAO from "./BaseDAO";
-import { simulateFind, simulateList } from "./simulator";
+import simulator from "./simulator";
 
 type Status = 'done' | 'to do' | 'in process' | 'to review';
 type Priority = 0 | 1 | 2 | 3 | 4;
@@ -29,12 +29,16 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => ({
 
 const LetterDAO: BaseDAO<Letter> = {
 
+  async listIds(params) {
+    return simulator.simulateListIds(allLetters, params, 'id');
+  },
+
   async find(id) {
-    return simulateFind(allLetters, id, 'id');
+    return simulator.simulateFind(allLetters, id, 'id');
   },
 
   async list(params) {
-    return simulateList(allLetters, params);
+    return simulator.simulateList(allLetters, params);
   }
 };
 

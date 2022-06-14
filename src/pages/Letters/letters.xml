@@ -11,14 +11,11 @@
       <TableHeader selected="state.selected.length" name="state.selected.length === 1 ? 'Letter' : 'Letters'">
         <Button class="''" icon="'edit'" level="'secondary'" size="'sm'" disabled="state.selected.length === 0" onClick="() => this.state.batchEditModal = true">Batch Edit</Button>
       </TableHeader>
-      <Table total="state.total"
-          key="'letters-page-table'"
+      <DAOTable key="'letters-page-table'"
           columns="state.columns"
-          data="state.letters"
           keyCol="'id'"
-          onSelect="(selection) => this.state.selected = selection"
-          onFilterChange="(params) => this.updateData(params)"
-          loading="state.loading" />
+          dao="dao"
+          onSelect="(selection) => this.state.selected = selection" />
     </div>
   </div>
 </div>

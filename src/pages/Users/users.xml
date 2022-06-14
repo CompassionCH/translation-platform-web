@@ -9,15 +9,12 @@
       <TableHeader selected="state.selected.length" name="state.selected.length === 1 ? 'User' : 'Users'">
         <Button size="'sm'" color="'compassion'" icon="'envelope'" onClick="() => state.sendMail = true" disabled="state.selected.length === 0">Send E-mail</Button> 
       </TableHeader>
-      <Table total="state.total"
-        key="'users-page-table'"
+      <DAOTable key="'users-page-table'"
         columns="state.columns"
-        data="state.users"
         keyCol="'username'"
+        dao="dao"
         onSelect="(selection) => this.state.selected = selection"
-        onRowClick="(item) => this.state.modalUserId = item.username"
-        onFilterChange="(params) => this.updateData(params)"
-        loading="state.loading" />
+        onRowClick="(item) => this.state.modalUserId = item.username" />
     </div>
   </div>
 

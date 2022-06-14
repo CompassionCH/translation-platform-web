@@ -1,15 +1,7 @@
-import { ListQueryParams, ListResponse } from "./BaseDAO";
+import { FilterParams, ListQueryParams, ListResponse } from "./BaseDAO";
 
-export function simulateFind<T>(allItems: T[], id: string | number, key: keyof T): Promise<T | undefined> {
-  return new Promise(resolve => setTimeout(() => {
-    const item = allItems.find(it => `${it[key]}` === `${id}`);
-    resolve(item);
-  }, Math.random() * 300 + 300));
-};
-
-export function simulateList<T>(allItems: T[], params: Partial<ListQueryParams<T>>): Promise<ListResponse<T>> {
-
-  const searchParams = params.search || [];
+function filterItems<T>(allItems: T[], params?: FilterParams<T>['search']): T[] {
+  const searchParams = params || [];
   const filtered = allItems.filter((it) => {
     let match = true;
     for (let i = 0; i < searchParams.length; i++) {
@@ -22,6 +14,26 @@ export function simulateList<T>(allItems: T[], params: Partial<ListQueryParams<T
     }
     return match;
   });
+
+  return filtered;
+}
+
+export function simulateFind<T>(allItems: T[], id: string | number, key: keyof T): Promise<T | undefined> {
+  return new Promise(resolve => setTimeout(() => {
+    const item = allItems.find(it => `${it[key]}` === `${id}`);
+    resolve(item);
+  }, Math.random() * 300 + 300));
+};
+
+export function simulateListIds<T, K extends keyof T>(allItems: T[], params: FilterParams<T>, idCol: K): Promise<Array<T[K]>> {
+  return new Promise(resolve => setTimeout(() => {
+    resolve(filterItems(allItems, params.search).map(it => it[idCol]));
+  }, Math.random() * 500 + 500));
+};
+
+export function simulateList<T>(allItems: T[], params: Partial<ListQueryParams<T>>): Promise<ListResponse<T>> {
+
+  const filtered = filterItems(allItems, params.search);
 
   // Then apply sort
   const sorted = filtered.sort((a, b) => {
@@ -44,3 +56,9 @@ export function simulateList<T>(allItems: T[], params: Partial<ListQueryParams<T
 
   return new Promise(resolve => setTimeout(() => resolve(response), Math.random() * 300 + 300));
 }
+
+export default {
+  simulateFind,
+  simulateList,
+  simulateListIds,
+};

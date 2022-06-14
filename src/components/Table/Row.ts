@@ -1,5 +1,6 @@
 import { Component, xml } from "@odoo/owl";
 import { PropsType } from "../../UtilityTypes";
+import Checkbox from '../Checkbox';
 
 type ComponentTemplate = {
   component: typeof Component;
@@ -32,9 +33,7 @@ export default class Row extends Component<PropsType<typeof props>> {
       t-att-class="{'hover:bg-slate-300 transition-colors cursor-pointer': props.onClick !== undefined}"
     >
       <td t-if="props.selectable" class="py-1 px-2" t-att-class="{'border-b border-solid border-slate-200': !props.last}">
-        <input type="checkbox" t-on-click.stop="this.props.onToggle"
-          t-att="{'checked': props.selected}"
-          class="rounded cursor-pointer border-gray-300 text-compassion shadow-sm focus:border-blue-300 focus:ring focus:ring-offset-0 focus:ring-blue-200 focus:ring-opacity-50" />
+        <Checkbox onClick="props.onToggle" checked="props.selected" />
       </td>
       <t t-foreach="props.columns" t-as="col" t-key="col.name">
         <td t-if="props.data.hasOwnProperty(col.name)" class="text-slate-700 py-2 px-2" t-att-class="{'border-b border-solid border-slate-200': !props.last}">
@@ -53,5 +52,9 @@ export default class Row extends Component<PropsType<typeof props>> {
   static props = props;
   static defaultProps = {
     onToggle: () => null,
+  };
+
+  static components = {
+    Checkbox,
   };
 }

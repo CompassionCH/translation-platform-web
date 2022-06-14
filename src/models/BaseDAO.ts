@@ -1,10 +1,13 @@
 
-export type ListQueryParams<T> = {
+export interface FilterParams<T> {
+  search: Array<{ column: keyof T, term: string }>;
+}
+
+export interface ListQueryParams<T> extends FilterParams<T> {
   sortBy?: keyof T;
   sortOrder: 'asc' | 'desc';
   pageSize: number;
   pageNumber: number;
-  search: Array<{ column: keyof T, term: string }>;
 };
 
 export type ListResponse<T> = {
@@ -14,6 +17,7 @@ export type ListResponse<T> = {
 
 interface BaseDAO<T> {
   find(id: number | string): Promise<T | undefined>;
+  listIds(params: FilterParams<T>): Promise<Array<string | number>>;
   list(params: Partial<ListQueryParams<T>>): Promise<ListResponse<T>>;
 }
 

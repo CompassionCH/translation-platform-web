@@ -1,8 +1,8 @@
 import { Component, useState } from "@odoo/owl";
 import template from './letters.xml';
-import { models, Letter } from "../../models";
-import Table, { Column } from "../../components/Table";
-import { ListQueryParams } from "../../models/BaseDAO";
+import { models } from "../../models";
+import DAOTable from "../../components/Table/DAOTable";
+import { Column } from "../../components/Table/Row";
 import LetterPriority from "./LetterPriority";
 import TranslatorButton from "./TranslatorButton";
 import UserModal from '../../components/UserModal';
@@ -11,9 +11,6 @@ import TableHeader from '../../components/Table/TableHeader';
 import BatchEditModal from './BatchEditModal';
 
 type State = {
-  letters: Letter[];
-  total: number;
-  loading: boolean;
   columns: Column[];
   selected: [];
   usernameModal?: string;
@@ -25,17 +22,16 @@ class Letters extends Component {
 
   static template = template;
   static components = {
-    Table,
+    DAOTable,
     UserModal,
     Button,
     TableHeader,
     BatchEditModal,
   };
 
+  dao = models.letters; // Directly passed to the dataTables component
+
   state = useState<State>({
-    letters: [],
-    total: 0,
-    loading: false,
     selected: [],
     usernameModal: undefined,
     batchEditModal: false,
@@ -68,15 +64,6 @@ class Letters extends Component {
       }
     ],
   });
-
-  updateData(params: Partial<ListQueryParams<Letter>> = {}) {
-    this.state.loading = true;
-    models.letters.list(params).then((res) => {
-      this.state.letters = res.data;
-      this.state.total = res.total;
-      this.state.loading = false;
-    });
-  }
 };
 
 export default Letters;

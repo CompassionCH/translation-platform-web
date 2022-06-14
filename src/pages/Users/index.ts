@@ -1,11 +1,11 @@
-import { Component, onMounted, useState } from "@odoo/owl";
-import Table, { Column } from '../../components/Table';
+import { Component, useState } from "@odoo/owl";
+import DAOTable from "../../components/Table/DAOTable";
+import { Column } from "../../components/Table/Row";
 import template from './users.xml';
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import UserModal from "../../components/UserModal";
 import { models, User } from "../../models";
-import { ListQueryParams } from "../../models/BaseDAO";
 import TableHeader from "../../components/Table/TableHeader";
 
 const columns: Column[] = [
@@ -34,9 +34,6 @@ const columns: Column[] = [
 ];
 
 type State = {
-  users: User[];
-  total: number;
-  loading: boolean;
   columns: Column[];
   selected: [];
   sendMail: boolean;
@@ -47,29 +44,19 @@ export default class Users extends Component {
   static template = template;
 
   static components = {
-    Table,
+    DAOTable,
     Button,
     Modal,
     UserModal,
     TableHeader,
   };
 
+  dao = models.users;
+
   state = useState<State>({
-    users: [],
-    loading: false,
     columns,
     selected: [],
     sendMail: false,
-    total: 0,
     modalUserId: undefined,
   });
-
-  updateData(params: Partial<ListQueryParams<User>>) {
-    this.state.loading = true;
-    models.users.list(params).then((res) => {
-      this.state.users = res.data;
-      this.state.total = res.total;
-      this.state.loading = false;
-    });
-  } 
 }
