@@ -42,6 +42,7 @@ class App extends Component {
 
   checkAuthentication() {
     // Check authentication with Odoo
+    if (this.state.loading) return;
     const { username, password } = store;
     const isEmpty = (str?: string) => str === undefined || str.trim() === '';
     if (isEmpty(username) || isEmpty(password)) return;
