@@ -1,4 +1,4 @@
-import { Component, xml, useRef, onMounted, useState, onWillDestroy } from "@odoo/owl";
+import { Component, xml, useRef, onMounted, useState, onWillUnmount } from "@odoo/owl";
 
 class LetterViewer extends Component {
 
@@ -48,13 +48,11 @@ class LetterViewer extends Component {
       document.addEventListener('mouseup', onMouseUp, false);
     });
 
-    /*
-    onWillDestroy(() => {
+    onWillUnmount(() => {
       const panel = this.letterPanel.el as HTMLDivElement;
       panel.removeEventListener('mousedown', onMouseDown);
       panel.removeEventListener('mouseup', onMouseUp);
     });
-    */
   }
 
   resize(event: MouseEvent) {
