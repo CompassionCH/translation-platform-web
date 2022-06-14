@@ -1,6 +1,6 @@
 import { Component, xml } from "@odoo/owl";
 
-class LetterPriority extends Component {
+class TranslationPriority extends Component {
 
   static props = ['priority'];
   static template = xml`<div class="text-xs w-5 h-5 flex items-center justify-center rounded" t-esc="props.priority" t-att-class="{
@@ -12,4 +12,4 @@ class LetterPriority extends Component {
   }" />`;
 }
 
-export default LetterPriority;
+export default TranslationPriority;

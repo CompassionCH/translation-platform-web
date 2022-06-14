@@ -4,7 +4,7 @@ import simulator from "./simulator";
 type Status = 'done' | 'to do' | 'in process' | 'to review';
 type Priority = 0 | 1 | 2 | 3 | 4;
 
-export type Letter = {
+export type Translation = {
   id: number;
   status: Status;
   priority: Priority;
@@ -15,7 +15,7 @@ export type Letter = {
   date: Date;
 };
 
-const allLetters: Letter[] = [...Array(100).keys()].map((i) => ({
+const allTranslations: Translation[] = [...Array(100).keys()].map((i) => ({
   id: i,
   status: ['done', 'to do', 'in process', 'to review'][Math.floor(Math.random() * 4)] as any,
   priority: Math.floor(Math.random() * 5) as any,
@@ -27,19 +27,19 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => ({
 }));
 
 
-const LetterDAO: BaseDAO<Letter> = {
+const TranslationDAO: BaseDAO<Translation> = {
 
   async listIds(params) {
-    return simulator.simulateListIds(allLetters, params, 'id');
+    return simulator.simulateListIds(allTranslations, params, 'id');
   },
 
   async find(id) {
-    return simulator.simulateFind(allLetters, id, 'id');
+    return simulator.simulateFind(allTranslations, id, 'id');
   },
 
   async list(params) {
-    return simulator.simulateList(allLetters, params);
+    return simulator.simulateList(allTranslations, params);
   }
 };
 
-export default LetterDAO;
+export default TranslationDAO;

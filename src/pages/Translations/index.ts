@@ -1,14 +1,15 @@
 import { Component, useState } from "@odoo/owl";
-import template from './letters.xml';
-import { models } from "../../models";
+import template from './translations.xml';
+import { Translation, models } from "../../models";
 import DAOTable from "../../components/Table/DAOTable";
 import { Column } from "../../components/Table/Row";
-import LetterPriority from "./LetterPriority";
+import TranslationPriority from "./TranslationPriority";
 import TranslatorButton from "./TranslatorButton";
 import UserModal from '../../components/UserModal';
 import Button from '../../components/Button';
 import TableHeader from '../../components/Table/TableHeader';
 import BatchEditModal from './BatchEditModal';
+import TranslationRowActions from "./TranslationRowActions";
 
 type State = {
   columns: Column[];
@@ -29,7 +30,7 @@ class Letters extends Component {
     BatchEditModal,
   };
 
-  dao = models.letters; // Directly passed to the dataTables component
+  dao = models.translations; // Directly passed to the dataTables component
 
   state = useState<State>({
     selected: [],
@@ -39,7 +40,7 @@ class Letters extends Component {
       {
         name: 'priority',
         component: (val: number) => ({
-          component: LetterPriority,
+          component: TranslationPriority,
           props: { priority: val },
         }),
       },
@@ -61,6 +62,17 @@ class Letters extends Component {
         name: 'date',
         searchable: false,
         formatter: (val: Date) => val.toLocaleDateString(),
+      },
+      {
+        name: 'actions',
+        searchable: false,
+        sortable: false,
+        component: (_, translation: Translation) => ({
+          component: TranslationRowActions,
+          props: {
+            translation,
+          },
+        }),
       }
     ],
   });

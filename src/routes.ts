@@ -17,9 +17,9 @@ const routes: Route[] = [
     path: '/text-edit/:textId',
   },
   {
-    component: () => import('./pages/Letters'),
-    name: 'Letters',
-    path: '/letters',
+    component: () => import('./pages/Translations'),
+    name: 'Translations',
+    path: '/translations',
   },
 ];
 
