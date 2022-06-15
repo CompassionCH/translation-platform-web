@@ -18,7 +18,13 @@ const watchers: Watcher[] = [];
  * to perform API/JSON-RPC calls to Odoo
  */
 const store = reactive<Store>({
-  user: undefined,
+  // user: undefined,
+  user: {
+    username: 'toto',
+    password: 'toto',
+    userId: '123456789',
+    role: 'admin',
+  },
 }, () => {
   for (const watcher of watchers) {
     watcher(store);

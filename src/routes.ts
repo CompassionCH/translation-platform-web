@@ -37,9 +37,10 @@ const routes: Route[] = [
 const guards: Guard[] = [
   // Authentication guard
   async (_, to) => {
-    if (to === 'Login') return;
     if (!store.user && to !== 'Login') {
       return '/login';
+    } else {
+      return;
     }
   },
 ];

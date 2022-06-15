@@ -11,6 +11,7 @@ export type AuthenticatedUser = {
   username: string;
   userId: string;
   password: string;
+  role: 'user' | 'admin';
 };
 
 const OdooAPI = {
@@ -29,6 +30,7 @@ const OdooAPI = {
           username,
           password,
           userId: '123456789',
+          role: 'admin',
         });
       } else {
         resolve(null);

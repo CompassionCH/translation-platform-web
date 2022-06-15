@@ -7,6 +7,7 @@ export type Route = {
   component: ComponentConstructor | Promise<ComponentConstructor> | (() => Promise<any>),
   path: string,
   name: string,
+  guards?: Guard[],
 };
 
 /**
@@ -110,7 +111,8 @@ export default class Router extends Component<Props> {
   }
 
   async runGuards(from?: string, to?: string) {
-    const guards = this.props.guards || [];
+    const routeGuards = to ? this.props.routes.find(it => it.name === to)?.guards || [] : [];
+    const guards = [...this.props.guards || [], ...routeGuards];
     for await (const guard of guards) {
       const nextRoute = await guard(from || null, to || null, this.props.routes);
       if (nextRoute) {

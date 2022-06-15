@@ -7,8 +7,12 @@ type Props = {
 
 class MenuButton extends Component<Props> {
   static template = xml`
-    <div class="relative w-14 h-14 flex justify-center items-center rounded-full hover:bg-black-10 transition-colors text-white"
-      t-att-class="props.class || ''"
+    <div class="relative w-20 h-20 flex justify-center items-center transition-colors"
+      t-att-class="{
+        [props.class]: true,
+        'bg-gradient-to-b from-slate-100 to-sky-50 text-compassion': props.active,
+        'text-white hover:bg-black-10': !props.active,
+      }"
       t-on-mouseenter="() => this.state.tooltipVisible = true"
       t-on-mouseleave="() => this.state.tooltipVisible = false"
     >
@@ -23,13 +27,19 @@ class MenuButton extends Component<Props> {
         t-slot-scope="scope"
         delay="200"
       >
-        <div class="absolute bg-black-90 shadow rounded p-3 text-white text-sm left-16 tooltip-arrow-left" t-att-class="scope.itemClass" t-esc="props.tooltip" />
+        <div class="absolute bg-black-90 shadow rounded p-3 ml-3 text-white text-sm left-16 tooltip-arrow-left" t-att-class="scope.itemClass" t-esc="props.tooltip" />
       </Transition>
       <t t-slot="default" />
     </div>
   `;
 
-  static props = ['tooltip', 'class', '*'];
+  static props = {
+    tooltip: { type: String },
+    active: { type: Boolean, optional: true },
+    class: { type: String, optional: true },
+    '*': {},
+  };
+
   static components = {
     Transition,
   };
