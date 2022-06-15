@@ -6,7 +6,7 @@ type Priority = 0 | 1 | 2 | 3 | 4;
 
 interface BaseElement {
   type: 'paragraph' | 'pageBreak';
-  id: number;
+  id: number | string;
 };
 
 interface Paragraph extends BaseElement {
@@ -36,6 +36,7 @@ export type Letter = {
   source: string;
   target: string;
   translatorId: string;
+  lastUpdate?: Date;
   date: Date;
   translatedElements: Element[];
   child: Person,
@@ -65,6 +66,7 @@ const allTranslations: Letter[] = [...Array(100).keys()].map((i) => {
   let index = 0;
   const elements: Element[] = [];
   const nbParagraphs = Math.floor(Math.random() * 3);
+
   for (let i = 0; i < nbParagraphs; i++) {
     const txtStart = Math.round(Math.random() * (loremIpsum.length / 2));
     const txtEnd = txtStart + Math.round(Math.random() * (loremIpsum.length / 2));
@@ -73,7 +75,7 @@ const allTranslations: Letter[] = [...Array(100).keys()].map((i) => {
       id: index++,
       type: 'paragraph',
       content: text,
-      comments: Math.random() > 0.8 ? 'Some random comment' : undefined,
+      comments: Math.random() > 0.5 ? text.slice(0, Math.round(text.length / 2)) : undefined,
     });
 
     if (Math.random() > 0.6) {
@@ -86,12 +88,13 @@ const allTranslations: Letter[] = [...Array(100).keys()].map((i) => {
 
   return {
     id: i,
-    status: ['done', 'to do', 'in process', 'to review'][Math.floor(Math.random() * 4)] as any,
+    status: elements.length === 0 ? 'to do' : ['done', 'to do', 'in process', 'to review'][Math.floor(Math.random() * 4)] as any,
     priority: Math.floor(Math.random() * 5) as any,
     title: `letter-${i}.pdf`,
     source: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
     target: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
     translatorId: `user-${Math.round(Math.random() * 100)}`,
+    lastUpdate: elements.length > 0 ? new Date(Date.now() - (Math.round(Math.random() * 10000000000))) : undefined,
     date: new Date(Date.now() - (Math.round(Math.random() * 50000000000))),
     translatedElements: elements,
     child: personGenerator(),

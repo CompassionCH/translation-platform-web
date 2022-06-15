@@ -28,6 +28,11 @@ const routes: Route[] = [
     path: '/letter-view/:letterId',
   },
   {
+    component: () => import('./pages/LetterView'),
+    name: 'Edit Letter',
+    path: '/letter-edit/:letterId',
+  },
+  {
     component: () => import('./pages/Login'),
     name: 'Login',
     path: '/login',
