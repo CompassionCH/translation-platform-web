@@ -75,7 +75,7 @@ const allTranslations: Letter[] = [...Array(100).keys()].map((i) => {
       id: index++,
       type: 'paragraph',
       content: text,
-      comments: Math.random() > 0.5 ? text.slice(0, Math.round(text.length / 2)) : undefined,
+      comments: Math.random() > 0.5 ? text.slice(0, Math.round(text.length / 5)) : undefined,
     });
 
     if (Math.random() > 0.6) {
