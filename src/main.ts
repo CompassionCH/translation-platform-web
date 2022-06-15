@@ -1,10 +1,10 @@
 import { mount } from "@odoo/owl";
-import App from './App';
+import Layout from './pages/Layout';
 import translateFn from './i18n';
 import './style.css';
 import './icons';
 
-mount(App, document.body, {
+mount(Layout, document.body, {
   translateFn,
   dev: true,
 });

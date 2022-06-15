@@ -1,5 +1,3 @@
-import store from "../store";
-
 /**
  * This class should be used to offer a basic abstraction
  * on top of querying Odoo with API/JSON-RPC calls.
@@ -8,16 +6,32 @@ import store from "../store";
  * You can use the various authentication informations
  * stored in the store to perform such API calls
  */
+
+export type AuthenticatedUser = {
+  username: string;
+  userId: string;
+  password: string;
+};
+
 const OdooAPI = {
 
-  async authenticate() {
-    const { username, password } = store;
+  /**
+   * Attempts to authenticate the user given a username and a
+   * password
+   * @param username the username
+   * @param password the password
+   * @returns the authenticated user's informations or null if failed authenticating
+   */
+  async authenticate(username: string, password: string): Promise<AuthenticatedUser | null> {
     return new Promise(resolve => setTimeout(() => {
       if (username === 'toto' && password === 'toto') {
-        store.userId = '123456789';
-        resolve(true);
+        resolve({
+          username,
+          password,
+          userId: '123456789',
+        });
       } else {
-        resolve(false);
+        resolve(null);
       }
     }, Math.random() * 500 + 500));
   }

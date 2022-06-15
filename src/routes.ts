@@ -1,4 +1,5 @@
-import { Route } from "./components/Router/Router";
+import { Guard, Route } from "./components/Router/Router";
+import store from "./store";
 
 const routes: Route[] = [
   {
@@ -26,6 +27,24 @@ const routes: Route[] = [
     name: 'View Letter',
     path: '/letter-view/:letterId',
   },
+  {
+    component: () => import('./pages/Login'),
+    name: 'Login',
+    path: '/login',
+  }
 ];
 
-export default routes;
+const guards: Guard[] = [
+  // Authentication guard
+  async (_, to) => {
+    if (to === 'Login') return;
+    if (!store.user && to !== 'Login') {
+      return '/login';
+    }
+  },
+];
+
+export {
+  routes,
+  guards,
+};

@@ -1,9 +1,8 @@
 import { reactive } from '@odoo/owl';
+import { AuthenticatedUser } from './models/OdooAPI';
 
 type Store = {
-  userId?: string,
-  username?: string,
-  password?: string,
+  user?: AuthenticatedUser,
 };
 
 /**
@@ -19,9 +18,7 @@ const watchers: Watcher[] = [];
  * to perform API/JSON-RPC calls to Odoo
  */
 const store = reactive<Store>({
-  userId: undefined,
-  username: undefined,
-  password: undefined,
+  user: undefined,
 }, () => {
   for (const watcher of watchers) {
     watcher(store);

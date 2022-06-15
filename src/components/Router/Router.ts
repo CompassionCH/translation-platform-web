@@ -1,6 +1,6 @@
 import { Component, onMounted, onWillDestroy, useState, xml } from "@odoo/owl";
 import { ComponentConstructor } from "@odoo/owl/dist/types/component/component";
-
+import RouterView from "./RouterView";
 import pathMatch from "./pathMatch";
 
 export type Route = {
@@ -9,33 +9,44 @@ export type Route = {
   name: string,
 };
 
+/**
+ * A guard is executed right before a routing is performed and a route is mounted
+ * It must return a string which is the destination route name or nothing to keep
+ * on with the routing flow
+ */
+export type Guard = (from: string | null, to: string | null, routes: Route[]) => Promise<string | void>;
+
+
 type Props = {
   routes: Route[];
+  guards?: Guard[];
   basePath?: string;
 };
 
+export type RoutePayload = {
+  route: Route;
+  params?: Record<string, string | number>;
+}
+
 type State = {
-  component: ComponentConstructor | null,
-  route: Route | null,
-  routeProps: Record<string, string> | null,
+  route?: RoutePayload;
 };
 
 export default class Router extends Component<Props> {
   static template = xml`
-    <t>
-      <t
-        t-if="state.route"
-        t-component="state.component"
-        t-props="state.routeProps || {}" />
+    <t t-slot="default" currentRoute="state.route">
+      <RouterView route="state.route" />
     </t>
   `;
 
-  static props = ['routes'];
+  static props = ['routes', 'guards', 'slots'];
+
+  static components = {
+    RouterView,
+  };
 
   state = useState<State>({
-    component: null,
-    route: null,
-    routeProps: null,
+    route: undefined,
   });
 
   setup(): void {
@@ -70,25 +81,43 @@ export default class Router extends Component<Props> {
     for (const route of this.props.routes) {
       const routeProps = pathMatch(currentPath, route.path);
       if (routeProps) {
-        let resolvableComponent = route.component;
-        if (typeof resolvableComponent === 'function') {
-          // @ts-ignore
-          resolvableComponent = resolvableComponent();
+
+        const guardInterrupt = await this.runGuards(this.state.route?.route.name, route.name);
+        if (guardInterrupt) {
+          // Route change, stop current flow
+          window.history.pushState({}, "", guardInterrupt);
+          return;
         }
 
-        const resolvedComponent = await Promise.resolve(resolvableComponent);
-        // @ts-ignore
-        const component = "default" in resolvedComponent ? resolvedComponent.default : resolvedComponent;
+        this.state.route = {
+          route,
+          params: routeProps,
+        };
 
-        this.state.component = component;
-        this.state.route = route;
-        this.state.routeProps = routeProps;
         return;
       }
     }
 
-    this.state.route = null;
-    this.state.component = null;
-    this.state.routeProps = null;
+    // Run guards even if we dont know where we're going or where we're from
+    const guardInterrupt = await this.runGuards(this.state.route?.route.name, undefined);
+    if (guardInterrupt) {
+      // Route change, stop current flow
+      window.history.pushState({}, "", guardInterrupt);
+      return;
+    }
+
+    this.state.route = undefined;
+  }
+
+  async runGuards(from?: string, to?: string) {
+    const guards = this.props.guards || [];
+    for await (const guard of guards) {
+      const nextRoute = await guard(from || null, to || null, this.props.routes);
+      if (nextRoute) {
+        return nextRoute;
+      }
+    }
+
+    return null; // Keep on with the flow
   }
 }
