@@ -50,10 +50,13 @@
     </table>
   </div>
   <div class="flex justify-between items-center border-t border-solid border-slate-300 p-4" t-if="state.pageData.length > 0">
-    <div class="text-slate-700 text-sm">
-      Showing 
-      <t t-esc="(filters.pageNumber * state.pageData.length) + 1" /> - <t t-esc="(filters.pageNumber + 1) * state.pageData.length" />
-      of <t t-esc="state.total" /> Results
+    <div class="flex">
+      <div class="text-slate-700 text-sm">
+        Showing 
+        <t t-esc="(filters.pageNumber * state.pageData.length) + 1" /> - <t t-esc="(filters.pageNumber + 1) * state.pageData.length" />
+        of <t t-esc="state.total" /> Results
+      </div>
+      <p t-on-click="() => this.clearFilters()" t-if="filters.search.length > 0 || filters.sortBy !== undefined" class="text-sm text-red-700 hover:text-red-900 cursor-pointer ml-2">Clear filters</p>
     </div>
     <div>
       <PageSelector page="filters.pageNumber" total="state.total" pageSize="filters.pageSize" onPageChange="(page) => this.changePage(page)" />

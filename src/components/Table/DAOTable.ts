@@ -93,6 +93,14 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
     }
   }
 
+  clearFilters() {
+    this.filters.search = [];
+    this.filters.pageNumber = 0;
+    this.filters.sortBy = undefined;
+    this.filters.sortOrder = 'desc';
+    this.updateData();
+  }
+
   toggleItem(key: any) {
     const index = this.state.selectedIds.indexOf(key);
     if (index >= 0) {
