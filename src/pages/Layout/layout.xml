@@ -1,7 +1,9 @@
 <div class="h-screen flex">
   <Router routes="routes" guards="guards" t-slot-scope="router">
     <div t-if="router.currentRoute and router.currentRoute.route.name !== 'Login'" class="h-screen w-20 bg-compassion relative shadow-2xl z-50 flex flex-col items-center">
-      <img src="/logo_simple.png" class="pb-3 pt-4 px-3 bg-white" />
+      <div class="flex w-20 h-20 items-center justify-center">
+        <img src="/logo_white.png" class="w-12" />
+      </div>
       <RouterLink to="'/'" t-slot-scope="scope">
         <MenuButton tooltip="'Home'" active="scope.active">
           <Icon prefix="'fas'" icon="'home'" class="'text-xl'" />

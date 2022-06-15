@@ -32,11 +32,11 @@ export default class Row extends Component<PropsType<typeof props>> {
     <tr t-on-click="props.onClick ? (() => props.onClick(props.data)) : (() => null)"
       t-att-class="{'hover:bg-slate-300 transition-colors cursor-pointer': props.onClick !== undefined}"
     >
-      <td t-if="props.selectable" class="py-1 px-2" t-att-class="{'border-b border-solid border-slate-200': !props.last}">
+      <td t-if="props.selectable" class="p-3" t-att-class="{'border-b border-solid border-slate-200': !props.last}">
         <Checkbox onClick="props.onToggle" checked="props.selected" />
       </td>
       <t t-foreach="props.columns" t-as="col" t-key="col.name">
-        <td class="text-slate-700 py-2 px-2" t-att-class="{'border-b border-solid border-slate-200': !props.last}">
+        <td class="text-slate-700 py-3 px-1" t-att-class="{'border-b border-solid border-slate-200': !props.last}">
           <span t-if="col.formatter" t-out="col.formatter(props.data[col.name], props.data)" />
           <t t-elif="col.component">
             <t t-set="component" t-value="col.component(props.data[col.name], props.data)" />

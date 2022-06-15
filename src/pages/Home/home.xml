@@ -1,18 +1,18 @@
 <div class="container mx-auto">
   <div class="pt-20">
-    <h3 class="text-slate-600 font-semibold text-2xl text-center">Compassion</h3>
-    <h1 class="text-slate-700 font-semibold text-4xl text-center">Translation Platform</h1>
-    <p class="text-slate-700 text-center mt-2">
+    <h3 class="text-slate-600 font-light text-2xl text-center">Compassion</h3>
+    <h1 class="text-slate-700 font-light text-5xl text-center">Translation Platform</h1>
+    <p class="text-slate-700 text-center my-10">
       Welcome Guillaume. Here is the list of texts waiting to be translated, <br/>
       please pick one according to your translation skills.
     </p>
   </div>
-  <div class="flex justify-center gap-5 mt-5">
+  <div class="flex justify-center gap-10 mt-5">
     <TranslationCard title="'English -> French'" remaining="32" texts="texts" />
     <TranslationCard title="'Italian -> English'" remaining="4" texts="texts" />
     <TranslationCard title="'German -> French'" remaining="45" texts="texts" />
   </div>
   <div class="pt-10">
-    <h3 class="text-slate-600 font-semibold text-2xl text-center">Thank you.</h3>
+    <h3 class="text-slate-600 font-light text-2xl text-center">Thank you.</h3>
   </div>
 </div>

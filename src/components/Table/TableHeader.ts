@@ -9,7 +9,7 @@ class TableHeader extends Component {
       }">
         <span t-esc="props.selected" /> <span t-esc="props.name || 'Items'" /> Selected
       </p>
-      <div class="flex items-center pr-3">
+      <div class="flex items-center pr-2">
         <t t-slot="default" />
       </div>
     </div>

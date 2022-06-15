@@ -2,10 +2,10 @@
   <TranslatorModal userId="state.modalUserId" onClose="() => this.state.modalUserId = undefined" />
   <div class="container mx-auto px-10 lg:px-0">
     <div class="py-10">
-      <h3 class="text-slate-600 font-semibold text-2xl">Compassion</h3>
-      <h1 class="text-slate-700 font-semibold text-4xl">Registered Translators</h1>
+      <h3 class="text-slate-600 font-light text-2xl mb-1">Compassion</h3>
+      <h1 class="text-slate-700 font-light text-5xl">Registered Translators</h1>
     </div>
-    <div class="relative bg-white rounded-xl shadow-md flex-1 overflow-hidden">
+    <div class="relative bg-white rounded-sm shadow-xl flex-1 overflow-hidden">
       <TableHeader selected="state.selected.length" name="state.selected.length === 1 ? 'User' : 'Users'">
         <Button size="'sm'" color="'compassion'" icon="'envelope'" onClick="() => state.sendMail = true" disabled="state.selected.length === 0">Send E-mail</Button> 
       </TableHeader>

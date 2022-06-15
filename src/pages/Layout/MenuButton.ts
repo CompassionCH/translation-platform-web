@@ -27,7 +27,7 @@ class MenuButton extends Component<Props> {
         t-slot-scope="scope"
         delay="200"
       >
-        <div class="absolute bg-black-90 shadow rounded p-3 ml-3 text-white text-sm left-16 tooltip-arrow-left" t-att-class="scope.itemClass" t-esc="props.tooltip" />
+        <div class="absolute bg-black-90 shadow rounded-sm p-3 ml-6 text-white text-sm left-16 tooltip-arrow-left" t-att-class="scope.itemClass" t-esc="props.tooltip" />
       </Transition>
       <t t-slot="default" />
     </div>

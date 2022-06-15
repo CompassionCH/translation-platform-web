@@ -142,7 +142,7 @@ class Button extends Component<Props> {
       classes.push(sizes[size].circle);
       classes.push('flex justify-center items-center rounded-full');
     } else {
-      classes.push('rounded');
+      classes.push('rounded-sm');
       classes.push(sizes[size].default);
       iconClasses.push(sizes[size].default[1]); // Add margin right to icon
     }

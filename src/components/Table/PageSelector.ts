@@ -32,14 +32,14 @@ class PageSelector extends Component<Props> {
           <button t-if="btn.type === 'page'"
             t-esc="btn.id + 1"
             t-on-click="() => props.page === btn.id ? null : props.onPageChange(btn.id)"
-            class="w-8 h-8 flex justify-center items-center transition-colors rounded"
+            class="w-7 h-7 flex justify-center items-center transition-colors rounded-sm text-sm"
             t-att-class="{
               'bg-compassion shadow-inner text-white': btn.id === props.page,
               'text-slate-700 hover:bg-black-20': btn.id !== props.page,
             }" />
           <span t-else=""
             t-esc="'...'"
-            class="w-8 h-8 flex text-xs justify-center items-center text-slate-500" />
+            class="w-7 h-7 flex text-xs justify-center items-center text-slate-500" />
         </div>
       </t>
     </div>
