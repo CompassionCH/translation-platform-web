@@ -5,8 +5,8 @@ class LetterRowActions extends Component {
 
   static template = xml`
     <div class="flex">
-      <RouterLink to="'/letter-view/' + props.letter.id">View</RouterLink>
-      <RouterLink to="'/letter-edit/' + props.letter.id">Edit</RouterLink>
+      <RouterLink to="'/letters/letter-view/' + props.letter.id">View</RouterLink>
+      <RouterLink to="'/letters/letter-edit/' + props.letter.id">Edit</RouterLink>
     </div>
   `;
 

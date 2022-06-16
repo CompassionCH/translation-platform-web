@@ -1,7 +1,8 @@
-import { Component, xml } from "@odoo/owl";
+import { Component, onWillRender, xml } from "@odoo/owl";
 import Transition from "./Transition";
 import Icon from "./Icon";
 import Button from "./Button";
+import Loader from "./Loader";
 
 const props = {
   title: { type: String, optional: true },
@@ -12,15 +13,35 @@ const props = {
   '*': {},
 };
 
+export class ModalLoader extends Component {
+
+  static props = ['loading'];
+  static components = {
+    Loader,
+    Transition,
+  };
+
+  static template = xml`
+    <Transition active="props.loading || false" t-slot-scope="loaderScope">
+      <div class="absolute top-0 left-0 w-full h-full bg-white-10 flex items-center justify-center backdrop-blur-sm" t-att-class="loaderScope.itemClass">
+        <div class="p-8 bg-white rounded-sm shadow-2xl">
+          <Loader class="'text-2xl'" />
+        </div>
+      </div>
+    </Transition>
+  `;
+}
+
 class Modal extends Component {
 
   static template = xml`
     <Transition active="props.active || false" t-slot-scope="scope">
-      <div class="fixed top-0 left-0 z-50 bg-black-60 w-screen h-screen flex justify-center items-start backdrop-blur-sm" t-att-class="scope.itemClass">
-        <div class="bg-white rounded-sm overflow-hidden shadow-2xl mt-20">
-          <div class="bg-slate-100 border-b border-solid border-slate-300 px-4 py-3 flex justify-between items-start" t-if="!props.empty">
+      <div class="fixed overflow-auto top-0 left-0 z-50 bg-black-60 w-screen h-screen flex justify-center items-start backdrop-blur-sm" t-att-class="scope.itemClass">
+        <div class="bg-white rounded-sm overflow-hidden shadow-2xl my-20 relative">
+          <t t-slot="loader" />
+          <div class="border-b border-solid border-slate-200 px-5 py-4 flex justify-between items-start" t-if="!props.empty">
             <div>
-              <h1 t-if="props.title" class="text-slate-800 text-2xl" t-esc="props.title" />
+              <h1 t-if="props.title" class="text-slate-700 text-xl font-light" t-esc="props.title" />
               <h3 t-if="props.subtitle" class="text-slate-600 font-light" t-esc="props.subtitle" />
             </div>
             <div>
@@ -51,6 +72,10 @@ class Modal extends Component {
     Icon,
     Button,
   };
+
+  setup() {
+    onWillRender(() => console.log('modal render'));
+  }
 }
 
 export default Modal;

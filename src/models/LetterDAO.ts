@@ -1,3 +1,4 @@
+import { OutputBlockData, OutputData } from "@editorjs/editorjs";
 import BaseDAO from "./BaseDAO";
 import simulator from "./simulator";
 
@@ -65,7 +66,7 @@ const allTranslations: Letter[] = [...Array(100).keys()].map((i) => {
 
   let index = 0;
   const elements: Element[] = [];
-  const nbParagraphs = Math.floor(Math.random() * 3);
+  const nbParagraphs = Math.floor(Math.random() * 3 + 1);
 
   for (let i = 0; i < nbParagraphs; i++) {
     const txtStart = Math.round(Math.random() * (loremIpsum.length / 2));
@@ -78,7 +79,7 @@ const allTranslations: Letter[] = [...Array(100).keys()].map((i) => {
       comments: Math.random() > 0.5 ? text.slice(0, Math.round(text.length / 5)) : undefined,
     });
 
-    if (Math.random() > 0.6) {
+    if (Math.random() > 0.6 && i !== nbParagraphs - 1) {
       elements.push({
         id: index++,
         type: 'pageBreak',
@@ -102,8 +103,19 @@ const allTranslations: Letter[] = [...Array(100).keys()].map((i) => {
   };
 });
 
+type LetterDAOApi = {
+  /**
+   * This method will be called when an administrator replied to a comment writen by a translator
+   * on a letter. It should send an email or do something
+   * @param letter 
+   * @param elementId 
+   * @param reply 
+   * @returns Promise<boolean>, true if successful, false otherwise
+   */
+  replyToComment(letter: Letter, elementId: string | number, reply: OutputData): Promise<boolean>;
+};
 
-const LetterDAO: BaseDAO<Letter> = {
+const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
 
   async listIds(params) {
     return simulator.simulateListIds(allTranslations, params, 'id');
@@ -115,7 +127,32 @@ const LetterDAO: BaseDAO<Letter> = {
 
   async list(params) {
     return simulator.simulateList(allTranslations, params);
-  }
+  },
+
+  async replyToComment(letter, elementId, { blocks }) {
+
+    const mappers = {
+      paragraph: (item: OutputBlockData) => `<p>${item.data.text}</p>`,
+      image: (item: OutputBlockData) => `<img src="${item.data.file.url}" alt="${item.data.caption}" />`,
+      list: (item: OutputBlockData) => {
+        const tag = item.data.style === 'ordered' ? 'ol' : 'ul';
+        return `<${tag}>${item.data.items.map((it: string) => `<li>${it}</li>`).join('')}</${tag}>`;
+      },
+    };
+
+    return new Promise((resolve) => {
+      try {
+        const html = blocks.map(it => Object.keys(mappers).includes(it.type) ? mappers[it.type as keyof typeof mappers](it) : '').join('');
+        setTimeout(() => {
+          console.log('Sending reply email', letter.id, elementId, html);
+          resolve(true);
+        }, 2000);
+      } catch (e) {
+        console.error(e);
+        resolve(false);
+      }
+    });
+  },
 };
 
 export default LetterDAO;

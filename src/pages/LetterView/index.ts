@@ -8,9 +8,12 @@ import Loader from '../../components/Loader';
 import Transition from '../../components/Transition';
 import Button from '../../components/Button';
 import RouterLink from '../../components/Router/RouterLink';
+import CommentReplyModal from '../../components/CommentReplyModal';
 
 type State = {
   loading: boolean;
+  replyCommentId?: string | number;
+  showReplyModal: boolean;
   letter?: Letter;
   commentAnswers?: Record<string | number, string>
 };
@@ -24,6 +27,7 @@ class LetterView extends Component {
 
   static components = {
     LetterInformationHeader,
+    CommentReplyModal,
     RouterLink,
     LetterViewer,
     Button,
@@ -34,6 +38,8 @@ class LetterView extends Component {
   state = useState<State>({
     loading: false,
     letter: undefined,
+    replyCommentId: 0,
+    showReplyModal: true,
     commentAnswers: {},
   });
 

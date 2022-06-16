@@ -25,6 +25,7 @@ const store = reactive<Store>({
     userId: '123456789',
     role: 'admin',
   },
+  // */
 }, () => {
   for (const watcher of watchers) {
     watcher(store);

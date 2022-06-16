@@ -19,6 +19,7 @@ interface BaseDAO<T> {
   find(id: number | string): Promise<T | undefined>;
   listIds(params: FilterParams<T>): Promise<Array<string | number>>;
   list(params: Partial<ListQueryParams<T>>): Promise<ListResponse<T>>;
+  [key: string]: any;
 }
 
 export default BaseDAO;

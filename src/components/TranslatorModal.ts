@@ -15,9 +15,8 @@ type State = {
 class TranslatorModal extends Component {
 
   static template = xml`
-    <Modal title="state.title" active="state.active" onClose="props.onClose" empty="state.loading">
-      <Loader class="'p-10 text-xl'" t-if="state.loading" />
-      <div t-if="state.user">
+    <Modal title="state.title" active="state.active" onClose="props.onClose" loading="state.loading">
+      <div t-if="state.user">  
         <t t-esc="state.user.username" />
       </div>
     </Modal>
