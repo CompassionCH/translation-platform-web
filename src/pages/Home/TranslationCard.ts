@@ -1,11 +1,12 @@
 import { Component, xml } from "@odoo/owl";
 
 import Button from "../../components/Button";
+import { Letter } from "../../models";
 
 type Props = {
   title: string;
   remaining: number;
-  texts: Array<{ title: string, id: number }>;
+  letters: Letter[];
 };
 
 class TranslationCard extends Component<Props> {
@@ -16,9 +17,9 @@ class TranslationCard extends Component<Props> {
         <p class="text-slate-600 text-xs"><t t-esc="props.remaining" /> Texts remaining</p>
       </div>
       <div class="p-4 bg-white">
-        <div t-if="props.texts.length gt 0">
+        <div t-if="props.letters.length gt 0">
           <Button icon="'star'" color="'compassion'" level="'secondary'" class="'w-full mb-2'" size="'sm'">Take the first</Button>
-          <t t-foreach="props.texts" t-as="text" t-key="text.id">
+          <t t-foreach="props.letters" t-as="text" t-key="text.id">
             <a href="#" class="block text-sm text-slate-700 hover:text-compassion hover:translate-x-0.5 transform transition-all mb-1" t-esc="text.title" />
           </t>
         </div>
@@ -33,7 +34,7 @@ class TranslationCard extends Component<Props> {
     remaining: {
       type: Number,
     },
-    texts: {
+    letters: {
       type: Array,
     }
   };

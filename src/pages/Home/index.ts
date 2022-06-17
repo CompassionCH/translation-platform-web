@@ -6,8 +6,11 @@ import TranslationCard from './TranslationCard';
 import { useStore } from "../../store";
 import { Letter, models, User } from "../../models";
 
-type SkillLetter {
-  skill: User['skills'],
+type ArrayElement<ArrayType extends readonly unknown[]> = 
+  ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
+
+type SkillLetter = {
+  skill: ArrayElement<User['skills']>,
   total: number,
   letters: Letter[],
 }
@@ -30,6 +33,7 @@ export default class Home extends Component {
 
   state = useState({
     skillLetters: [] as SkillLetter[],
+    loading: false,
   });
 
   setup() {
@@ -37,9 +41,10 @@ export default class Home extends Component {
     this.fetchLetters();
   }
 
-  fetchLetters() {
+  async fetchLetters() {
     const user = this.store.user;
     if (!user) return;
+    this.state.loading = true;
     this.state.skillLetters = await Promise.all(user.skills.map(async (skill) => {
       const skillLetters = await models.letters.list({
         sortBy: 'date',
@@ -58,5 +63,6 @@ export default class Home extends Component {
         letters: skillLetters.data,
       };
     }));
+    this.state.loading = false;
   }
 }

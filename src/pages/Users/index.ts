@@ -26,11 +26,7 @@ const columns: Column[] = [
     formatter: (val: User) => val.available ? 'Yes' : 'No',
     searchable: false,
   },
-  {
-    name: 'languages',
-    formatter: (val: string[]) => val.join(', '),
-    sortable: false,
-  }
+  'language'
 ];
 
 type State = {
