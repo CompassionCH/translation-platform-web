@@ -1,19 +1,22 @@
 import { Component, onMounted, useState } from "@odoo/owl";
 import template from './letterEdit.xml';
 import { Letter, models } from "../../models";
+import { Element } from "../../models/LetterDAO";
 import notyf from "../../notifications";
 import LetterViewer from "../../components/LetterViewer";
-import LetterInformationHeader from "../../components/LetterInformationHeader";
-import Loader from '../../components/Loader';
-import Transition from '../../components/Transition';
 import Button from '../../components/Button';
-import RouterLink from '../../components/Router/RouterLink';
-import Icon from '../../components/Icon';
+import SignalProblem from "../../components/SignalProblem";
+import ContentEditor from './ContentEditor';
+import { BlurLoader } from '../../components/Loader';
+import LetterSubmittedModal from "./LetterSubmittedModal";
+import store from "../../store";
 
 type State = {
   loading: boolean;
+  internalLoading: boolean;
   letter?: Letter;
   signalProblemModal: boolean;
+  letterSubmitted: boolean;
 };
 
 class LetterEdit extends Component {
@@ -24,24 +27,79 @@ class LetterEdit extends Component {
   };
 
   static components = {
-    LetterInformationHeader,
-    RouterLink,
+    SignalProblem,
     LetterViewer,
+    LetterSubmittedModal,
+    ContentEditor,
     Button,
-    Transition,
-    Loader,
-    Icon,
+    BlurLoader,
   };
 
   state = useState<State>({
     loading: false,
+    internalLoading: false,
     letter: undefined,
     signalProblemModal: false,
+    letterSubmitted: false,
   });
+
+  contentGetter: undefined | (() => Element[]) = undefined;
 
   setup() {
     this.state.loading = true;
     onMounted(() => this.refreshLetter());
+  }
+
+  async submit() {
+    if (!this.contentGetter) {
+      return;
+    }
+
+    this.state.internalLoading = true;
+    const res = await models.letters.submit({
+      ...this.state.letter as Letter,
+      lastUpdate: new Date(),
+      status: 'done',
+      translatorId: store.user?.username,
+      translatedElements: this.contentGetter(),
+    });
+
+    if (!res) {
+      notyf.error('Unable to save and submit letter, please save it first and retry.');
+    } else {
+      this.state.internalLoading = false;
+      this.state.letterSubmitted = true;
+    }
+  }
+
+  async save(background?: false) {
+    if (!this.contentGetter) {
+      return;
+    }
+
+    if (!background) {
+      this.state.internalLoading = true;
+    }
+
+    const res = await models.letters.update({
+      ...this.state.letter as Letter,
+      lastUpdate: new Date(),
+      status: 'in process',
+      translatorId: store.user?.username,
+      translatedElements: this.contentGetter(),
+    });
+
+    if (!res) {
+      notyf.error('Unable to save letter');
+    } else {
+      if (!background) {
+        notyf.success('Letter saved');
+      }
+    }
+
+    if (!background) {
+      this.state.internalLoading = false;
+    }
   }
 
   async refreshLetter() {

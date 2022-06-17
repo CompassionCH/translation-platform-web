@@ -18,6 +18,7 @@ class LetterViewer extends Component {
   static template = xml`
     <div class="h-full relative">
       <SignalProblem active="state.signalProblemModal" onClose="() => state.signalProblemModal = false" />
+      <t t-slot="unsafe" />
       <div t-if="props.letter" class="flex h-full">
         <div class="h-full relative bg-blue-300 w-2/5" t-ref="letterPanel">
           <div class="shadow-sm overflow-hidden h-full border-gray-400 flex">
@@ -28,8 +29,8 @@ class LetterViewer extends Component {
             <div t-ref="panelDrag" class="absolute right-0 w-2 h-full bg-slate-400 z-30 hover:bg-compassion cursor-ew-resize select-none" />
           </div>
         </div>
-        <div class="flex-1 flex flex-col">
-          <t t-slot="unsafe" />
+        <div class="flex-1 flex flex-col relative">
+          <t t-slot="right-pane" />
           <div class="flex-1 w-full flex flex-col relative">
             <div t-ref="header">
               <LetterInformationHeader letter="props.letter">
@@ -37,7 +38,7 @@ class LetterViewer extends Component {
               </LetterInformationHeader>        
             </div>
             <div class="flex-1 relative bg-slate-200">
-              <div class="absolute top-0 w-full h-4 bg-gradient-to-b from-slate-300 to-transparent z-20" />
+              <div class="absolute top-0 w-full h-4 bg-gradient-to-b from-slate-300 to-transparent z-10" />
               <div class="overflow-auto py-4" t-ref="contentContainer">
                 <t t-slot="content" letter="props.letter" />
               </div>
@@ -80,13 +81,15 @@ class LetterViewer extends Component {
   infoHeader = useRef('header');
   contentContainer = useRef('contentContainer');
 
+  // Store as class attribute to avoid repatch component
+  // whenever it changes
   resizeCallback = null as any;
   onMouseUp = null as any;
   onMouseDown = null as any;
   dragInitialized = false;
+  dx = 0;
 
   state = useState({
-    dx: 0,
     displayHeight: 0,
     active: false,
     signalProblemModal: false,
@@ -101,7 +104,7 @@ class LetterViewer extends Component {
       this.state.active = false;
     }
     this.onMouseDown = (event: MouseEvent) => {
-      this.state.dx = event.x;
+      this.dx = event.x;
       this.state.active = true;
       document.addEventListener('mousemove', this.resizeCallback, false);
     };
@@ -128,7 +131,6 @@ class LetterViewer extends Component {
 
     // Once props are correctly updated, see if we need to mount something
     onPatched(() => {
-      console.log('patched')
       if (this.props.letter && !this.dragInitialized) {
         this.attachListeners();
       }
@@ -166,8 +168,8 @@ class LetterViewer extends Component {
   }
 
   resize(event: MouseEvent) {
-    const dx = this.state.dx - event.clientX;
-    this.state.dx = event.x;
+    const dx = this.dx - event.clientX;
+    this.dx = event.x;
     const panel = this.letterPanel.el as HTMLDivElement;
     const drag = this.panelDrag.el as HTMLDivElement;
 

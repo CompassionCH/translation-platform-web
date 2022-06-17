@@ -1,4 +1,4 @@
-import { Component, onWillUpdateProps, useState, xml } from "@odoo/owl";
+import { Component, useState, xml } from "@odoo/owl";
 import TranslatorModal from './TranslatorModal';
 
 class LetterInformationHeader extends Component {
@@ -6,7 +6,7 @@ class LetterInformationHeader extends Component {
   static template = xml`
     <TranslatorModal onClose="() => this.state.translatorId = undefined" userId="state.translatorId" />
     <div t-if="props.letter">
-      <div class="flex bg-white relative z-10 border-b border-solid border-slate-300">
+      <div class="flex bg-white relative border-b border-solid border-slate-300">
         <div class="pt-3 pb-5 px-4 mr-10">
           <h4 class="font-semibold text-gray-800 mb-2 text-lg">Child Data</h4>
           <div class="flex text-sm mb-1 text-slate-800">
@@ -70,7 +70,7 @@ class LetterInformationHeader extends Component {
         </div>
       </div>
     </div>
-    <div class="bg-slate-100 px-4 py-3 border-b border-solid border-slate-300 flex justify-between shadow-sm items-center z-30 relative">
+    <div class="bg-slate-100 px-4 py-3 border-b border-solid border-slate-300 flex justify-between shadow-sm items-center z-20 relative">
       <div t-if="props.letter" class="flex items-center gap-2">
         <span class="rounded-sm py-0.5 px-1 text-xs font-medium text-white bg-slate-500" t-esc="props.letter.status" />
         <p class="text-sm text-slate-600">

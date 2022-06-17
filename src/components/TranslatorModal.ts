@@ -55,6 +55,7 @@ class TranslatorModal extends Component {
           notyf.error('User not found');
           this.state.active = false;
           this.state.loading = false;
+          this.props.onClose();
         } else {
           this.state.loading = false;
           this.state.user = user;

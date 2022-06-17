@@ -37,6 +37,7 @@ type Props = {
   size?: keyof typeof sizes;
   icon?: [string, string] | string;
   circle?: boolean;
+  square?: boolean;
   class?: string;
   onClick: Function;
   disabled?: boolean;
@@ -96,6 +97,7 @@ class Button extends Component<Props> {
       level,
       size,
       circle,
+      square,
       icon,
       disabled,
     } = props;
@@ -142,6 +144,9 @@ class Button extends Component<Props> {
     if (circle) {
       classes.push(sizes[size].circle);
       classes.push('flex justify-center items-center rounded-full');
+    } else if (square) {
+      classes.push(sizes[size].circle);
+      classes.push('flex justify-center items-center rounded-sm');
     } else {
       classes.push('rounded-sm');
       classes.push(sizes[size].default);

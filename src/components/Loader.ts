@@ -1,5 +1,6 @@
 import { Component, xml } from "@odoo/owl";
 import { PropsType } from "../UtilityTypes";
+import Transition from "./Transition";
 import Icon from "./Icon";
 
 const props = {
@@ -26,5 +27,28 @@ class Loader extends Component<PropsType<typeof props>> {
     Icon,
   };
 }
+
+class BlurLoader extends Component {
+  static template = xml`
+    <Transition active="props.active" t-slot-scope="scope">
+      <div class="absolute z-40 top-0 left-0 w-full h-full bg-white-20 backdrop-blur-sm flex items-center justify-center" t-att-class="scope.itemClass">
+        <div class="p-8 bg-white rounded-sm shadow-2xl">
+          <Loader class="'text-3xl'" />
+        </div>
+      </div>
+    </Transition>
+  `;
+
+  static components = {
+    Transition,
+    Loader,
+  };
+
+  static props = ['active'];
+}
+
+export {
+  BlurLoader,
+};
 
 export default Loader;

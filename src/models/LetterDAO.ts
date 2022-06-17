@@ -10,17 +10,17 @@ interface BaseElement {
   id: number | string;
 };
 
-interface Paragraph extends BaseElement {
+export interface Paragraph extends BaseElement {
   type: 'paragraph';
   content: string;
   comments?: string;
 };
 
-interface PageBreak extends BaseElement {
+export interface PageBreak extends BaseElement {
   type: 'pageBreak';
 };
 
-type Element = Paragraph | PageBreak;
+export type Element = Paragraph | PageBreak;
 
 export type Person = {
   firstName: string;
@@ -30,7 +30,7 @@ export type Person = {
 };
 
 export type Letter = {
-  id: number;
+  id: number | string;
   status: Status;
   priority: Priority;
   title: string;
@@ -66,7 +66,7 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => {
 
   let index = 0;
   const elements: Element[] = [];
-  const nbParagraphs = Math.floor(Math.random() * 3 + 5);
+  const nbParagraphs = Math.floor(Math.random() * 3);
 
   for (let i = 0; i < nbParagraphs; i++) {
     const txtStart = Math.round(Math.random() * (loremIpsum.length / 2));
@@ -128,6 +128,18 @@ type LetterDAOApi = {
    * @param letter 
    */
   makeTranslatable(letter: Letter): Promise<boolean>;
+
+  /**
+   * Updates the given letter, either creating or updating it
+   * @param letter 
+   */
+  update(letter: Letter): Promise<boolean>;
+
+  /**
+   * Submits the given letter
+   * @param letter 
+   */
+  submit(letter: Letter): Promise<boolean>;
 };
 
 const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
@@ -197,6 +209,30 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
           resolve(true);
         }
       }, 1000);
+    });
+  },
+
+  async update(letter) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const index = allLetters.findIndex(it => it.id === letter.id);
+        if (index >= 0) {
+          allLetters.splice(index, 1, letter);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, Math.random() * 1000 + 500);
+    });
+  },
+
+  async submit(letter) {
+    const save = await LetterDAO.update(letter);
+    if (!save) return false;
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, Math.random() * 1000 + 500);
     });
   }
 };
