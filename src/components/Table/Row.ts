@@ -11,7 +11,7 @@ export type Column = {
   header?: string;
   name: string;
   formatter?: (value: any, item: any) => string | number;
-  component?: (value: any, item: any) => ComponentTemplate;
+  component?: (value: any, item: any) => ComponentTemplate | null;
   sortable?: boolean;
   searchable?: boolean;
 } | string;
@@ -40,7 +40,7 @@ export default class Row extends Component<PropsType<typeof props>> {
           <span t-if="col.formatter" t-out="col.formatter(props.data[col.name], props.data)" />
           <t t-elif="col.component">
             <t t-set="component" t-value="col.component(props.data[col.name], props.data)" />
-            <t t-component="component.component" t-props="component.props" />
+            <t t-if="component" t-component="component.component" t-props="component.props" />
           </t>
           <span t-else="" t-esc="props.data[col.name]" />
         </td>

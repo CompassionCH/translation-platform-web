@@ -66,7 +66,7 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => {
 
   let index = 0;
   const elements: Element[] = [];
-  const nbParagraphs = Math.floor(Math.random() * 3 + 1);
+  const nbParagraphs = Math.floor(Math.random() * 5);
 
   for (let i = 0; i < nbParagraphs; i++) {
     const txtStart = Math.round(Math.random() * (loremIpsum.length / 2));
@@ -87,14 +87,16 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => {
     }
   }
 
+  const status = elements.length === 0 ? 'to do' : ['done', 'in process', 'to review'][Math.floor(Math.random() * 3)] as any;
+
   return {
     id: i,
-    status: elements.length === 0 ? 'to do' : ['done', 'to do', 'in process', 'to review'][Math.floor(Math.random() * 4)] as any,
+    status,
     priority: Math.floor(Math.random() * 5) as any,
     title: `letter-${i}.pdf`,
     source: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
     target: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
-    translatorId: `user-${Math.round(Math.random() * 100)}`,
+    translatorId: status === 'to do' ? undefined : `user-${Math.round(Math.random() * 100)}`,
     lastUpdate: elements.length > 0 ? new Date(Date.now() - (Math.round(Math.random() * 10000000000))) : undefined,
     date: new Date(Date.now() - (Math.round(Math.random() * 50000000000))),
     translatedElements: elements,

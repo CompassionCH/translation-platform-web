@@ -51,13 +51,16 @@ class Letters extends Component {
       {
         name: 'translatorId',
         header: 'Translator',
-        component: (translatorId: string) => ({
-          component: TranslatorButton,
-          props: {
-            username: translatorId,
-            onClick: () => this.state.usernameModal = translatorId,
-          }
-        }),
+        component: (translatorId?: string) => {
+          if (!translatorId) return null;
+          return {
+            component: TranslatorButton,
+            props: {
+              username: translatorId,
+              onClick: () => this.state.usernameModal = translatorId,
+            }
+          };
+        },
       },
       {
         name: 'date',

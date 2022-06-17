@@ -16,7 +16,7 @@
         <div class="flex gap-3">
           <Button color="'red'" level="'secondary'" size="'sm'" onClick="() => this.deleteLetter()">Delete Letter</Button>
           <Button color="'yellow'" level="'secondary'" size="'sm'" onClick="() => this.putBackToTranslate()">Put Back to Translate</Button>
-          <RouterLink to="'/letter-edit/' + state.letter.id">
+          <RouterLink to="'/letters/letter-edit/' + state.letter.id">
             <Button color="'compassion'" size="'sm'">Open in Editor</Button>
           </RouterLink>
         </div>

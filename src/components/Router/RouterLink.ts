@@ -1,5 +1,6 @@
 import { Component, onMounted, onWillDestroy, useState, xml } from "@odoo/owl";
 import pathMatch from "./pathMatch";
+import { navigateTo } from "./Router";
 
 class RouterLink extends Component {
   static template = xml`
@@ -23,7 +24,7 @@ class RouterLink extends Component {
   });
 
   moveTo() {
-    window.history.pushState({}, "", this.props.to);
+    navigateTo(this.props.to);
   }
 
   // TODO: Refactor code with Router
