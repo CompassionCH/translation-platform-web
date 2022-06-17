@@ -3,9 +3,6 @@ import template from './letterView.xml';
 import { Letter, models } from "../../models";
 import notyf from "../../notifications";
 import LetterViewer from "../../components/LetterViewer";
-import LetterInformationHeader from "../../components/LetterInformationHeader";
-import Loader from '../../components/Loader';
-import Transition from '../../components/Transition';
 import Button from '../../components/Button';
 import RouterLink from '../../components/Router/RouterLink';
 import CommentReplyModal from '../../components/CommentReplyModal';
@@ -16,7 +13,6 @@ type State = {
   replyCommentId?: string | number;
   showReplyModal: boolean;
   letter?: Letter;
-  commentAnswers?: Record<string | number, string>
 };
 
 class LetterView extends Component {
@@ -27,13 +23,10 @@ class LetterView extends Component {
   };
 
   static components = {
-    LetterInformationHeader,
     CommentReplyModal,
     RouterLink,
     LetterViewer,
     Button,
-    Transition,
-    Loader,
   };
 
   state = useState<State>({
@@ -41,7 +34,6 @@ class LetterView extends Component {
     letter: undefined,
     replyCommentId: 0,
     showReplyModal: false,
-    commentAnswers: {},
   });
 
   setup() {
@@ -78,7 +70,6 @@ class LetterView extends Component {
     } else {
       notyf.error('Operation failed, letter remains in current state');
     }
-
   }
 
   async deleteLetter() {

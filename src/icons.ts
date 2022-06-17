@@ -8,6 +8,7 @@ import {
   faPaperPlane,
   faDownload,
   faEdit,
+  faRotateLeft,
   faHome,
   faUserGroup,
   faComments,
@@ -24,9 +25,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
-  faTrash, 
+  faTrash,
   faPlus,
   faAngleUp,
+  faRotateLeft,
   faAngleDown,
   faFloppyDisk,
   faPaperPlane,

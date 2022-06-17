@@ -66,7 +66,7 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => {
 
   let index = 0;
   const elements: Element[] = [];
-  const nbParagraphs = Math.floor(Math.random() * 5);
+  const nbParagraphs = Math.floor(Math.random() * 3 + 5);
 
   for (let i = 0; i < nbParagraphs; i++) {
     const txtStart = Math.round(Math.random() * (loremIpsum.length / 2));

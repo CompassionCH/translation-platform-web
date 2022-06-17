@@ -28,7 +28,7 @@ const routes: Route[] = [
     path: '/letters/letter-view/:letterId',
   },
   {
-    component: () => import('./pages/LetterView'),
+    component: () => import('./pages/LetterEdit'),
     name: 'Edit Letter',
     path: '/letters/letter-edit/:letterId',
   },

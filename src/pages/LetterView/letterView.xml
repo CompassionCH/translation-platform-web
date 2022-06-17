@@ -1,61 +1,39 @@
-<LetterViewer letterId="props.letterId">
-  <div class="w-full h-full relative">
-    <div t-if="state.letter" class="h-full flex flex-col">
-      <CommentReplyModal letter="state.letter" show="state.showReplyModal" elementId="state.replyCommentId" onClose="() => this.state.showReplyModal = false" />
-      <LetterInformationHeader letter="state.letter" />
-      <div class="bg-slate-100 px-4 py-3 border-b border-solid border-slate-300 flex justify-between shadow-sm items-center z-30 relative">
-        <div class="flex items-center gap-2">
-          <span class="rounded-sm py-0.5 px-1 text-xs font-medium text-white bg-slate-500" t-esc="state.letter.status" />
-          <p class="text-sm text-slate-600">
-            <t t-if="state.letter.lastUpdate">
-              Last updated the <span t-esc="state.letter.lastUpdate.toLocaleDateString()" />
-            </t>
-            <span t-else="">Never Modified</span>
-          </p>
-        </div>
-        <div class="flex gap-3">
-          <Button color="'red'" level="'secondary'" size="'sm'" onClick="() => this.deleteLetter()">Delete Letter</Button>
-          <Button color="'yellow'" level="'secondary'" size="'sm'" onClick="() => this.putBackToTranslate()">Put Back to Translate</Button>
-          <RouterLink to="'/letters/letter-edit/' + state.letter.id">
-            <Button color="'compassion'" size="'sm'">Open in Editor</Button>
-          </RouterLink>
+<LetterViewer letter="state.letter" loading="state.loading">
+  <!-- action bar buttons -->
+  <t t-set-slot="action-buttons" t-slot-scope="buttons">
+    <Button color="'red'" level="'secondary'" icon="'trash'" size="'sm'" onClick="() => this.deleteLetter()">Delete Letter</Button>
+    <Button color="'yellow'" level="'secondary'" size="'sm'" icon="'rotate-left'" onClick="() => this.putBackToTranslate()">Put Back to Translate</Button>
+    <RouterLink to="'/letters/letter-edit/' + state.letter.id">
+      <Button color="'compassion'" icon="'edit'" size="'sm'">Open in Editor</Button>
+    </RouterLink>
+  </t>
+
+  <!-- content -->
+  <t t-set-slot="content" t-slot-scope="scope">
+    <CommentReplyModal letter="scope.letter" show="state.showReplyModal" elementId="state.replyCommentId" onClose="() => this.state.showReplyModal = false" />
+    <div t-foreach="scope.letter.translatedElements" t-as="element" t-key="element.id">
+      <div t-if="element.type == 'pageBreak'" class="relative w-full flex items-center justify-center px-4">
+        <div class="bg-slash p-4 w-full flex justify-center">
+          <span class="text-slate-400 font-medium text-xs">Page Break</span>
         </div>
       </div>
-      <div class="flex-1 overflow-auto relative bg-slate-200">
-        <div class="absolute top-0 w-full h-4 bg-gradient-to-b from-slate-300 to-transparent z-20" />
-        <div class="py-4 overflow-auto h-full">
-          <!-- Display the various translation elements in readonly mode -->
-          <div t-foreach="state.letter.translatedElements" t-as="element" t-key="element.id">
-            <div t-if="element.type == 'pageBreak'" class="relative w-full flex items-center justify-center px-4">
-              <div class="bg-slash p-4 w-full flex justify-center">
-                <span class="text-slate-400 font-medium text-xs">Page Break</span>
-              </div>
+      <div t-if="element.type == 'paragraph'" class="bg-white shadow-xl relative z-10 mx-4" t-att-class="{
+        'border-b border-dashed border-slate-300': !element_last and scope.letter.translatedElements[element_index + 1].type !== 'pageBreak'
+      }">
+        <div class="grid grid-cols-6 gap-4">
+          <div class="col-span-4 py-4 pl-4">
+            <h4 class="font-medium text-slate-700">Translated Content</h4>
+            <p class="text-xs text-slate-700" t-esc="element.content" />
+          </div>
+          <div class="col-span-2 bg-slate-50 p-4">
+            <div class="flex">
+              <h4 class="font-medium text-slate-700">Comment</h4>
+              <button class="text-blue-500 hover:text-compassion transition-colors cursor-pointer text-xs ml-2" t-on-click="() => { state.replyCommentId = element.id; state.showReplyModal = true; }">Reply</button>
             </div>
-            <div t-if="element.type == 'paragraph'" class="bg-white shadow-xl relative z-10 mx-4" t-att-class="{
-              'border-b border-dashed border-slate-300': !element_last and state.letter.translatedElements[element_index + 1].type !== 'pageBreak'
-            }">
-              <div class="grid grid-cols-6 gap-4">
-                <div class="col-span-4 py-4 pl-4">
-                  <h4 class="font-medium text-slate-700">Translated Content</h4>
-                  <p class="text-xs text-slate-700" t-esc="element.content" />
-                </div>
-                <div class="col-span-2 bg-slate-50 p-4">
-                  <div class="flex">
-                    <h4 class="font-medium text-slate-700">Comment</h4>
-                    <button class="text-blue-500 hover:text-compassion transition-colors cursor-pointer text-xs ml-2" t-on-click="() => { state.replyCommentId = element.id; state.showReplyModal = true; }">Reply</button>
-                  </div>
-                  <p class="text-xs text-slate-700" t-esc="element.comments" />
-                </div>
-              </div>
-            </div>
+            <p class="text-xs text-slate-700" t-esc="element.comments" />
           </div>
         </div>
       </div>
     </div>
-    <Transition t-slot-scope="scope" active="state.loading">
-      <div class="absolute z-30 bg-white flex justify-center items-center flex-col top-0 left-0 w-full h-full" t-att-class="scope.itemClass">
-        <Loader class="'text-4xl'" />
-      </div>
-    </Transition>
-  </div>
+  </t>
 </LetterViewer>

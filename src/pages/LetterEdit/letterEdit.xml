@@ -1,0 +1,34 @@
+<LetterViewer letterId="props.letterId">
+  <div class="w-full h-full relative">
+    <SignalProblem active="state.signalProblemModal" onClose="() => state.signalProblemModal = false" />
+    <div t-if="state.letter" class="h-full flex flex-col">
+      <LetterInformationHeader letter="state.letter">
+        <Button color="'red'" level="'secondary'" icon="'triangle-exclamation'" onClick="() => state.signalProblemModal = true" size="'sm'">Signal a Problem</Button>
+        <Button t-if="state.letter" color="'green'" icon="'floppy-disk'" level="'secondary'" size="'sm'">Save</Button>
+        <Button t-if="state.letter" color="'compassion'" icon="'paper-plane'" size="'sm'">Submit</Button>
+      </LetterInformationHeader>
+      <div class="flex-1 overflow-auto relative bg-slate-200">
+        <div class="absolute top-0 w-full h-4 bg-gradient-to-b from-slate-300 to-transparent z-20" />
+        <div class="py-4 overflow-auto h-full">
+          <!-- Display the various translation elements in readonly mode -->
+          
+        </div>
+      </div>
+    </div>
+    <div t-else="" class="h-full flex-col flex items-center justify-center">
+      <Icon icon="'triangle-exclamation'" class="'text-slate-400 text-6xl mb-4'" />
+      <p class="text-slate-600 font-semibold mb-2">This letter could not be found</p>
+      <div class="flex gap-3">
+        <Button color="'red'" level="'secondary'" onClick="() => state.signalProblemModal = true" size="'sm'">Signal a Problem</Button>
+        <RouterLink to="'/letters'">
+          <Button level="'secondary'" onClick="() => state.signalProblemModal = true" size="'sm'">Back to Translations</Button>
+        </RouterLink>
+      </div>
+    </div>
+    <Transition t-slot-scope="scope" active="state.loading">
+      <div class="absolute z-30 bg-white flex justify-center items-center flex-col top-0 left-0 w-full h-full" t-att-class="scope.itemClass">
+        <Loader class="'text-4xl'" />
+      </div>
+    </Transition>
+  </div>
+</LetterViewer>
