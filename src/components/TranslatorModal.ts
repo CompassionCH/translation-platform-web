@@ -60,12 +60,11 @@ class TranslatorModal extends Component {
           this.state.user = user;
           this.state.title = user.username;
         }
-      });  
+      });
     } else {
+      // Keep internal state while modal is closing
       this.state.active = false;
       this.state.loading = false;
-      this.state.user = undefined;
-      this.state.title = undefined;
     }
   }
 }

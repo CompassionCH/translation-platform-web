@@ -1,7 +1,7 @@
 <LetterViewer letterId="props.letterId">
   <div class="w-full h-full relative">
     <div t-if="state.letter" class="h-full flex flex-col">
-      <CommentReplyModal t-if="state.showReplyModal" letter="state.letter" show="state.showReplyModal" elementId="state.replyCommentId" onClose="() => this.state.showReplyModal = false" />
+      <CommentReplyModal letter="state.letter" show="state.showReplyModal" elementId="state.replyCommentId" onClose="() => this.state.showReplyModal = false" />
       <LetterInformationHeader letter="state.letter" />
       <div class="bg-slate-100 px-4 py-3 border-b border-solid border-slate-300 flex justify-between shadow-sm items-center z-30 relative">
         <p class="text-sm text-slate-600">

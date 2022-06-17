@@ -2,7 +2,6 @@ import { Component, onMounted, onWillUpdateProps, useState, xml } from "@odoo/ow
 
 type Props = {
   active: boolean;
-  forceInitialTransition: boolean;
   duration: number;
   enterActive: string;
   leaveActive: string;
@@ -39,33 +38,30 @@ class Transition extends Component<Props> {
     leaveTo: 'opacity-0',
     enterActive: 'transition-opacity duration-300',
     leaveActive: 'transition-opacity duration-300',
-    delay: 100,
+    delay: 0,
     duration: 300,
   };
 
   state = useState({
     class: '',
     show: this.props.active,
+    previous: null as null | boolean,
     timer: null as number | null,
   });
 
   setup(): void {
     onMounted(() => {
-      this.computeClasses({
-        ...this.props,
-        active: this.props.forceInitialTransition ? true : this.props.active,
-      });
-
-      if (this.props.forceInitialTransition) {
-        setTimeout(() => this.computeClasses({ ...this.props, active: this.props.active }), 10);
-      }
+      console.log('transition mounted', this.props.active);
+      this.computeClasses(this.props);
     });
 
-    onWillUpdateProps((nextProps) => this.computeClasses(nextProps));
+    onWillUpdateProps((nextProps) => {
+      console.log('transition props update', this.props.active, nextProps.active);
+      this.computeClasses(nextProps);
+    });
   }
 
   computeClasses(props: Required<Props>) {
-    const previousActive = this.props.active;
     const {
       active,
       enterActive,
@@ -78,7 +74,14 @@ class Transition extends Component<Props> {
     } = props;
     if (this.state.timer) {
       clearTimeout(this.state.timer);
+      this.state.timer = null;
     }
+
+    if (this.state.previous === active) {
+      return;
+    }
+
+    this.state.previous = active;
 
     if (active) {
       // Show element
@@ -86,6 +89,7 @@ class Transition extends Component<Props> {
       this.setClass(enterActive, enterFrom);
       this.state.timer = setTimeout(() => {
         this.setClass(enterActive, enterTo);
+        this.state.timer = null;
       }, 5 + (delay || 0));
 
     } else {
@@ -94,7 +98,8 @@ class Transition extends Component<Props> {
       this.state.timer = setTimeout(() => {
         this.setClass(leaveActive, leaveTo);
         this.state.timer = setTimeout(() => {
-          this.state.show = false;  
+          this.state.show = false;
+          this.state.timer = null;
         }, (this.props.duration || 200) - 10);
       }, 10);
     }
