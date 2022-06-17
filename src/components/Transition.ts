@@ -50,15 +50,8 @@ class Transition extends Component<Props> {
   });
 
   setup(): void {
-    onMounted(() => {
-      console.log('transition mounted', this.props.active);
-      this.computeClasses(this.props);
-    });
-
-    onWillUpdateProps((nextProps) => {
-      console.log('transition props update', this.props.active, nextProps.active);
-      this.computeClasses(nextProps);
-    });
+    onMounted(() => this.computeClasses(this.props));
+    onWillUpdateProps((nextProps) => this.computeClasses(nextProps));
   }
 
   computeClasses(props: Required<Props>) {

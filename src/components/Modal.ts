@@ -1,4 +1,4 @@
-import { Component, onMounted, onPatched, onRendered, onWillUpdateProps, useState, xml } from "@odoo/owl";
+import { Component, onMounted, onPatched, onWillUpdateProps, useState, xml } from "@odoo/owl";
 import Transition from "./Transition";
 import Icon from "./Icon";
 import Button from "./Button";

@@ -1,4 +1,4 @@
-import { Component, useState, xml } from "@odoo/owl";
+import { Component, onWillUpdateProps, useState, xml } from "@odoo/owl";
 import TranslatorModal from './TranslatorModal';
 
 class LetterInformationHeader extends Component {
@@ -65,8 +65,8 @@ class LetterInformationHeader extends Component {
           </div>
           <div class="flex text-sm text-slate-800">
             <p class="w-32  font-medium">Translator</p>
-            <p class="text-blue-600 hover:text-compassion cursor-pointer" t-on-click="() => this.state.translatorId = props.letter.translatorId" t-esc="props.letter.translatorId" />
-          </div> 
+            <p t-if="props.letter.translatorId" class="text-blue-600 hover:text-compassion cursor-pointer" t-on-click="() => this.state.translatorId = props.letter.translatorId" t-esc="props.letter.translatorId" />
+          </div>
         </div>
       </div>
     </div>
@@ -83,6 +83,10 @@ class LetterInformationHeader extends Component {
   state = useState({
     translatorId: undefined,
   });
+
+  setup() {
+    onWillUpdateProps((n) => console.log(JSON.stringify(n)));
+  }
 }
 
 export default LetterInformationHeader;

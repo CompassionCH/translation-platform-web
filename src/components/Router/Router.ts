@@ -3,6 +3,10 @@ import { ComponentConstructor } from "@odoo/owl/dist/types/component/component";
 import RouterView from "./RouterView";
 import pathMatch from "./pathMatch";
 
+export function navigateTo(path: string) {
+  window.history.pushState({}, "", path);
+}
+
 export type Route = {
   component: ComponentConstructor | Promise<ComponentConstructor> | (() => Promise<any>),
   path: string,
@@ -103,8 +107,7 @@ export default class Router extends Component<Props> {
     const guardInterrupt = await this.runGuards(this.state.route?.route.name, undefined);
     if (guardInterrupt) {
       // Route change, stop current flow
-      window.history.pushState({}, "", guardInterrupt);
-      return;
+      return navigateTo(guardInterrupt);
     }
 
     this.state.route = undefined;

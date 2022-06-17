@@ -36,7 +36,7 @@ export type Letter = {
   title: string;
   source: string;
   target: string;
-  translatorId: string;
+  translatorId?: string;
   lastUpdate?: Date;
   date: Date;
   translatedElements: Element[];
@@ -62,7 +62,7 @@ function personGenerator(): Person {
   };
 };
 
-const allTranslations: Letter[] = [...Array(100).keys()].map((i) => {
+const allLetters: Letter[] = [...Array(100).keys()].map((i) => {
 
   let index = 0;
   const elements: Element[] = [];
@@ -113,20 +113,33 @@ type LetterDAOApi = {
    * @returns Promise<boolean>, true if successful, false otherwise
    */
   replyToComment(letter: Letter, elementId: string | number, reply: OutputData): Promise<boolean>;
+
+  /**
+   * Delete the given letter object
+   * @param letter 
+   */
+  deleteLetter(letter: Letter): Promise<boolean>;
+
+  /**
+   * Put the given letter back in the to do state and restart its
+   * translation process
+   * @param letter 
+   */
+  makeTranslatable(letter: Letter): Promise<boolean>;
 };
 
 const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
 
   async listIds(params) {
-    return simulator.simulateListIds(allTranslations, params, 'id');
+    return simulator.simulateListIds(allLetters, params, 'id');
   },
 
   async find(id) {
-    return simulator.simulateFind(allTranslations, id, 'id');
+    return simulator.simulateFind(allLetters, id, 'id');
   },
 
   async list(params) {
-    return simulator.simulateList(allTranslations, params);
+    return simulator.simulateList(allLetters, params);
   },
 
   async replyToComment(letter, elementId, { blocks }) {
@@ -153,6 +166,37 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
       }
     });
   },
+
+  async deleteLetter(letter) {
+    const index = allLetters.findIndex(item => item.id === letter.id);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (index >= 0) {
+          allLetters.splice(index, 1);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, 1000);
+    });
+  },
+
+  async makeTranslatable(letter) {
+    const item = allLetters.find(item => item.id === letter.id);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (!item) {
+          resolve(false);
+        } else {
+          item.status = 'to do';
+          item.translatorId = undefined;
+          item.translatedElements = [];
+          item.lastUpdate = undefined;
+          resolve(true);
+        }
+      }, 1000);
+    });
+  }
 };
 
 export default LetterDAO;
