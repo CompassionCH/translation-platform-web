@@ -3,7 +3,7 @@
     <h3 class="text-slate-600 font-light text-2xl text-center">Compassion</h3>
     <h1 class="text-slate-700 font-light text-5xl text-center">Translation Platform</h1>
     <p class="text-slate-700 text-center my-10">
-      Welcome Guillaume. Here is the list of texts waiting to be translated, <br/>
+      Welcome <t t-esc="store.user.username" />. Here is the list of texts waiting to be translated, <br/>
       please pick one according to your translation skills.
     </p>
   </div>

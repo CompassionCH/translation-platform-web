@@ -7,11 +7,13 @@
  * stored in the store to perform such API calls
  */
 
-export type AuthenticatedUser = {
-  username: string;
-  userId: string;
-  password: string;
-  role: 'user' | 'admin';
+import { User, allUsers } from "./UserDAO";
+
+export const EXAMPLE_USER: User = {
+  ...allUsers[0],
+  username: 'toto',
+  password: 'toto',
+  userId: '123456789',
 };
 
 const OdooAPI = {
@@ -23,15 +25,10 @@ const OdooAPI = {
    * @param password the password
    * @returns the authenticated user's informations or null if failed authenticating
    */
-  async authenticate(username: string, password: string): Promise<AuthenticatedUser | null> {
+  async authenticate(username: string, password: string): Promise<User | null> {
     return new Promise(resolve => setTimeout(() => {
-      if (username === 'toto' && password === 'toto') {
-        resolve({
-          username,
-          password,
-          userId: '123456789',
-          role: 'admin',
-        });
+      if (username === EXAMPLE_USER.username && password === EXAMPLE_USER.password) {
+        resolve(EXAMPLE_USER);
       } else {
         resolve(null);
       }

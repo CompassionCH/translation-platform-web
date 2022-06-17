@@ -1,8 +1,9 @@
-import { reactive } from '@odoo/owl';
-import { AuthenticatedUser } from './models/OdooAPI';
+import { reactive, useState } from '@odoo/owl';
+import { User } from './models';
+import { EXAMPLE_USER } from './models/OdooAPI';
 
 type Store = {
-  user?: AuthenticatedUser,
+  user?: User,
 };
 
 /**
@@ -19,19 +20,14 @@ const watchers: Watcher[] = [];
  */
 const store = reactive<Store>({
   // user: undefined,
-  user: {
-    username: 'toto',
-    password: 'toto',
-    userId: '123456789',
-    role: 'admin',
-  },
-  // */
+  user: EXAMPLE_USER,
 }, () => {
   for (const watcher of watchers) {
     watcher(store);
   }
 });
 
+export const useStore = () => useState(store);
 export const watchStore = (watcher: Watcher) => watchers.push(watcher);
 export const unwatchStore = (watcher: Watcher) => watchers.includes(watcher) ? watchers.splice(watchers.indexOf(watcher), 1) : null;
 
