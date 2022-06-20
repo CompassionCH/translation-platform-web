@@ -11,7 +11,7 @@ import { User, allUsers } from "./UserDAO";
 
 export const EXAMPLE_USER: User = {
   ...allUsers[0],
-  username: 'toto',
+  username: 'user-1',
   password: 'toto',
   userId: '123456789',
 };

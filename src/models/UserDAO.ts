@@ -37,7 +37,7 @@ export const allUsers: User[] = [...Array(100).keys()].map(i => ({
   year: Math.round(Math.random() * 10 + 5),
   lastYear: Math.round(Math.random() * 100 + 50),
   available: Math.random() > 0.3,
-  skills: [...Array(Math.round(Math.random() * 3)).keys()].map(() => ({
+  skills: [...Array(Math.round(Math.random() * 0)).keys()].map(() => ({
     source: randomLang(),
     target: randomLang(),
   })),

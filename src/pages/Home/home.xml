@@ -1,20 +1,37 @@
-<div class="container mx-auto">
-  <div class="pt-20">
-    <h3 class="text-slate-600 font-light text-2xl text-center">Compassion</h3>
-    <h1 class="text-slate-700 font-light text-5xl text-center">Translation Platform</h1>
-    <p class="text-slate-700 text-center my-10">
-      Welcome <t t-esc="store.user.username" />. Here is the list of texts waiting to be translated, <br/>
-      please pick one according to your translation skills.
-    </p>
-  </div>
-  <div class="flex justify-center gap-10 mt-5">
-    <TranslationCard t-foreach="state.skillLetters"
-      t-as="item" t-key="item_index"
-      title="item.skill.source + ' -> ' + item.skill.target"
-      remaining="item.total"
-      letters="item.letters" />
-  </div>
-  <div class="pt-10">
-    <h3 class="text-slate-600 font-light text-2xl text-center">Thank you.</h3>
+<div class="relative">
+  <BlurLoader active="state.loading" fixed="true" />
+  <div class="container mx-auto">
+    <div class="pt-20">
+      <h3 class="text-slate-600 font-light text-2xl text-center">Compassion</h3>
+      <h1 class="text-slate-700 font-light text-5xl text-center">Translation Platform</h1>
+    </div>
+    <t t-if="state.skillLetters.length gt 0">
+      <p class="text-slate-700 text-center my-10">
+        Welcome <t t-esc="store.user.username" />. Here is the list of texts waiting to be translated, <br/>
+        please pick one according to your translation skills.
+      </p>
+      <div class="flex flex-wrap mt-5 gap-10 justify-center">
+        <TranslationCard t-if="state.savedLetters and state.savedLetters.total gt 0" title="'Saved Letters'"
+          remaining="state.savedLetters.total"
+          letters="state.savedLetters.data"
+          highlight="true" />
+        <TranslationCard t-foreach="state.skillLetters"
+          t-as="item" t-key="item_index"
+          title="item.skill.source + ' -> ' + item.skill.target"
+          remaining="item.total"
+          letters="item.letters" />
+      </div>
+      <div class="py-10">
+        <h3 class="text-slate-600 font-light text-2xl text-center">Thank you.</h3>
+      </div>
+    </t>
+    <div t-else="">
+      <p class="text-slate-700 text-center my-10">
+        Welcome <t t-esc="store.user.username" />. It seems that you don't have any skill currently defined. Start by picking the languages you are confident in.
+      </p>
+      <div class="flex justify-center">
+        <Button color="'compassion'">Pick Languages</Button>
+      </div>
+    </div>
   </div>
 </div>

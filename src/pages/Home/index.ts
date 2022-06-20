@@ -4,7 +4,9 @@ import template from './home.xml';
 import Button from "../../components/Button";
 import TranslationCard from './TranslationCard';
 import { useStore } from "../../store";
+import { ListResponse } from '../../models/BaseDAO';
 import { Letter, models, User } from "../../models";
+import { BlurLoader } from '../../components/Loader';
 
 type ArrayElement<ArrayType extends readonly unknown[]> = 
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
@@ -20,35 +22,50 @@ export default class Home extends Component {
   static components = {
     Button,
     TranslationCard,
+    BlurLoader,
   };
 
   store = useStore();
 
-  texts = [
-    { id: 1, title: 'Arya Stark, Westeros' },
-    { id: 2, title: 'Bart Simpson, America' },
-    { id: 3, title: 'Basilic Mascarpone, Italy' },
-    { id: 4, title: 'Capheus Onyango, Kenya' },
-  ];
-
   state = useState({
     skillLetters: [] as SkillLetter[],
+    savedLetters: undefined as ListResponse<Letter> | undefined,
     loading: false,
   });
 
   setup() {
     // Fetch letters to display to the user for each of his translation skill
-    this.fetchLetters();
+    this.state.loading = true;
+    Promise.all([
+      this.fetchLetters(),
+      this.fetchSaved(),
+    ]).then(() => {
+      this.state.loading = false;
+    });
+  }
+
+  async fetchSaved() {
+    const user = this.store.user;
+    if (!user) return;
+    this.state.savedLetters = await models.letters.list({
+      sortBy: 'date',
+      sortOrder: 'asc',
+      pageNumber: 0,
+      pageSize: 5,
+      search: [
+        { column: 'translatorId', term: user.username },
+        { column: 'status', term: 'in process' },
+      ]
+    });
   }
 
   async fetchLetters() {
     const user = this.store.user;
     if (!user) return;
-    this.state.loading = true;
     this.state.skillLetters = await Promise.all(user.skills.map(async (skill) => {
       const skillLetters = await models.letters.list({
         sortBy: 'date',
-        sortOrder: 'desc',
+        sortOrder: 'asc',
         pageSize: 5,
         pageNumber: 0,
         search: [
@@ -63,6 +80,5 @@ export default class Home extends Component {
         letters: skillLetters.data,
       };
     }));
-    this.state.loading = false;
   }
 }

@@ -1,6 +1,6 @@
-<div class="h-screen flex">
+<div class="">
   <Router routes="routes" guards="guards" t-slot-scope="router">
-    <div t-if="router.currentRoute and router.currentRoute.route.name !== 'Login'" class="h-screen w-20 bg-compassion relative shadow-2xl z-50 flex flex-col items-center">
+    <div t-if="router.currentRoute and router.currentRoute.route.name !== 'Login'" class="h-screen fixed left-0 top-0 w-20 bg-compassion shadow-2xl z-50 flex flex-col items-center">
       <div class="flex w-20 h-20 items-center justify-center">
         <img src="/logo_white.png" class="w-12" />
       </div>
@@ -19,19 +19,17 @@
           <Icon prefix="'fas'" icon="'envelope'" class="'text-xl'" />
         </MenuButton>
       </RouterLink>
-      <RouterLink to="'/text-edit/1'" t-slot-scope="scope">
-        <MenuButton tooltip="'Texts'" active="scope.active">
-          <Icon prefix="'fas'" icon="'comments'" class="'text-xl'" />
-        </MenuButton>
-      </RouterLink>
       <div class="mt-auto mb-4">
         <MenuButton tooltip="'Settings'" class="'cursor-pointer'">
           <Icon prefix="'fas'" icon="'gear'" class="'text-xl'" />
         </MenuButton>
       </div>
     </div>
-    <div class="flex-1">
-      <RouterView route="router.currentRoute" />
+    <div class="flex w-full min-h-screen">
+      <div class="w-20" />
+      <div class="flex-1 min-h-screen">
+        <RouterView route="router.currentRoute" />
+      </div>
     </div>
   </Router>
 </div>

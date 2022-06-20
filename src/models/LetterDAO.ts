@@ -96,7 +96,7 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => {
     title: `letter-${i}.pdf`,
     source: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
     target: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
-    translatorId: status === 'to do' ? undefined : `user-${Math.round(Math.random() * 100)}`,
+    translatorId: status === 'to do' ? undefined : `user-${Math.round(Math.random() * 20)}`,
     lastUpdate: elements.length > 0 ? new Date(Date.now() - (Math.round(Math.random() * 10000000000))) : undefined,
     date: new Date(Date.now() - (Math.round(Math.random() * 50000000000))),
     translatedElements: elements,

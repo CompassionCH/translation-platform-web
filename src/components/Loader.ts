@@ -31,7 +31,7 @@ class Loader extends Component<PropsType<typeof props>> {
 class BlurLoader extends Component {
   static template = xml`
     <Transition active="props.active" t-slot-scope="scope">
-      <div class="absolute z-40 top-0 left-0 w-full h-full bg-white-20 backdrop-blur-sm flex items-center justify-center" t-att-class="scope.itemClass">
+      <div class="z-40 top-0 left-0 w-full h-full bg-white-20 backdrop-blur-sm flex items-center justify-center" t-att-class="scope.itemClass + ' ' + (props.fixed ? 'fixed' : 'absolute')">
         <div class="p-8 bg-white rounded-sm shadow-2xl">
           <Loader class="'text-3xl'" />
         </div>
@@ -44,7 +44,10 @@ class BlurLoader extends Component {
     Loader,
   };
 
-  static props = ['active'];
+  static props = {
+    fixed: { type: Boolean, optional: true },
+    active: { type: Boolean, optional: true },
+  };
 }
 
 export {

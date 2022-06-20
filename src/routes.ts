@@ -18,11 +18,6 @@ const routes: Route[] = [
     path: '/users',
   },
   {
-    component: () => import('./pages/TextEdit'),
-    name: 'Texts',
-    path: '/text-edit/:textId',
-  },
-  {
     component: () => import('./pages/LetterView'),
     name: 'View Letter',
     path: '/letters/letter-view/:letterId',
