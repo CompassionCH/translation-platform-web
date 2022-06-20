@@ -9,12 +9,7 @@
 
 import { User, allUsers } from "./UserDAO";
 
-export const EXAMPLE_USER: User = {
-  ...allUsers[0],
-  username: 'user-1',
-  password: 'toto',
-  userId: '123456789',
-};
+export const EXAMPLE_USER: User = allUsers[0];
 
 const OdooAPI = {
 
@@ -27,7 +22,7 @@ const OdooAPI = {
    */
   async authenticate(username: string, password: string): Promise<User | null> {
     return new Promise(resolve => setTimeout(() => {
-      if (username === EXAMPLE_USER.username && password === EXAMPLE_USER.password) {
+      if (username === EXAMPLE_USER.username && password === 'toto') {
         resolve(EXAMPLE_USER);
       } else {
         resolve(null);

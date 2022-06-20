@@ -7,6 +7,7 @@ import { useStore } from "../../store";
 import { ListResponse } from '../../models/BaseDAO';
 import { Letter, models, User } from "../../models";
 import { BlurLoader } from '../../components/Loader';
+import LanguagesPickModal from './LanguagesPickModal';
 
 type ArrayElement<ArrayType extends readonly unknown[]> = 
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
@@ -22,6 +23,7 @@ export default class Home extends Component {
   static components = {
     Button,
     TranslationCard,
+    LanguagesPickModal,
     BlurLoader,
   };
 
@@ -30,11 +32,16 @@ export default class Home extends Component {
   state = useState({
     skillLetters: [] as SkillLetter[],
     savedLetters: undefined as ListResponse<Letter> | undefined,
+    manageSkillsModal: true,
     loading: false,
   });
 
   setup() {
     // Fetch letters to display to the user for each of his translation skill
+    this.refresh();
+  }
+
+  async refresh() {
     this.state.loading = true;
     Promise.all([
       this.fetchLetters(),
@@ -42,6 +49,12 @@ export default class Home extends Component {
     ]).then(() => {
       this.state.loading = false;
     });
+  }
+
+  async onSkillsChange() {
+    // Refetch everything so that we can display next skills translation cards
+    this.state.manageSkillsModal = false;
+    this.refresh();
   }
 
   async fetchSaved() {
@@ -62,7 +75,7 @@ export default class Home extends Component {
   async fetchLetters() {
     const user = this.store.user;
     if (!user) return;
-    this.state.skillLetters = await Promise.all(user.skills.map(async (skill) => {
+    const skillLetters = await Promise.all(user.skills.map(async (skill) => {
       const skillLetters = await models.letters.list({
         sortBy: 'date',
         sortOrder: 'asc',
@@ -80,5 +93,11 @@ export default class Home extends Component {
         letters: skillLetters.data,
       };
     }));
+
+    this.state.skillLetters = skillLetters.sort((a, b) => {
+      if (a.skill.verified) return 1;
+      if (b.skill.verified) return -1;
+      return 0;
+    });
   }
 }

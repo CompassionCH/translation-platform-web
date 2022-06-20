@@ -9,26 +9,36 @@ type Props = {
   remaining: number;
   letters: Letter[];
   highlight?: boolean;
+  verified?: boolean;
 };
 
 class TranslationCard extends Component<Props> {
   static template = xml`
     <div class="bg-white rounded-sm ring-2 w-72 overflow-hidden flex flex-col" t-att-class="{
       'ring-compassion ring-opacity-70': props.highlight,
-      'ring-slate-200 ring-opacity-30': !props.highlight,
+      'ring-yellow-300 ring-opacity-80': props.verified === false,
+      'ring-slate-200 ring-opacity-30': !props.highlight and props.verified !== false,
     }">
       <div class="bg-slate-100 px-4 py-3">
         <h4 class="font-light text-lg text-slate-700" t-esc="props.title" />
-        <p class="text-slate-600 text-xs"><t t-esc="props.remaining" /> Texts remaining</p>
+        <p t-if="props.verified !== false" class="text-slate-600 text-xs"><t t-esc="props.remaining" /> Texts remaining</p>
+        <p t-else="" class="text-slate-600 text-xs">Waiting for validation</p>
       </div>
       <div class="p-4 bg-white flex-1">
-        <div t-if="props.letters.length gt 0">
+        <div t-if="props.letters.length gt 0 and props.verified !== false">
           <RouterLink to="'/letters/letter-edit/' + props.letters[0].id">
             <Button icon="'star'" color="'compassion'" level="props.highlight ? 'primary' : 'secondary'" class="'w-full mb-2'" size="'sm'">Take the first</Button>
           </RouterLink>
           <RouterLink t-foreach="props.letters" t-as="text" t-key="text.id" to="'/letters/letter-edit/' + text.id">
             <button class="block text-sm text-slate-700 hover:text-compassion hover:translate-x-0.5 transform transition-all mb-1" t-esc="text.title" />
           </RouterLink>
+        </div>
+        <div t-elif="props.verified === false">
+          <RouterLink t-if="props.letters.length gt 0" to="'/letters/letter-edit/' + props.letters[0].id">
+            <Button icon="'star'" color="'compassion'" level="props.highlight ? 'primary' : 'secondary'" class="'w-full mb-2'" size="'sm'">Translate Verification Letter</Button>
+          </RouterLink>
+          <p t-else="" class="px-3 py-1.5 bg-yellow-50 border border-solid border-yellow-200 text-sm text-center text-yellow-700 mb-1">There are currently no letters</p>
+          <p class="text-center text-slate-600 text-sm">This skill must be validated, to do so you must first translate a letter which will be double checked at Compassion</p>
         </div>
         <div t-else="" class="flex h-full items-center justify-center flex-col">
           <p class="text-slate-400 text-center">There's currently no text to translate here</p>
@@ -50,7 +60,11 @@ class TranslationCard extends Component<Props> {
     highlight: {
       type: Boolean,
       optional: true,
-    }
+    },
+    verified: {
+      type: Boolean,
+      optional: true,
+    },
   };
 
   static components = {

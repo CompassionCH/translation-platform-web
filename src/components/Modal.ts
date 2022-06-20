@@ -11,6 +11,8 @@ const props = {
   subtitle: { type: String, optional: true },
   active: { type: Boolean, optional: true },
   onClose: { type: Function, optional: true },
+  showCloseButton: { type: Boolean, optional: true },
+  closeButtonText: { type: String, optional: true },
   empty: { type: Boolean, optional: true },
   '*': {},
 };
@@ -58,7 +60,7 @@ class Modal extends Component<PropsType<typeof props>> {
           <div>
             <t t-slot="footer">
               <div class="flex gap-2 justify-end p-4 border-t border-solid border-slate-200" t-if="!props.empty">
-                <Button t-if="props.onClose" onClick="props.onClose" size="'sm'" level="'secondary'">Close</Button>
+                <Button t-if="props.onClose and props.showCloseButton !== false" onClick="props.onClose" size="'sm'" level="'secondary'" t-esc="props.closeButtonText || 'Close'" />
                 <t t-slot="footer-buttons" />
               </div>
             </t>

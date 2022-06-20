@@ -4,6 +4,11 @@ import { EXAMPLE_USER } from './models/OdooAPI';
 
 type Store = {
   user?: User,
+
+  // AuthData
+  // Set only on the currently authenticated user
+  userId?: string;
+  password?: string;
 };
 
 /**
