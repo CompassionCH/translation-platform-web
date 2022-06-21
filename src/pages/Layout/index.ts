@@ -6,7 +6,7 @@ import RouterLink from '../../components/Router/RouterLink';
 import Icon from '../../components/Icon';
 import MenuButton from './MenuButton';
 import { routes, guards } from '../../routes';
-import { useStore, watchStore } from '../../store';
+import { clearStoreCache, useStore, watchStore } from '../../store';
 
 export default class Root extends Component {
   static template = template;
@@ -28,5 +28,11 @@ export default class Root extends Component {
         window.history.pushState({}, "", '/login');
       }
     });
+  }
+
+  logout() {
+    // Clear session storage and reload page, efficient, clean, simple, bim bim
+    clearStoreCache();
+    window.location.reload();
   }
 }

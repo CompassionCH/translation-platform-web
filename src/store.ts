@@ -51,6 +51,7 @@ const store = reactive<Store>(initialStoreValues, () => {
   }
 });
 
+export const clearStoreCache = () => window.sessionStorage.removeItem(STORAGE_KEY);
 export const useStore = () => useState(store);
 export const watchStore = (watcher: Watcher) => watchers.push(watcher);
 export const unwatchStore = (watcher: Watcher) => watchers.includes(watcher) ? watchers.splice(watchers.indexOf(watcher), 1) : null;

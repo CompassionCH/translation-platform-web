@@ -1,4 +1,4 @@
-<div class="">
+<div>
   <Router routes="routes" guards="guards" t-slot-scope="router">
     <div t-if="router.currentRoute and router.currentRoute.route.name !== 'Login'" class="h-screen fixed left-0 top-0 w-20 bg-compassion shadow-2xl z-50 flex flex-col items-center">
       <div class="flex w-20 h-20 items-center justify-center">
@@ -19,9 +19,9 @@
           <Icon prefix="'fas'" icon="'envelope'" class="'text-xl'" />
         </MenuButton>
       </RouterLink>
-      <div class="mt-auto mb-4">
-        <MenuButton tooltip="'Settings'" class="'cursor-pointer'">
-          <Icon prefix="'fas'" icon="'gear'" class="'text-xl'" />
+      <div class="mt-auto" t-on-click="() => this.logout()">
+        <MenuButton tooltip="'Log Out'" class="'cursor-pointer'">
+          <Icon prefix="'fas'" icon="'right-from-bracket'" class="'text-xl'" />
         </MenuButton>
       </div>
     </div>
