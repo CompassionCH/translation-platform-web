@@ -5,6 +5,10 @@ type Props = {
   tooltip: string;
 };
 
+/**
+ * A button of the main menu on the left side of the viewport. It displays
+ * tooltips when the user passes the mouse over it.
+ */
 class MenuButton extends Component<Props> {
   static template = xml`
     <div class="relative w-20 h-20 flex justify-center items-center transition-colors"
@@ -16,17 +20,7 @@ class MenuButton extends Component<Props> {
       t-on-mouseenter="() => this.state.tooltipVisible = true"
       t-on-mouseleave="() => this.state.tooltipVisible = false"
     >
-      <Transition duration="300"
-        active="state.tooltipVisible"
-        enterFrom="'opacity-0'"
-        enterTo="'opacity-1'"
-        leaveFrom="'opacity-1'"
-        leaveTo="'opacity-0'"
-        enterActive="'transition-all duration-300'"
-        leaveActive="'transition-all duration-300'"
-        t-slot-scope="scope"
-        delay="200"
-      >
+      <Transition active="state.tooltipVisible" t-slot-scope="scope" delay="200">
         <div class="absolute bg-black-90 shadow whitespace-nowrap rounded-sm p-3 ml-6 text-white text-sm left-16 tooltip-arrow-left" t-att-class="scope.itemClass" t-esc="props.tooltip" />
       </Transition>
       <t t-slot="default" />

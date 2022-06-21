@@ -1,6 +1,6 @@
 import { Component, useState } from '@odoo/owl';
 import template from './layout.xml';
-import Router from '../../components/Router/Router';
+import Router, { navigateTo } from '../../components/Router/Router';
 import RouterView from '../../components/Router/RouterView';
 import RouterLink from '../../components/Router/RouterLink';
 import Icon from '../../components/Icon';
@@ -10,7 +10,17 @@ import { routes, guards } from '../../routes';
 import { clearStoreCache, useStore, watchStore } from '../../store';
 import useCurrentUser from '../../hooks/useCurrentUser';
 
-export default class Root extends Component {
+/**
+ * The Layout component is the root component of the application.
+ * It is responsible for mounting the router, declaring routes and redirecting
+ * the user to the login page if he's not authenticated.
+ * 
+ * Furthermore it will load the current user using the useCurrentUser hook so
+ * that other components do not have to do it. If user info is already in session,
+ * it will display a loader for it, otherwise the Login page will have already
+ * done it.
+ */
+export default class Layout extends Component {
   static template = template;
   static components = {
     Router,
@@ -36,9 +46,11 @@ export default class Root extends Component {
       this.refreshUser();
     }
 
+    // Watch store to redirect user if he's not authenticated, I.E
+    // no info about him are in store
     watchStore((store) => {
-      if (!store.username) {
-        window.history.pushState({}, "", '/login');
+      if (!store.username || !store.userId || !store.password) {
+        navigateTo("/login");
       } else if (!this.user.data) {
         this.refreshUser();
       }

@@ -17,6 +17,11 @@ const props = {
   contentRetriever: { type: Function },
 };
 
+/**
+ * This component offers a visual editor to translate a letter. It
+ * is responsible for displaying the various paragraphs and pageBreaks the user
+ * can edit.
+ */
 class ContentEditor extends Component<Props> {
 
   static template = xml`
@@ -82,6 +87,10 @@ class ContentEditor extends Component<Props> {
       // so that we're working with internal state not updating
       // any remote object directly
       this.state.elements = JSON.parse(JSON.stringify(this.props.letter.translatedElements));
+
+      // This is a common pattern to offer a way for the parent component
+      // to access the api exposed by the child one. In this case
+      // a function to retrieve the state of the edited translation elements
       this.props.contentRetriever(() => ([...this.state.elements]));
     });
   }
