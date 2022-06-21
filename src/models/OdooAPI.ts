@@ -8,9 +8,7 @@
  */
 
 import store from "../store";
-import { User, allUsers } from "./UserDAO";
-
-export const EXAMPLE_USER: User = allUsers[0];
+import { allUsers, User } from "./UserDAO";
 
 const OdooAPI = {
 
@@ -21,13 +19,13 @@ const OdooAPI = {
    * @param password the password
    * @returns the authenticated user's informations or null if failed authenticating
    */
-  async authenticate(username: string, password: string): Promise<User | null> {
+  async authenticate(username: string, password: string): Promise<string | null> {
     return new Promise(resolve => setTimeout(() => {
-      if (username === EXAMPLE_USER.username && password === 'toto') {
+      if (username === 'toto' && password === 'toto') {
         // Set store authentication data
         store.userId = '123456789';
         store.password = 'toto';
-        resolve(EXAMPLE_USER);
+        resolve(allUsers[0].username);
       } else {
         resolve(null);
       }

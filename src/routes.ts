@@ -50,7 +50,7 @@ const routes: Route[] = [
 const guards: Guard[] = [
   // Authentication guard to redirect to login if not authenticated
   async (_, to) => {
-    if (!store.user && to !== 'Login') {
+    if (!store.username && to !== 'Login') {
       return '/login';
     } else {
       return;
@@ -59,7 +59,7 @@ const guards: Guard[] = [
 
   // Guard to redirect to home page if already authenticated
   async (_, to) => {
-    if (store.user && to === 'Login') {
+    if (store.username && to === 'Login') {
       return '/';
     } else {
       return;

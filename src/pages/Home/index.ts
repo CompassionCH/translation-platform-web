@@ -8,6 +8,7 @@ import { ListResponse } from '../../models/BaseDAO';
 import { Letter, models, User } from "../../models";
 import { BlurLoader } from '../../components/Loader';
 import LanguagesPickModal from './LanguagesPickModal';
+import useCurrentUser from "../../hooks/useCurrentUser";
 
 type ArrayElement<ArrayType extends readonly unknown[]> = 
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
@@ -18,6 +19,10 @@ type SkillLetter = {
   letters: Letter[],
 }
 
+/**
+ * The Home page is the first page the user sees when he's logged in.
+ * It displays the various
+ */
 export default class Home extends Component {
   static template = template;
   static components = {
@@ -28,6 +33,7 @@ export default class Home extends Component {
   };
 
   store = useStore();
+  user = useCurrentUser();
 
   state = useState({
     skillLetters: [] as SkillLetter[],
@@ -54,28 +60,28 @@ export default class Home extends Component {
   async onSkillsChange() {
     // Refetch everything so that we can display next skills translation cards
     this.state.manageSkillsModal = false;
+    this.state.loading = true;
+    await this.user.refresh();
     this.refresh();
   }
 
   async fetchSaved() {
-    const user = this.store.user;
-    if (!user) return;
+    if (!this.user.data) return;
     this.state.savedLetters = await models.letters.list({
       sortBy: 'date',
       sortOrder: 'asc',
       pageNumber: 0,
       pageSize: 5,
       search: [
-        { column: 'translatorId', term: user.username },
+        { column: 'translatorId', term: this.user.data.username },
         { column: 'status', term: 'in process' },
       ]
     });
   }
 
   async fetchLetters() {
-    const user = this.store.user;
-    if (!user) return;
-    const skillLetters = await Promise.all(user.skills.map(async (skill) => {
+    if (!this.user.data) return;
+    const skillLetters = await Promise.all(this.user.data.skills.map(async (skill) => {
       const skillLetters = await models.letters.list({
         sortBy: 'date',
         sortOrder: 'asc',

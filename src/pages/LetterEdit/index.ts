@@ -60,7 +60,7 @@ class LetterEdit extends Component {
       ...this.state.letter as Letter,
       lastUpdate: new Date(),
       status: 'done',
-      translatorId: store.user?.username,
+      translatorId: store.username,
       translatedElements: this.contentGetter(),
     });
 
@@ -84,8 +84,8 @@ class LetterEdit extends Component {
     const res = await models.letters.update({
       ...this.state.letter as Letter,
       lastUpdate: new Date(),
-      status: 'in process',
-      translatorId: store.user?.username,
+      status: 'in progress',
+      translatorId: store.username,
       translatedElements: this.contentGetter(),
     });
 

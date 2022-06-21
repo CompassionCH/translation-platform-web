@@ -1,3 +1,4 @@
+import store from "../store";
 import BaseDAO from "./BaseDAO";
 import { Language, randomLanguage } from "./SettingsDAO";
 import simulator from "./simulator";

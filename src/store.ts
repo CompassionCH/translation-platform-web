@@ -1,10 +1,7 @@
 import { reactive, useState } from '@odoo/owl';
-import { User } from './models';
-import { EXAMPLE_USER } from './models/OdooAPI';
 
 type Store = {
-  user?: User,
-
+  username?: string;
   // AuthData
   // Set only on the currently authenticated user
   userId?: string;
@@ -17,10 +14,9 @@ type Store = {
 const STORAGE_KEY = 'translation-platform-store';
 
 const baseStore = {
-  user: undefined,
+  username: undefined,
   userId: undefined,
   password: undefined,
-  // user: EXAMPLE_USER,
 }
 
 const sessionStore = JSON.parse(window.sessionStorage.getItem(STORAGE_KEY) || '{}');
@@ -51,9 +47,31 @@ const store = reactive<Store>(initialStoreValues, () => {
   }
 });
 
+/**
+ * Used for logging out, erases the session content and reload page, thus the store
+ * is empty, forcing the user to log in again
+ */
 export const clearStoreCache = () => window.sessionStorage.removeItem(STORAGE_KEY);
+
+/**
+ * A useful hook to include the store in your components, simply do
+ * class MyComponent extends Component {
+ *  store = useStore();
+ * }
+ */
 export const useStore = () => useState(store);
+
+/**
+ * Used to watch when the store changes and react accordingly, used for example to redirect
+ * the user once he's logged in, to use in component's setup() hooks
+ * @param watcher the callback to run when the store changes
+ */
 export const watchStore = (watcher: Watcher) => watchers.push(watcher);
+
+/**
+ * Remove a watcher from the list, to use when your component unmounts
+ * @param watcher 
+ */
 export const unwatchStore = (watcher: Watcher) => watchers.includes(watcher) ? watchers.splice(watchers.indexOf(watcher), 1) : null;
 
 export default store;

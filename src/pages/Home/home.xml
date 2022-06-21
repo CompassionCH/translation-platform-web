@@ -1,14 +1,14 @@
 <div class="relative">
-  <BlurLoader active="state.loading" fixed="true" class="'ml-10'" />
-  <LanguagesPickModal active="state.manageSkillsModal" onClose="() => this.state.manageSkillsModal = false" username="store.user.username" onChange="() => this.onSkillsChange()" />
-  <div class="container mx-auto" t-if="!state.loading">
+  <BlurLoader active="state.loading or user.loading" fixed="true" class="'ml-10'" />
+  <LanguagesPickModal active="state.manageSkillsModal" onClose="() => this.state.manageSkillsModal = false" username="store.username" onChange="() => this.onSkillsChange()" />
+  <div class="container mx-auto" t-if="!state.loading and !user.loading">
     <div class="pt-20">
       <h3 class="text-slate-600 font-light text-2xl text-center">Compassion</h3>
       <h1 class="text-slate-700 font-light text-5xl text-center">Translation Platform</h1>
     </div>
     <t t-if="state.skillLetters.length gt 0">
       <p class="text-slate-700 text-center mt-10 mb-5">
-        Welcome <t t-esc="store.user.username" />. Here is the list of texts waiting to be translated, <br/>
+        Welcome <t t-esc="store.username" />. Here is the list of texts waiting to be translated, <br/>
         please pick one according to your translation skills. You can also register new ones.
       </p>
       <div class="flex justify-center mb-10">
@@ -18,11 +18,11 @@
         <TranslationCard t-if="state.savedLetters and state.savedLetters.total gt 0" title="'Saved Letters'"
           remaining="state.savedLetters.total"
           letters="state.savedLetters.data"
-          highlight="true" />
+          status="'highlight'" />
         <TranslationCard t-foreach="state.skillLetters"
           t-as="item" t-key="item_index"
           title="item.skill.source + ' -> ' + item.skill.target"
-          verified="item.skill.verified"
+          status="item.skill.verified ? undefined : 'unverified'"
           remaining="item.total"
           letters="item.letters" />
       </div>
@@ -32,7 +32,7 @@
     </t>
     <div t-else="">
       <p class="text-slate-700 text-center my-10">
-        Welcome <t t-esc="store.user.username" />. It seems that you don't have any skill currently defined. Start by picking the languages you are confident in.
+        Welcome <t t-esc="store.username" />. It seems that you don't have any skill currently defined. Start by picking the languages you are confident in.
       </p>
       <div class="flex justify-center">
         <Button color="'compassion'" onClick="() => this.state.manageSkillsModal = true">Pick Languages</Button>

@@ -5,6 +5,8 @@ import notyf from "../notifications";
 import store from "../store";
 import Transition from "../components/Transition";
 import Loader from "../components/Loader";
+import useCurrentUser from "../hooks/useCurrentUser";
+import { navigateTo } from "../components/Router/Router";
 
 class Login extends Component {
 
@@ -36,6 +38,7 @@ class Login extends Component {
     </div>
   `;
 
+  user = useCurrentUser();
   state = useState({
     username: '',
     password: '',
@@ -48,19 +51,21 @@ class Login extends Component {
     Transition,
   };
 
-  login() {
+  async login() {
     this.state.loading = true;
     const { username, password } = this.state;
-    OdooAPI.authenticate(username, password).then((res) => {
+    const res = await OdooAPI.authenticate(username, password)
+    if (!res) {
+      notyf.error('Failed to log in, incorrect credentials');
       this.state.loading = false;
-      if (!res) {
-        notyf.error('Failed to log in, incorrect credentials');
-      } else {
-        // Go to home page
-        store.user = res;
-        window.history.pushState({}, "", '/');
-      }
-    });
+    } else {
+      // Provide user to all next components, better UI, minimize number of loaders
+      await this.user.refresh(res);
+
+      // Set username in store
+      store.username = res;
+      navigateTo("/");
+    }
   }
 }
 
