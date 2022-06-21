@@ -9,6 +9,7 @@ import BaseDAO, { ListQueryParams } from '../../models/BaseDAO';
 import usePersistedState from "../../hooks/usePersistedState";
 import Icon from '../Icon';
 import Checkbox from '../Checkbox';
+import notyf from "../../notifications";
 
 type Props<T extends Record<string, any>> = {
   key?: string;
@@ -40,6 +41,13 @@ type State<T> = {
   total: number;
 };
 
+/**
+ * This component displays a table based on a model DAO. You can find examples
+ * in the /src/pages/letters/index.ts and letters.xml.
+ * 
+ * A DAO Table displays data fetched asynchronously using the /src/models/BaseDAO's interface.
+ * To display content you must first define the DAO and then define the columns of the table.
+ */
 export default class DAOTable<T extends Record<string, any>> extends Component<Props<T>> {
 
   static template = template;
@@ -64,6 +72,11 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
     total: 0,
   });
 
+  /**
+   * The current set of filters, sort and stuff applied on the table.
+   * Note that it is persisted in local storage to have them kept when coming back
+   * to the table.
+   */
   filters = usePersistedState<ListQueryParams<T>>({
     pageNumber: 0,
     pageSize: 10,
@@ -71,7 +84,6 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
     sortBy: undefined,
     sortOrder: 'desc',
   }, this.props.key);
-
 
   toggleAll() {
     if (this.state.allSelectedIds) {
@@ -82,6 +94,10 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
       }
     } else {
       this.state.loading = true;
+      if (!this.props.dao.listIds) {
+        console.error('Given DAO does not implement listIds!');
+        notyf.error('Unable to perform this operation');
+      }
       this.props.dao.listIds(this.filters).then((data) => {
         this.state.selectedIds = data;
         this.state.allSelectedIds = true;

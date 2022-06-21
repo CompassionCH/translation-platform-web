@@ -7,12 +7,48 @@ type ComponentTemplate = {
   props: Record<string, any>;
 };
 
+/**
+ * A column of a DAO Table. If no formatter nor component is
+ * defined, it will dump the value as-is.
+ * 
+ * Note that a column can also be defined with a string, which
+ * will be used as name and header.
+ */
 export type Column = {
+  /**
+   * The header is displayed on top of the column, if
+   * not provided the name will be used
+   */
   header?: string;
+
+  /**
+   * The name of the property of the object to display.
+   */
   name: string;
+
+  /**
+   * A function allowing you to format the content of the
+   * cell. The value is the current's object value at index `name`
+   * (upper field), while item is the complete item.
+   */
   formatter?: (value: any, item: any) => string | number;
+
+  /**
+   * A function allowing you to format the content of the
+   * cell with a custom component. The value is the current's
+   * object value at index `name` (upper field), while item is
+   * the complete item.
+   */
   component?: (value: any, item: any) => ComponentTemplate | null;
+
+  /**
+   * Whether this column is sortable or not
+   */
   sortable?: boolean;
+
+  /**
+   * Whether this column is searchable or not
+   */
   searchable?: boolean;
 } | string;
 

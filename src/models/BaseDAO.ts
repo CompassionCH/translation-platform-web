@@ -15,6 +15,9 @@ export type ListResponse<T> = {
   data: T[];
 }
 
+/**
+ * The BaseDAO offers a basic interface to implement a DAOTable
+ */
 interface BaseDAO<T> {
   find(id: number | string): Promise<T | undefined>;
   listIds(params: FilterParams<T>): Promise<Array<string | number>>;

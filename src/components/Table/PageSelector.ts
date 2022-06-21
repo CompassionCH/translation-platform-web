@@ -23,6 +23,14 @@ type State = {
   pages: number;
 };
 
+/**
+ * Dummy Page Selector, displays buttons to select the page
+ * we want to go to. The algorithm to define what page numbers
+ * are displayed is really dumb, I'm almost ashamed, but I was
+ * tired when writing it and believes it is a good testimony of my
+ * motivation to finish it before going to bed. Please do not
+ * try to rewrite it as I poured my soul and mind into it.
+ */
 class PageSelector extends Component<Props> {
 
   static template = xml`
@@ -58,6 +66,9 @@ class PageSelector extends Component<Props> {
     });
   }
 
+  /**
+   * Look at this master piece of code
+   */
   update({ page, total, pageSize }: Props) {
     const pages = Math.ceil(total / pageSize);
     const res: PaginationButton[] = [];
