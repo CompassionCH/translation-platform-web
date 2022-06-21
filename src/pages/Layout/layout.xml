@@ -34,5 +34,5 @@
   </Router>
 </div>
 <div t-else="" class="bg-slate-200 fixed w-full h-full">
-  <BlurLoader active="true" text="'Fetching User'" textClass="'text-2xl text-slate-400 mt-4 font-medium'" />
+  <BlurLoader active="true" text="'Authenticating'" textClass="'text-2xl text-slate-400 mt-4 font-medium'" />
 </div>
