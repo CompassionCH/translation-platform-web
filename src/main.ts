@@ -1,3 +1,9 @@
+/**
+ * Application entry point
+ * Imports and mounts Owl with the Layout component, include
+ * styles and loads icons
+ */
+
 import { mount } from "@odoo/owl";
 import Layout from './pages/Layout';
 import translateFn from './i18n';

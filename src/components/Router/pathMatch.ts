@@ -1,5 +1,13 @@
 type PathMatchResult = Record<string, string>;
 
+/**
+ * Defines the path matcher algorithm to check if a route matches with current URL
+ * It will also extract the various parameters from the path and return them so that
+ * they can be passed on as props to the page component
+ * @param currentPath the current path
+ * @param route the route to check
+ * @returns false if not matched, Record<string, string> if matched, including the path parameters
+ */
 export default function pathMatch(currentPath: string, route: string): PathMatchResult | false {
 
   const currentPathPieces = currentPath.split("/");

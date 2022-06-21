@@ -2,6 +2,12 @@ import { Component, onMounted, onWillDestroy, useState, xml } from "@odoo/owl";
 import pathMatch from "./pathMatch";
 import { navigateTo } from "./Router";
 
+/**
+ * The RouterLink components can wrap any component and will navigate to
+ * the path it is provided when clicked on, think of it as the HTML <a> tag.
+ * It will also provide its default slot a `scope.active` value indicating
+ * if it is currently matched or not, check /src/pages/layout/layout.xml for it
+ */
 class RouterLink extends Component {
   static template = xml`
     <div t-on-click="moveTo" class="cursor-pointer">
@@ -10,7 +16,10 @@ class RouterLink extends Component {
   `;
 
   static props = {
+    // The path to navigate to
     to: { type: String },
+
+    // A base path to include when checking if it matches with current path
     basePath: { type: String, optional: true },
     "*": {},
   };

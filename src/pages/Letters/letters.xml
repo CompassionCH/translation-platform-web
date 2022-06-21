@@ -1,5 +1,4 @@
 <TranslatorModal userId="state.usernameModal" onClose="() => this.state.usernameModal = undefined" />
-<BatchEditModal active="state.batchEditModal" onClose="() => this.state.batchEditModal = false" />
 
 <div>
   <div class="container mx-auto">
@@ -8,14 +7,10 @@
       <h1 class="text-slate-700 font-light text-5xl">Available Letters</h1>
     </div>
     <div class="bg-white rounded-sm shadow-xl flex-1 overflow-hidden">
-      <TableHeader selected="state.selected.length" name="state.selected.length === 1 ? 'Letter' : 'Letters'">
-        <Button class="''" icon="'edit'" level="'secondary'" size="'sm'" disabled="state.selected.length === 0" onClick="() => this.state.batchEditModal = true">Batch Edit</Button>
-      </TableHeader>
       <DAOTable key="'letters-page-table'"
           columns="state.columns"
           keyCol="'id'"
-          dao="dao"
-          onSelect="(selection) => this.state.selected = selection" />
+          dao="dao" />
     </div>
   </div>
 </div>

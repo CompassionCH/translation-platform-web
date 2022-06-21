@@ -2,7 +2,7 @@ import { OutputBlockData, OutputData } from "@editorjs/editorjs";
 import BaseDAO from "./BaseDAO";
 import simulator from "./simulator";
 
-type Status = 'done' | 'to do' | 'in process' | 'to review';
+type Status = 'done' | 'to do' | 'to validate' | 'in progress';
 type Priority = 0 | 1 | 2 | 3 | 4;
 
 interface BaseElement {

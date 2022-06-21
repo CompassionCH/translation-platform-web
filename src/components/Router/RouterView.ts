@@ -13,6 +13,10 @@ type State = {
   routeProps: Record<string, string | number> | null,
 };
 
+/**
+ * A simple component responsible for resolving the given route's component
+ * and mounting it in the viewport
+ */
 class RouterView extends Component<Props> {
 
   static template = xml`

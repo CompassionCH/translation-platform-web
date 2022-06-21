@@ -8,14 +8,11 @@ import TranslatorButton from "./TranslatorButton";
 import TranslatorModal from '../../components/TranslatorModal';
 import Button from '../../components/Button';
 import TableHeader from '../../components/Table/TableHeader';
-import BatchEditModal from './BatchEditModal';
 import LetterRowActions from "./LetterRowActions";
 
 type State = {
   columns: Column[];
-  selected: [];
   usernameModal?: string;
-  batchEditModal: boolean;
 };
 
 
@@ -27,15 +24,12 @@ class Letters extends Component {
     TranslatorModal,
     Button,
     TableHeader,
-    BatchEditModal,
   };
 
   dao = models.letters; // Directly passed to the dataTables component
 
   state = useState<State>({
-    selected: [],
     usernameModal: undefined,
-    batchEditModal: false,
     columns: [
       {
         name: 'priority',
@@ -48,7 +42,7 @@ class Letters extends Component {
       'status',
       {
         name: 'unreadComments',
-        header: 'Unread Comments',
+        header: 'Comments',
         formatter: (v: boolean) => v ? 'Yes' : 'No',
       },
       'source',

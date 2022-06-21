@@ -6,28 +6,11 @@
       <h1 class="text-slate-700 font-light text-5xl">Registered Translators</h1>
     </div>
     <div class="relative bg-white rounded-sm shadow-xl flex-1 overflow-hidden">
-      <TableHeader selected="state.selected.length" name="state.selected.length === 1 ? 'User' : 'Users'">
-        <Button size="'sm'" color="'compassion'" icon="'envelope'" onClick="() => state.sendMail = true" disabled="state.selected.length === 0">Send E-mail</Button> 
-      </TableHeader>
       <DAOTable key="'users-page-table'"
         columns="state.columns"
         keyCol="'username'"
         dao="dao"
-        onSelect="(selection) => this.state.selected = selection"
         onRowClick="(item) => this.state.modalUserId = item.username" />
     </div>
   </div>
-
-  <Modal active="state.sendMail" onClose="() => state.sendMail = false" title="'Send Mail'" subtitle="state.selected.length + ' Users selected'">
-    <div class="p-4">
-      <p class="px-3 py-2 rounded bg-sky-100 border border-solid border-blue-200 text-sm text-sky-700">
-        A few <i>magic variables</i> are available while writing your e-mail: <i><b>{username}, {firstname}</b></i> and <i><b>{lastname}</b></i><br/>
-        Those will be replaced by actual values when sending the e-mail.
-      </p>
-      
-      <t t-set-slot="footer-buttons">
-        <Button color="'compassion'" size="'sm'">Send</Button>
-      </t>
-    </div>
-  </Modal>
 </div>

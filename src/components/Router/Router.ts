@@ -1,16 +1,49 @@
+/**
+ * The router is responsible for mounting components in reaction to URL changes.
+ * Note that its implementation is rather basic, it will listen to URL changes,
+ * load the component (even asynchronously) and pass any props along with it.
+ */
+
 import { Component, onMounted, onWillDestroy, useState, xml } from "@odoo/owl";
 import { ComponentConstructor } from "@odoo/owl/dist/types/component/component";
 import RouterView from "./RouterView";
 import pathMatch from "./pathMatch";
 
+/**
+ * Small utility function to move to another URL without reloading the page
+ * @param path the target path
+ */
 export function navigateTo(path: string) {
   window.history.pushState({}, "", path);
 }
 
+/**
+ * Defines a route (as set in /src/routes.ts)
+ */
 export type Route = {
+  /**
+   * The component for the page can either be:
+   * - directly the component
+   * - a function returning the component
+   * - a function returning a promise to the component with `import`
+   */
   component: ComponentConstructor | Promise<ComponentConstructor> | (() => Promise<any>),
+
+  /**
+   * Which path must be matched for this route's component to be mounted
+   * When defining routes the first matching path will be mounted.
+   */
   path: string,
+
+  /**
+   * The route's name, used in the application title
+   */
   name: string,
+
+  /**
+   * Route specific guards which will be ran sequentially when we
+   * try to reach this route
+   */
   guards?: Guard[],
 };
 
@@ -51,6 +84,7 @@ export default class Router extends Component<Props> {
   };
 
   state = useState<State>({
+    // If a route is matched, it will be set here
     route: undefined,
   });
 
@@ -61,6 +95,7 @@ export default class Router extends Component<Props> {
 
     onMounted(() => {
       this.loadRoute();
+      // Override the pushState object to listen to page changes
       window.history.pushState = new Proxy(window.history.pushState, {
         apply: (target, thisArg, argArray) => {
           // @ts-ignore

@@ -3,7 +3,6 @@ import DAOTable from "../../components/Table/DAOTable";
 import { Column } from "../../components/Table/Row";
 import template from './users.xml';
 import Button from "../../components/Button";
-import Modal from "../../components/Modal";
 import TranslatorModal from "../../components/TranslatorModal";
 import { models, User } from "../../models";
 import TableHeader from "../../components/Table/TableHeader";
@@ -31,8 +30,6 @@ const columns: Column[] = [
 
 type State = {
   columns: Column[];
-  selected: [];
-  sendMail: boolean;
   modalUserId?: string;
 };
 
@@ -42,7 +39,6 @@ export default class Users extends Component {
   static components = {
     DAOTable,
     Button,
-    Modal,
     TranslatorModal,
     TableHeader,
   };
@@ -51,8 +47,6 @@ export default class Users extends Component {
 
   state = useState<State>({
     columns,
-    selected: [],
-    sendMail: false,
     modalUserId: undefined,
   });
 }

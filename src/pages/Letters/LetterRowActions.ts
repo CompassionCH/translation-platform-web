@@ -4,7 +4,7 @@ import RouterLink from "../../components/Router/RouterLink";
 class LetterRowActions extends Component {
 
   static template = xml`
-    <div class="flex gap-1 pr-2">
+    <div class="flex gap-1">
       <RouterLink to="'/letters/letter-view/' + props.letter.id">
         <button class="text-blue-500 hover:text-compassion transition-colors">View</button>
       </RouterLink>

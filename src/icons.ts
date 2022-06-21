@@ -1,3 +1,9 @@
+/**
+ * You can list and load the various icons from FontAwesome used
+ * in the application. They can then be used with the <Icon /> component,
+ * located in /src/components/Icon
+ */
+
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faTrash,

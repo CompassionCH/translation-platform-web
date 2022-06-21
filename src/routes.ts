@@ -8,6 +8,8 @@ import store from "./store";
  */
 const routes: Route[] = [
   {
+    // Note that using this callback version coupled with import will load
+    // the component asynchronously, which is nice
     component: () => import('./pages/Home'),
     name: 'Home',
     path: '/',
@@ -20,6 +22,8 @@ const routes: Route[] = [
   {
     component: () => import('./pages/LetterView'),
     name: 'View Letter',
+    // You can define parameters in your route paths, they will be available as
+    // props in your page components
     path: '/letters/letter-view/:letterId',
   },
   {
@@ -39,6 +43,10 @@ const routes: Route[] = [
   }
 ];
 
+/**
+ * Global authentication guards are ran sequentially whenever the
+ * URL path changes.
+ */
 const guards: Guard[] = [
   // Authentication guard to redirect to login if not authenticated
   async (_, to) => {

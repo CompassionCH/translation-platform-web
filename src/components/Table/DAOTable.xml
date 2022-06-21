@@ -7,7 +7,11 @@
             <Checkbox onClick="() => this.toggleAll()" checked="state.allSelectedIds" />
           </td>
           <td t-foreach="state.columns" t-as="col" t-key="col.name"
-            class="py-3 font-medium px-2 border-b border-solid border-slate-300 bg-slate-100" t-att-class="{'cursor-pointer': col.sortable !== false}"
+            class="py-3 font-medium px-2 border-b border-solid border-slate-300" t-att-class="{
+              'cursor-pointer': col.sortable !== false,
+              'bg-white': props.onSelect === undefined,
+              'bg-slate-100': props.onSelect !== undefined,
+            }"
             t-on-click="() => this.updateSortOrder(col.name)"
           >
             <div class="flex">

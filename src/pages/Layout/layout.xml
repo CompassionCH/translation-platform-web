@@ -9,7 +9,7 @@
           <Icon prefix="'fas'" icon="'home'" class="'text-xl'" />
         </MenuButton>
       </RouterLink>
-      <RouterLink to="'/users'" t-slot-scope="scope">
+      <RouterLink to="'/users'" t-slot-scope="scope" t-if="store.user.role === 'admin'">
         <MenuButton tooltip="'Users'" active="scope.active">
           <Icon prefix="'fas'" icon="'user-group'" class="'text-xl'" />
         </MenuButton>
