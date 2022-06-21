@@ -46,6 +46,11 @@ class Letters extends Component {
       },
       'title',
       'status',
+      {
+        name: 'unreadComments',
+        header: 'Unread Comments',
+        formatter: (v: boolean) => v ? 'Yes' : 'No',
+      },
       'source',
       'target',
       {

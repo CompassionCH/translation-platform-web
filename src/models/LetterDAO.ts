@@ -36,6 +36,7 @@ export type Letter = {
   title: string;
   source: string;
   target: string;
+  unreadComments: boolean;
   translatorId?: string;
   lastUpdate?: Date;
   date: Date;
@@ -76,7 +77,7 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => {
       id: index++,
       type: 'paragraph',
       content: text,
-      comments: Math.random() > 0.5 ? text.slice(0, Math.round(text.length / 5)) : undefined,
+      comments: Math.random() > 0.6 ? text.slice(0, Math.round(text.length / 5)) : undefined,
     });
 
     if (Math.random() > 0.6 && i !== nbParagraphs - 1) {
@@ -94,6 +95,7 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => {
     status,
     priority: Math.floor(Math.random() * 5) as any,
     title: `letter-${i}.pdf`,
+    unreadComments: elements.filter(it => it.type === 'paragraph' && it.comments !== undefined).length > 0,
     source: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
     target: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
     translatorId: status === 'to do' ? undefined : `user-${Math.round(Math.random() * 20)}`,
