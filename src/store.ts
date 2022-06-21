@@ -11,6 +11,24 @@ type Store = {
   password?: string;
 };
 
+// Retrieve data from session storage
+// WARNING: This is a security issue, we should NOT store a plain text password in session storage
+// But well, anyway :)
+const STORAGE_KEY = 'translation-platform-store';
+
+const baseStore = {
+  user: undefined,
+  userId: undefined,
+  password: undefined,
+  // user: EXAMPLE_USER,
+}
+
+const sessionStore = JSON.parse(window.sessionStorage.getItem(STORAGE_KEY) || '{}');
+const initialStoreValues = {
+  ...baseStore,
+  ...sessionStore,
+};
+
 /**
  * Define a set of store watchers notified whenever the store's
  * values changed
@@ -23,10 +41,11 @@ const watchers: Watcher[] = [];
  * across components and objects, such as authentication data, required
  * to perform API/JSON-RPC calls to Odoo
  */
-const store = reactive<Store>({
-  // user: undefined,
-  user: EXAMPLE_USER,
-}, () => {
+const store = reactive<Store>(initialStoreValues, () => {
+  // Persist in session on change
+  window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+
+  // Call watchers
   for (const watcher of watchers) {
     watcher(store);
   }

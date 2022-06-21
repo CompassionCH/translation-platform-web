@@ -32,7 +32,7 @@ export default class Home extends Component {
   state = useState({
     skillLetters: [] as SkillLetter[],
     savedLetters: undefined as ListResponse<Letter> | undefined,
-    manageSkillsModal: true,
+    manageSkillsModal: false,
     loading: false,
   });
 

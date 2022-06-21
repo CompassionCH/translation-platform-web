@@ -7,6 +7,7 @@
  * stored in the store to perform such API calls
  */
 
+import store from "../store";
 import { User, allUsers } from "./UserDAO";
 
 export const EXAMPLE_USER: User = allUsers[0];
@@ -23,6 +24,9 @@ const OdooAPI = {
   async authenticate(username: string, password: string): Promise<User | null> {
     return new Promise(resolve => setTimeout(() => {
       if (username === EXAMPLE_USER.username && password === 'toto') {
+        // Set store authentication data
+        store.userId = '123456789';
+        store.password = 'toto';
         resolve(EXAMPLE_USER);
       } else {
         resolve(null);

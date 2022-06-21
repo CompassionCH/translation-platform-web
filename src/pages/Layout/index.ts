@@ -1,4 +1,4 @@
-import { Component, useState } from '@odoo/owl';
+import { Component } from '@odoo/owl';
 import template from './layout.xml';
 import Router from '../../components/Router/Router';
 import RouterView from '../../components/Router/RouterView';
@@ -6,7 +6,7 @@ import RouterLink from '../../components/Router/RouterLink';
 import Icon from '../../components/Icon';
 import MenuButton from './MenuButton';
 import { routes, guards } from '../../routes';
-import store, { watchStore } from '../../store';
+import { useStore, watchStore } from '../../store';
 
 export default class Root extends Component {
   static template = template;
@@ -20,7 +20,7 @@ export default class Root extends Component {
 
   routes = routes;
   guards = guards;
-  store = useState(store);
+  store = useStore();
   
   setup() {
     watchStore((store) => {

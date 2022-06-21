@@ -1,7 +1,7 @@
 
 export type Language = string;
 
-const languages = ['french', 'english', 'spanish', 'chinese', 'german'];
+const languages = ['french', 'english', 'spanish', 'german'];
 export const randomLanguage = () => languages[Math.floor(Math.random() * languages.length)];
 
 const SettingsDAO = {
