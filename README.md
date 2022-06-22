@@ -27,10 +27,11 @@ The code is divided in the following directories and "main" files:
 - `/src/hooks` contains a few useful hooks to use in components
 - `/src/models` contains the API abstractions and DAOs used by the components to get and update data
 - `/src/pages` contains the page components, mounted by the router
+- `/src/i18n` contains translations related stuff
 
 Note that each file contains documentation about what it does, as such each component is documented in the file where it is defined.
 
-## Loading templates in components
+### Loading templates in components
 The structure of the application makes it easier to define a template as close as possible
 to its component definition. The Owl way of doing it is be setting an inline string in the static
 `template` field of a component class. It is nice for small components but once it grows it becomes
@@ -49,3 +50,24 @@ class MyComponent extends Component {
 ```
 Note that the plugin will automatically pass the content of the XML file in Owl's `xml` template string
 function.
+
+### Translations
+
+Translations are, as much as possible, handled using Owl's internal translation function, it is
+defined in `/src/i18n/index.ts`. Simply put the translation method defined will attempt to replace
+any string given by Owl, and fallback to what's provided, which should be in english.
+
+#### Adding a new language
+
+Defining new languages is done by first creating a file for it (take example on `/src/i18n/fr.ts`)
+and translating the various strings found in it. You can then register it in the `index.ts` file under
+dictionnaries with the minified lang representation as key.
+
+You can then register your new language in `/src/components/SettingsModal.ts` in the `languages` field
+of the component.
+
+#### Detecting missing translations
+
+Whenever a missing translation is found it will be logged to the browser's console. you can easily dump
+the various missing translations by running `dumpMissingTranslations()` in your browser console, which will
+log a JSON object containing them.
