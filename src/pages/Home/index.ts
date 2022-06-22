@@ -9,6 +9,7 @@ import { Letter, models, User } from "../../models";
 import { BlurLoader } from '../../components/Loader';
 import LanguagesPickModal from './LanguagesPickModal';
 import useCurrentUser from "../../hooks/useCurrentUser";
+import _ from "../../i18n";
 
 type ArrayElement<ArrayType extends readonly unknown[]> = 
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
@@ -34,6 +35,9 @@ export default class Home extends Component {
 
   store = useStore();
   user = useCurrentUser();
+
+  // Make translation function part of the template context
+  _ = _;
 
   state = useState({
     skillLetters: [] as SkillLetter[],

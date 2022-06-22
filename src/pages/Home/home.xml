@@ -21,7 +21,7 @@
           status="'highlight'" />
         <TranslationCard t-foreach="state.skillLetters"
           t-as="item" t-key="item_index"
-          title="item.skill.source + ' -> ' + item.skill.target"
+          title="_(item.skill.source) + ' -> ' + _(item.skill.target)"
           status="item.skill.verified ? undefined : 'unverified'"
           remaining="item.total"
           letters="item.letters" />

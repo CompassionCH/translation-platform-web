@@ -6,6 +6,7 @@ import Button from "../../components/Button";
 import TranslatorModal from "../../components/TranslatorModal";
 import { models, User } from "../../models";
 import TableHeader from "../../components/Table/TableHeader";
+import _ from "../../i18n";
 
 const columns: Column[] = [
   'username',
@@ -22,10 +23,13 @@ const columns: Column[] = [
   {
     name: 'available',
     header: 'Available',
-    formatter: (val: User) => val.available ? 'Yes' : 'No',
+    formatter: (val: User) => _(val.available ? 'Yes' : 'No'),
     searchable: false,
   },
-  'language'
+  {
+    name: 'language',
+    translatable: true,
+  }
 ];
 
 type State = {

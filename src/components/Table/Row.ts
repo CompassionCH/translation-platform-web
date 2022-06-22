@@ -1,4 +1,5 @@
 import { Component, xml } from "@odoo/owl";
+import _ from "../../i18n";
 import { PropsType } from "../../UtilityTypes";
 import Checkbox from '../Checkbox';
 
@@ -42,14 +43,19 @@ export type Column = {
   component?: (value: any, item: any) => ComponentTemplate | null;
 
   /**
-   * Whether this column is sortable or not
+   * Whether this column is sortable or not, true by default
    */
   sortable?: boolean;
 
   /**
-   * Whether this column is searchable or not
+   * Whether this column is searchable or not, true by default
    */
   searchable?: boolean;
+
+  /**
+   * Whether this column's values are translatable or not, false by default
+   */
+  translatable?: boolean;
 } | string;
 
 const props = {
@@ -82,6 +88,7 @@ export default class Row extends Component<PropsType<typeof props>> {
             <t t-set="component" t-value="col.component(props.data[col.name], props.data)" />
             <t t-if="component" t-component="component.component" t-props="component.props" />
           </t>
+          <span t-elif="col.translatable === true" t-esc="_(props.data[col.name])" />
           <span t-else="" t-esc="props.data[col.name]" />
         </td>
       </t>
@@ -96,4 +103,6 @@ export default class Row extends Component<PropsType<typeof props>> {
   static components = {
     Checkbox,
   };
+
+  _ = _;
 }

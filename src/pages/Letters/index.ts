@@ -9,6 +9,7 @@ import TranslatorModal from '../../components/TranslatorModal';
 import Button from '../../components/Button';
 import TableHeader from '../../components/Table/TableHeader';
 import LetterRowActions from "./LetterRowActions";
+import _ from "../../i18n";
 
 type State = {
   columns: Column[];
@@ -43,10 +44,16 @@ class Letters extends Component {
       {
         name: 'unreadComments',
         header: 'Comments',
-        formatter: (v: boolean) => v ? 'Yes' : 'No',
+        formatter: (v: boolean) => _(v ? 'Yes' : 'No'),
       },
-      'source',
-      'target',
+      {
+        name: 'source',
+        translatable: true,
+      },
+      {
+        name: 'target',
+        translatable: true,
+      },
       {
         name: 'translatorId',
         header: 'Translator',

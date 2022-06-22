@@ -1,30 +1,6 @@
 <div t-if="!state.loading">
   <Router routes="routes" guards="guards" t-slot-scope="router">
-    <div t-if="router.currentRoute and router.currentRoute.route.name !== 'Login'" class="h-screen fixed left-0 top-0 w-20 bg-compassion shadow-2xl z-50 flex flex-col items-center">
-      <div class="flex w-20 h-20 items-center justify-center">
-        <img src="/logo_white.png" class="w-12" />
-      </div>
-      <RouterLink to="'/'" t-slot-scope="scope">
-        <MenuButton tooltip="'Home'" active="scope.active">
-          <Icon prefix="'fas'" icon="'home'" class="'text-xl'" />
-        </MenuButton>
-      </RouterLink>
-      <RouterLink to="'/users'" t-slot-scope="scope" t-if="user.data.role === 'admin'">
-        <MenuButton tooltip="'Users'" active="scope.active">
-          <Icon prefix="'fas'" icon="'user-group'" class="'text-xl'" />
-        </MenuButton>
-      </RouterLink>
-      <RouterLink to="'/letters'" t-slot-scope="scope">
-        <MenuButton tooltip="'Letters'" active="scope.active">
-          <Icon prefix="'fas'" icon="'envelope'" class="'text-xl'" />
-        </MenuButton>
-      </RouterLink>
-      <div class="mt-auto" t-on-click="() => this.logout()">
-        <MenuButton tooltip="'Log Out'" class="'cursor-pointer'">
-          <Icon prefix="'fas'" icon="'right-from-bracket'" class="'text-xl'" />
-        </MenuButton>
-      </div>
-    </div>
+    <Menu router="router" />
     <div class="flex w-full min-h-screen">
       <div class="w-20" t-if="store.username" />
       <div class="flex-1 min-h-screen">
@@ -34,5 +10,5 @@
   </Router>
 </div>
 <div t-else="" class="bg-slate-200 fixed w-full h-full">
-  <BlurLoader active="true" class="'ml-10 mt-5'" text="'Authenticating'" textClass="'text-2xl text-slate-400 mt-4 font-medium'" />
+  <BlurLoader active="true" class="'ml-10 mt-5'" text="_('Authenticating')" textClass="'text-2xl text-slate-400 mt-4 font-medium'" />
 </div>

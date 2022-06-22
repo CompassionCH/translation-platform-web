@@ -63,6 +63,8 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
     Checkbox,
   };
 
+  _ = _;
+  
   state = useState<State<T>>({
     columns: [],
     selectedIds: [],

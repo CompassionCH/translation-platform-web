@@ -24,6 +24,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@odoo/owl": "^2.0.0-beta-7",
+    "country-flag-icons": "^1.5.5",
     "notyf": "^3.10.0"
   }
 }

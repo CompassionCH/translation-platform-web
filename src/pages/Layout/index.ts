@@ -2,13 +2,12 @@ import { Component, useState } from '@odoo/owl';
 import template from './layout.xml';
 import Router, { navigateTo } from '../../components/Router/Router';
 import RouterView from '../../components/Router/RouterView';
-import RouterLink from '../../components/Router/RouterLink';
-import Icon from '../../components/Icon';
-import MenuButton from './MenuButton';
 import { BlurLoader } from '../../components/Loader';
 import { routes, guards } from '../../routes';
-import { clearStoreCache, useStore, watchStore } from '../../store';
+import { useStore, watchStore } from '../../store';
 import useCurrentUser from '../../hooks/useCurrentUser';
+import Menu from './Menu';
+import _ from '../../i18n';
 
 /**
  * The Layout component is the root component of the application.
@@ -24,11 +23,9 @@ export default class Layout extends Component {
   static template = template;
   static components = {
     Router,
-    Icon,
-    RouterLink,
-    MenuButton,
     RouterView,
     BlurLoader,
+    Menu,
   };
 
   routes = routes;
@@ -38,6 +35,8 @@ export default class Layout extends Component {
   state = useState({
     loading: false,
   });
+
+  _ = _;
 
   setup() {
     if (!this.user.data) {
@@ -63,11 +62,5 @@ export default class Layout extends Component {
     this.state.loading = true;
     await this.user.refresh();
     this.state.loading = false;
-  }
-
-  logout() {
-    // Clear session storage and reload page, efficient, clean, simple, bim bim
-    clearStoreCache();
-    window.location.reload();
   }
 }

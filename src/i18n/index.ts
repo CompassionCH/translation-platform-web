@@ -3,11 +3,19 @@ import fr from './fr';
 const LANG_KEY = 'translation-platform-langage';
 const lang = window.localStorage.getItem(LANG_KEY);
 
+export const selectedLang = lang || 'en';
+
 /**
  * Keep track of errors we displayed regarding missing
  * dictionnaries to avoid overloading the console with error
  */
 const errorDictShown: Record<string, boolean> = {};
+
+/**
+ * Keep track of all missing translations to be able to run
+ * dumpMissingTranslations function from browser console
+ */
+const missingTranslations: string[] = [];
 
 /**
  * Allows set the new language for the application. We store it
@@ -23,8 +31,18 @@ export function setLanguage(lang: string) {
  * The various dictionnaries we have at our disposal
  */
 const dictionnaries = {
-  'french': fr,
+  fr,
 };
+
+/**
+ * You can call this function from the browser console to dump the
+ * missing translations as a JSON object, to add to existing dictionnaries.
+ */
+// @ts-ignore to avoid error of adding a global function to the window object
+window.dumpMissingTranslations = () => JSON.stringify(missingTranslations.reduce((acc, it) => {
+  acc[it] = it;
+  return acc;
+}, {} as Record<string, string>));
 
 /**
  * Translation function. It receives a string from Owl and attempts
@@ -51,8 +69,9 @@ const _ = (str: string): string => {
 
   const dict = dictionnaries[lang as keyof typeof dictionnaries];
 
-  if (!(str in dictionnaries)) {
+  if (!(str in dict)) {
     console.warn(`No translation found for [${str}]`);
+    missingTranslations.push(str);
     return str;
   }
 
@@ -60,3 +79,4 @@ const _ = (str: string): string => {
 };
 
 export default _;
+

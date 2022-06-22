@@ -1,5 +1,6 @@
 import { Component, useState, xml } from '@odoo/owl';
 import Transition from '../../components/Transition';
+import _ from '../../i18n';
 
 type Props = {
   tooltip: string;
@@ -21,11 +22,13 @@ class MenuButton extends Component<Props> {
       t-on-mouseleave="() => this.state.tooltipVisible = false"
     >
       <Transition active="state.tooltipVisible" t-slot-scope="scope" delay="200">
-        <div class="absolute bg-black-90 shadow whitespace-nowrap rounded-sm p-3 ml-6 text-white text-sm left-16 tooltip-arrow-left" t-att-class="scope.itemClass" t-esc="props.tooltip" />
+        <div class="absolute bg-black-90 shadow whitespace-nowrap rounded-sm p-3 ml-6 text-white text-sm left-16 tooltip-arrow-left" t-att-class="scope.itemClass" t-esc="_(props.tooltip)" />
       </Transition>
       <t t-slot="default" />
     </div>
   `;
+
+  _ = _;
 
   static props = {
     tooltip: { type: String },

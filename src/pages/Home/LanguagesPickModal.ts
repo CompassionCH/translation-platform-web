@@ -1,6 +1,7 @@
 import { Component, useState, xml } from "@odoo/owl";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
+import TranslationSkills from "../../components/TranslationSkills";
 import useLanguages from "../../hooks/useLanguages";
 import _ from "../../i18n";
 import { models } from "../../models";
@@ -17,11 +18,7 @@ class LanguagePickModal extends Component {
       }">
         <div class="p-4 flex flex-col items-center" t-if="state.user.skills.length gt 0">
           <h4 class="font-medium text-slate-700 mb-2">Your current translation skills</h4>
-          <div t-foreach="state.user.skills" t-as="skill" t-key="skill.source + '' + skill.target" class="flex items-center mb-3">
-            <p t-esc="skill.source" class="text-sm text-slate-700 bg-slate-100 rounded-sm py-2 font-semibold w-28 text-center" />
-            <p class="text-slate-500 font-semibold text-sm mx-4">-></p>
-            <p t-esc="skill.target" class="text-sm text-slate-700 bg-slate-100 rounded-sm py-2 font-semibold w-28 text-center" />
-          </div>
+          <TranslationSkills skills="state.user.skills" />
         </div>
         <div class="p-4 bg-slate-100 flex flex-col items-center">
           <h4 class="font-medium text-slate-700 mb-2">Register a new translation skill</h4>
@@ -29,13 +26,13 @@ class LanguagePickModal extends Component {
           <div t-foreach="state.potentialSkills" t-as="skill" t-key="skill_index" class="flex items-center ring ring-slate-300 rounded-sm mb-4">
             <div class="w-28">
               <select class="compassion-input text-sm" t-model="skill.source">
-                <option t-foreach="languages.data" t-as="lang" t-key="lang" t-att-value="lang" t-esc="lang" />
+                <option t-foreach="languages.data" t-as="lang" t-key="lang" t-att-value="lang" t-esc="_(lang)" />
               </select>
             </div>
             <p class="text-slate-500 font-semibold text-sm mx-4">-></p>
             <div class="w-28">
               <select class="compassion-input text-sm" t-model="skill.target">
-                <option t-foreach="languages.data" t-as="lang" t-key="lang" t-att-value="lang" t-esc="lang" />
+                <option t-foreach="languages.data" t-as="lang" t-key="lang" t-att-value="lang" t-esc="_(lang)" />
               </select>
             </div>
             <Button square="true" level="'secondary'" icon="'trash'" onClick="() => this.state.potentialSkills.splice(skill_index, 1)" />
@@ -55,7 +52,10 @@ class LanguagePickModal extends Component {
   static components = {
     Modal,
     Button,
+    TranslationSkills,
   };
+
+  _ = _;
 
   languages = useLanguages();
   state = useState({
