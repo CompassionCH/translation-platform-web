@@ -26,7 +26,7 @@ export type User = {
 export const allUsers: User[] = [...Array(100).keys()].map(i => ({
   username: i === 0 ? 'toto' : `user-${i}`,
   email: `email${i}@random.org`,
-  role: Math.random() > 0.8 ? 'admin' : 'user',
+  role: Math.random() > 0 ? 'admin' : 'user',
   name: `Mister User ${i}`,
   age: Math.round(Math.random() * 20 + 20),
   language: randomLanguage(),

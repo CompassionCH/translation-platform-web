@@ -5,6 +5,7 @@ import { models, User } from "../models";
 import TranslationSkills from "./TranslationSkills";
 import Modal from "./Modal";
 import Loader from './Loader';
+import _ from "../i18n";
 
 type State = {
   loading: boolean;
@@ -99,7 +100,7 @@ class TranslatorModal extends Component {
       this.state.active = true;
       models.users.find(userId).then((user) => {
         if (!user) {
-          notyf.error('User not found');
+          notyf.error(_('User not found'));
           this.state.active = false;
           this.state.loading = false;
           this.props.onClose();

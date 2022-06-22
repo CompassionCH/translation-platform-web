@@ -2,6 +2,7 @@ import { Component, useState, xml } from "@odoo/owl";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import useLanguages from "../../hooks/useLanguages";
+import _ from "../../i18n";
 import { models } from "../../models";
 import { TranslationSkill, User } from "../../models/UserDAO";
 import notyf from "../../notifications";
@@ -93,9 +94,9 @@ class LanguagePickModal extends Component {
     } as TranslationSkill)));
     this.state.loading = false;
     if (!res) {
-      notyf.error('Unable to register translation skills');
+      notyf.error(_('Unable to register translation skills'));
     } else {
-      notyf.success('Your new skills have been registered');
+      notyf.success(_('Your new skills have been registered'));
       this.props.onChange();
     }
   }

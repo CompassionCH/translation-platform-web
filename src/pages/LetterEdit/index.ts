@@ -10,6 +10,7 @@ import ContentEditor from './ContentEditor';
 import { BlurLoader } from '../../components/Loader';
 import LetterSubmittedModal from "./LetterSubmittedModal";
 import store from "../../store";
+import _ from "../../i18n";
 
 type State = {
   loading: boolean;
@@ -65,7 +66,7 @@ class LetterEdit extends Component {
     });
 
     if (!res) {
-      notyf.error('Unable to save and submit letter, please save it first and retry.');
+      notyf.error(_('Unable to save and submit letter, please save it first and retry.'));
     } else {
       this.state.internalLoading = false;
       this.state.letterSubmitted = true;
@@ -90,10 +91,10 @@ class LetterEdit extends Component {
     });
 
     if (!res) {
-      notyf.error('Unable to save letter');
+      notyf.error(_('Unable to save letter'));
     } else {
       if (!background) {
-        notyf.success('Letter saved');
+        notyf.success(_('Letter saved'));
       }
     }
 
@@ -105,7 +106,7 @@ class LetterEdit extends Component {
   async refreshLetter() {
     models.letters.find(this.props.letterId).then((letter) => {
       if (!letter) {
-        notyf.error(`Unable to find letter with identifier ${this.props.letterId}`);
+        notyf.error(_('Unable to find letter with identifier') + this.props.letterId);
       } else {
         this.state.letter = letter;
       }

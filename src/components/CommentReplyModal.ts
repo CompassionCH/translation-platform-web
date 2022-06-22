@@ -5,6 +5,7 @@ import EditorJS from "@editorjs/editorjs";
 import RichEditor from "./RichEditor";
 import Button from "./Button";
 import notyf from "../notifications";
+import _ from "../i18n";
 
 class CommentReplyModal extends Component {
 
@@ -60,10 +61,10 @@ class CommentReplyModal extends Component {
     const res = await models.letters.replyToComment(this.props.letter, this.props.elementId, data);
     this.state.loading = false;
     if (res) {
-      notyf.success('Reply successfully sent');
+      notyf.success(_('Reply successfully sent'));
       this.props.onClose();
     } else {
-      notyf.error('Unable to send reply, please retry later');
+      notyf.error(_('Unable to send reply, please retry later'));
     }
   }
 }

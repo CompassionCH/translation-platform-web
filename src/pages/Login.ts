@@ -7,6 +7,7 @@ import Transition from "../components/Transition";
 import Loader from "../components/Loader";
 import useCurrentUser from "../hooks/useCurrentUser";
 import { navigateTo } from "../components/Router/Router";
+import _ from "../i18n";
 
 class Login extends Component {
 
@@ -56,7 +57,7 @@ class Login extends Component {
     const { username, password } = this.state;
     const res = await OdooAPI.authenticate(username, password)
     if (!res) {
-      notyf.error('Failed to log in, incorrect credentials');
+      notyf.error(_('Failed to log in, incorrect credentials'));
       this.state.loading = false;
     } else {
       // Provide user to all next components, better UI, minimize number of loaders

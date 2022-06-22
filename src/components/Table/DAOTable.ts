@@ -5,6 +5,7 @@ import Transition from '../Transition';
 import PageSelector from './PageSelector';
 import SortOrderViewer from "./SortOrderViewer";
 import Loader from '../Loader';
+import _ from "../../i18n";
 import BaseDAO, { ListQueryParams } from '../../models/BaseDAO';
 import usePersistedState from "../../hooks/usePersistedState";
 import Icon from '../Icon';
@@ -96,7 +97,7 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
       this.state.loading = true;
       if (!this.props.dao.listIds) {
         console.error('Given DAO does not implement listIds!');
-        notyf.error('Unable to perform this operation');
+        notyf.error(_('Unable to perform this operation'));
       }
       this.props.dao.listIds(this.filters).then((data) => {
         this.state.selectedIds = data;

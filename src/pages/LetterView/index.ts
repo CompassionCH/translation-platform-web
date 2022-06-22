@@ -7,6 +7,7 @@ import Button from '../../components/Button';
 import RouterLink from '../../components/Router/RouterLink';
 import CommentReplyModal from '../../components/CommentReplyModal';
 import { navigateTo } from "../../components/Router/Router";
+import _ from "../../i18n";
 
 type State = {
   loading: boolean;
@@ -44,7 +45,7 @@ class LetterView extends Component {
   async refreshLetter() {
     models.letters.find(this.props.letterId).then((letter) => {
       if (!letter) {
-        notyf.error(`Unable to find letter with identifier ${this.props.letterId}`);
+        notyf.error(_('Unable to find letter with identifier') + this.props.letterId);
       } else {
         this.state.letter = letter;
       }
@@ -54,41 +55,41 @@ class LetterView extends Component {
 
   async putBackToTranslate() {
     if (!this.state.letter) {
-      notyf.error('Letter not found');
+      notyf.error(_('Letter not found'));
       return;
     }
 
-    const validate = window.confirm('Are you sure you want to put back this letter to translate ?');
+    const validate = window.confirm(_('Are you sure you want to put back this letter to translate ?'));
     if (!validate) return;
 
     this.state.loading = true;
     const res = await models.letters.makeTranslatable(this.state.letter);
     if (res) {
-      notyf.success('Letter is back to translate');
+      notyf.success(_('Letter is back to translate'));
       this.state.letter = undefined; // Put back to undefined to force deep refresh
       return this.refreshLetter();
     } else {
-      notyf.error('Operation failed, letter remains in current state');
+      notyf.error(_('Operation failed, letter remains in current state'));
     }
   }
 
   async deleteLetter() {
     if (!this.state.letter) {
-      notyf.error('Letter not found');
+      notyf.error(_('Letter not found'));
       return;
     }
 
-    const validate = window.confirm('Are you sure you want to delete this letter ?');
+    const validate = window.confirm(_('Are you sure you want to delete this letter ?'));
     if (!validate) return;
 
     this.state.loading = true;
     const res = await models.letters.deleteLetter(this.state.letter);
     this.state.loading = false;
     if (res) {
-      notyf.success('Successfully removed letter');
+      notyf.success(_('Successfully removed letter'));
       navigateTo('/letters');
     } else {
-      notyf.error('Unable to delete letter');
+      notyf.error(_('Unable to delete letter'));
     }
   }
 }
