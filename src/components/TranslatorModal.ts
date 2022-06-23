@@ -35,7 +35,7 @@ class TranslatorModal extends Component {
             </div>
             <div class="flex mb-2">
               <p class="font-semibold text-sm text-slate-700 w-32">Language</p>
-              <p class="text-sm text-slate-700" t-esc="state.user.language" />
+              <p class="text-sm text-slate-700" t-esc="_(state.user.language)" />
             </div>
           </div>
           <div class="flex justify-around">
@@ -71,6 +71,8 @@ class TranslatorModal extends Component {
     Loader,
     TranslationSkills,
   };
+
+  _ = _;
 
   state = useState<State>({
     loading: false,

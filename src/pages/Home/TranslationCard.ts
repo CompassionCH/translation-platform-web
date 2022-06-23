@@ -2,6 +2,7 @@ import { Component, xml } from "@odoo/owl";
 
 import Button from "../../components/Button";
 import RouterLink from "../../components/Router/RouterLink";
+import _ from "../../i18n";
 import { Letter } from "../../models";
 
 type Props = {
@@ -28,8 +29,13 @@ class TranslationCard extends Component<Props> {
           <RouterLink to="'/letters/letter-edit/' + props.letters[0].id">
             <Button icon="'star'" color="'compassion'" level="props.status === 'highlight' ? 'primary' : 'secondary'" class="'w-full mb-2'" size="'sm'">Take the first</Button>
           </RouterLink>
+
+          <!-- letters -list -->
           <RouterLink t-foreach="props.letters" t-as="text" t-key="text.id" to="'/letters/letter-edit/' + text.id">
-            <button class="block text-sm text-slate-700 hover:text-compassion hover:translate-x-0.5 transform transition-all mb-1" t-esc="text.title" />
+            <button class="block text-sm text-slate-700 hover:text-compassion hover:translate-x-0.5 transform transition-all mb-1">
+              <t t-esc="text.title" />
+              <span class="pl-2" t-if="props.status === 'highlight'" t-esc="'(' + _(text.source) + ' -> ' + _(text.target) + ')'" />
+            </button>
           </RouterLink>
         </div>
         <div t-elif="props.status !== 'unverified'">
@@ -66,6 +72,8 @@ class TranslationCard extends Component<Props> {
     Button,
     RouterLink,
   };
+
+  _ = _;
 }
 
 export default TranslationCard;

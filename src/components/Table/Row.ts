@@ -81,7 +81,8 @@ export default class Row extends Component<PropsType<typeof props>> {
         <td class="text-slate-700 py-3 px-1" t-att-class="{
           'border-b border-solid border-slate-200': !props.last,
           'pl-4': col_first,
-          'pr-4': col_last,
+          'px-3 pr-4': col_last,
+          'px-3': !col_fist and !col_last,
         }">
           <span t-if="col.formatter" t-out="col.formatter(props.data[col.name], props.data)" />
           <t t-elif="col.component">

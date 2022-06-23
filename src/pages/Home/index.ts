@@ -78,7 +78,7 @@ export default class Home extends Component {
       pageSize: 5,
       search: [
         { column: 'translatorId', term: this.user.data.username },
-        { column: 'status', term: 'in process' },
+        { column: 'status', term: 'in progress' },
       ]
     });
   }
@@ -92,6 +92,7 @@ export default class Home extends Component {
         pageSize: 5,
         pageNumber: 0,
         search: [
+          { column: 'status', term: 'to do' },
           { column: 'source', term: skill.source },
           { column: 'target', term: skill.target },
         ],

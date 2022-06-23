@@ -73,7 +73,7 @@ class LetterEdit extends Component {
     }
   }
 
-  async save(background?: false) {
+  async save(background = false) {
     if (!this.contentGetter) {
       return;
     }
@@ -97,6 +97,15 @@ class LetterEdit extends Component {
         notyf.success(_('Letter saved'));
       }
     }
+
+    const updatedLetterState = await models.letters.find(this.props.letterId);
+    if (!updatedLetterState) {
+      console.error('Saved letter cannot be found!');
+      notyf.error(_('An error occured while trying to retrieve updated state'));
+    } else {
+      this.state.letter = updatedLetterState;
+    }
+
 
     if (!background) {
       this.state.internalLoading = false;

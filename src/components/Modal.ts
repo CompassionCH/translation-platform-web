@@ -4,6 +4,7 @@ import Icon from "./Icon";
 import Button from "./Button";
 import Loader from "./Loader";
 import { PropsType } from "../UtilityTypes";
+import _ from "../i18n";
 
 const props = {
   title: { type: String, optional: true },
@@ -45,8 +46,8 @@ class Modal extends Component<PropsType<typeof props>> {
           <ModalLoader loading="props.loading || false" />
           <div class="border-b border-solid border-slate-200 px-5 py-4 flex justify-between items-start" t-if="!props.empty">
             <div>
-              <h1 t-if="props.title" class="text-slate-700 text-xl font-light" t-esc="props.title" />
-              <h3 t-if="props.subtitle" class="text-slate-600 font-light" t-esc="props.subtitle" />
+              <h1 t-if="props.title" class="text-slate-700 text-xl font-light" t-esc="_(props.title)" />
+              <h3 t-if="props.subtitle" class="text-slate-600 font-light" t-esc="_(props.subtitle)" />
             </div>
             <div>
               <button t-if="props.onClose" class="ml-4 rounded-full hover:text-slate-800 transition-colors text-slate-600 text-xl" t-on-click="props.onClose">
@@ -60,7 +61,7 @@ class Modal extends Component<PropsType<typeof props>> {
           <div>
             <t t-slot="footer">
               <div class="flex gap-2 justify-end p-4 border-t border-solid border-slate-200" t-if="!props.empty">
-                <Button t-if="props.onClose and props.showCloseButton !== false" onClick="props.onClose" size="'sm'" level="'secondary'" t-esc="props.closeButtonText || 'Close'" />
+                <Button t-if="props.onClose and props.showCloseButton !== false" onClick="props.onClose" size="'sm'" level="'secondary'" t-esc="_(props.closeButtonText || 'Close')" />
                 <t t-slot="footer-buttons" />
               </div>
             </t>
@@ -77,6 +78,8 @@ class Modal extends Component<PropsType<typeof props>> {
     Icon,
     Button,
   };
+
+  _ = _;
 
   state = useState({
     mounted: false,
