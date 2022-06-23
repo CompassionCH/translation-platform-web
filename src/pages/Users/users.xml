@@ -5,7 +5,7 @@
       <h3 class="text-slate-600 font-light text-2xl mb-1">Compassion</h3>
       <h1 class="text-slate-700 font-light text-5xl">Registered Translators</h1>
     </div>
-    <div class="relative bg-white rounded-sm shadow-xl flex-1 overflow-hidden">
+    <div class="relative bg-white rounded-sm shadow-lg flex-1 overflow-hidden">
       <DAOTable key="'users-page-table'"
         columns="state.columns"
         keyCol="'username'"

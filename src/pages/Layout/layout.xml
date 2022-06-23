@@ -11,4 +11,5 @@
 </div>
 <div t-else="" class="bg-slate-200 fixed w-full h-full">
   <BlurLoader active="true" class="'ml-10 mt-5'" text="_('Authenticating')" textClass="'text-2xl text-slate-400 mt-4 font-medium'" />
+  <ConfirmModal />
 </div>

@@ -8,6 +8,7 @@ import { useStore, watchStore } from '../../store';
 import useCurrentUser from '../../hooks/useCurrentUser';
 import Menu from './Menu';
 import _ from '../../i18n';
+import { ConfirmModal } from '../../hooks/useAlerts';
 
 /**
  * The Layout component is the root component of the application.
@@ -23,6 +24,7 @@ export default class Layout extends Component {
   static template = template;
   static components = {
     Router,
+    ConfirmModal,
     RouterView,
     BlurLoader,
     Menu,
