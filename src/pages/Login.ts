@@ -5,7 +5,7 @@ import notyf from "../notifications";
 import store from "../store";
 import Transition from "../components/Transition";
 import Loader from "../components/Loader";
-import useCurrentUser from "../hooks/useCurrentUser";
+import useCurrentTranslator from "../hooks/useCurrentTranslator";
 import { navigateTo } from "../components/Router/Router";
 import _ from "../i18n";
 
@@ -39,7 +39,7 @@ class Login extends Component {
     </div>
   `;
 
-  user = useCurrentUser();
+  user = useCurrentTranslator();
   state = useState({
     username: '',
     password: '',
@@ -61,10 +61,10 @@ class Login extends Component {
       this.state.loading = false;
     } else {
       // Provide user to all next components, better UI, minimize number of loaders
-      await this.user.refresh(res);
+      await this.user.refresh();
 
       // Set username in store
-      store.username = res;
+      store.username = username;
       navigateTo("/");
     }
   }

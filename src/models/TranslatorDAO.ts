@@ -1,4 +1,3 @@
-import store from "../store";
 import BaseDAO from "./BaseDAO";
 import { Language, randomLanguage } from "./SettingsDAO";
 import simulator from "./simulator";
@@ -9,8 +8,8 @@ export type TranslationSkill = {
   verified: boolean;
 };
 
-export type User = {
-  username: string;
+export type Translator = {
+  translatorId: number;
   email: string;
   role: 'user' | 'admin';
   name: string;
@@ -19,12 +18,11 @@ export type User = {
   total: number;
   year: number;
   lastYear: number;
-  available: boolean;
   skills: TranslationSkill[];
 };
 
-export const allUsers: User[] = [...Array(100).keys()].map(i => ({
-  username: i === 0 ? 'toto' : `user-${i}`,
+export const allTranslators: Translator[] = [...Array(100).keys()].map(i => ({
+  translatorId: i,
   email: `email${i}@random.org`,
   role: Math.random() > 0 ? 'admin' : 'user',
   name: `Mister User ${i}`,
@@ -41,32 +39,38 @@ export const allUsers: User[] = [...Array(100).keys()].map(i => ({
   })),
 }));
 
-type UserDAOApi = {
+type TranslatorDAOApi = {
 
   /**
    * Registers a potential skill in a user
    * @param username
    * @param skills
    */
-   registerSkills(username: string, skills: TranslationSkill[]): Promise<boolean>;
+  registerSkills(translatorId: number, skills: TranslationSkill[]): Promise<boolean>;
+
+   /**
+    * Returns the Translator object related to the currently
+    * authenticated user
+    */
+  current(): Promise<Translator>;
 };
 
-const UserDAO: BaseDAO<User> & UserDAOApi = {
+const UserDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async find(id) {
-    return simulator.simulateFind(allUsers, id, 'username');
+    return simulator.simulateFind(allTranslators, id, 'translatorId');
   },
 
   async list(params) {
-    return simulator.simulateList(allUsers, params);
+    return simulator.simulateList(allTranslators, params);
   },
 
   async listIds(params) {
-    return simulator.simulateListIds(allUsers, params, 'username');
+    return simulator.simulateListIds(allTranslators, params, 'translatorId');
   },
 
-  async registerSkills(username, skills) {
-    const user = allUsers.find(it => it.username === username);
+  async registerSkills(translatorId, skills) {
+    const user = allTranslators.find(it => it.translatorId === translatorId);
     if (!user) return false;
 
     return new Promise((resolve) => setTimeout(() => {
@@ -78,6 +82,10 @@ const UserDAO: BaseDAO<User> & UserDAOApi = {
       }
       resolve(true);
     }, 700));
+  },
+
+  async current() {
+    return allTranslators[0];
   }
 }
 

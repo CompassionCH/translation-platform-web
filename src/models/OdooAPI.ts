@@ -8,7 +8,6 @@
  */
 
 import store from "../store";
-import { allUsers, User } from "./UserDAO";
 
 const OdooAPI = {
 
@@ -19,17 +18,37 @@ const OdooAPI = {
    * @param password the password
    * @returns the authenticated user's informations or null if failed authenticating
    */
-  async authenticate(username: string, password: string): Promise<string | null> {
+  async authenticate(username: string, password: string): Promise<boolean> {
+
     return new Promise(resolve => setTimeout(() => {
       if (username === 'toto' && password === 'toto') {
         // Set store authentication data
-        store.userId = '123456789';
+        store.userId = 123456789;
         store.password = 'toto';
-        resolve(allUsers[0].username);
+        resolve(true);
       } else {
-        resolve(null);
+        resolve(false);
       }
     }, Math.random() * 500 + 500));
+
+    /*
+    // Build an XML-RPC client specific for authentication
+    const client = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/common");
+    const userId = await client.methodCall('authenticate', [
+      import.meta.env.VITE_ODOO_DBNAME,
+      username,
+      password,
+      [],
+    ]) as number | false;
+
+    if (userId === false) {
+      return false;
+    } else {
+      store.userId = userId as number;
+      store.password = password;
+      return true;
+    }
+    */
   }
 }
 

@@ -6,7 +6,6 @@ import LetterViewer from "../../components/LetterViewer";
 import Button from '../../components/Button';
 import RouterLink from '../../components/Router/RouterLink';
 import CommentReplyModal from '../../components/CommentReplyModal';
-import { confirm } from "../../hooks/useAlerts";
 import { navigateTo } from "../../components/Router/Router";
 import _ from "../../i18n";
 

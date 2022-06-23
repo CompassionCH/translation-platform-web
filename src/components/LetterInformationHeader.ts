@@ -4,7 +4,7 @@ import TranslatorModal from './TranslatorModal';
 class LetterInformationHeader extends Component {
 
   static template = xml`
-    <TranslatorModal onClose="() => this.state.translatorId = undefined" userId="state.translatorId" />
+    <TranslatorModal onClose="() => this.state.translatorId = undefined" translatorId="state.translatorId" />
     <div t-if="props.letter">
       <div class="flex bg-white relative border-b border-solid border-slate-300">
         <div class="pt-3 pb-5 px-4 mr-10">

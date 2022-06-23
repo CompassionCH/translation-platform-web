@@ -1,14 +1,14 @@
 import LetterDAO, { Letter } from "./LetterDAO";
-import UserDAO, { User } from "./UserDAO";
+import TranslatorDAO, { Translator } from "./TranslatorDAO";
 import SettingsDAO from "./SettingsDAO";
 
 export type {
   Letter,
-  User,
+  Translator,
 };
 
 export const models = {
-  users: UserDAO,
+  translators: TranslatorDAO,
   letters: LetterDAO,
   settings: SettingsDAO,
 };

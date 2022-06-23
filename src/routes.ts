@@ -15,9 +15,9 @@ const routes: Route[] = [
     path: '/',
   },
   {
-    component: () => import('./pages/Users'),
-    name: 'Users',
-    path: '/users',
+    component: () => import('./pages/Translators'),
+    name: 'Translators',
+    path: '/translators',
   },
   {
     component: () => import('./pages/LetterView'),
@@ -50,7 +50,7 @@ const routes: Route[] = [
 const guards: Guard[] = [
   // Authentication guard to redirect to login if not authenticated
   async (_, to) => {
-    if (!store.username && to !== 'Login') {
+    if (!store.userId && to !== 'Login') {
       return '/login';
     } else {
       return;
@@ -59,7 +59,7 @@ const guards: Guard[] = [
 
   // Guard to redirect to home page if already authenticated
   async (_, to) => {
-    if (store.username && to === 'Login') {
+    if (store.userId && to === 'Login') {
       return '/';
     } else {
       return;

@@ -5,7 +5,7 @@ import RouterView from '../../components/Router/RouterView';
 import { BlurLoader } from '../../components/Loader';
 import { routes, guards } from '../../routes';
 import { useStore, watchStore } from '../../store';
-import useCurrentUser from '../../hooks/useCurrentUser';
+import useCurrentTranslator from '../../hooks/useCurrentTranslator';
 import Menu from './Menu';
 import _ from '../../i18n';
 import { ConfirmModal } from '../../hooks/useAlerts';
@@ -33,7 +33,7 @@ export default class Layout extends Component {
   routes = routes;
   guards = guards;
   store = useStore();
-  user = useCurrentUser();
+  currentTranslator = useCurrentTranslator();
   state = useState({
     loading: false,
   });
@@ -41,10 +41,10 @@ export default class Layout extends Component {
   _ = _;
 
   setup() {
-    if (!this.user.data) {
+    if (!this.currentTranslator.data) {
       // Fetch current user data if not already here
       // Login page loads it to have a single spinner displayed to user
-      this.refreshUser();
+      this.refreshCurrentTranslator();
     }
 
     // Watch store to redirect user if he's not authenticated, I.E
@@ -52,17 +52,17 @@ export default class Layout extends Component {
     watchStore((store) => {
       if (!store.username || !store.userId || !store.password) {
         navigateTo("/login");
-      } else if (!this.user.data) {
-        this.refreshUser();
+      } else if (!this.currentTranslator.data) {
+        this.refreshCurrentTranslator();
       }
     });
   }
 
-  async refreshUser() {
+  async refreshCurrentTranslator() {
     // Store loading in separate value so that the whole loader is not
     // displayed whenever a component refresh user instance
     this.state.loading = true;
-    await this.user.refresh();
+    await this.currentTranslator.refresh();
     this.state.loading = false;
   }
 }

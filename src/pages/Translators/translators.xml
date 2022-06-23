@@ -1,5 +1,5 @@
 <div>
-  <TranslatorModal userId="state.modalUserId" onClose="() => this.state.modalUserId = undefined" />
+  <TranslatorModal translatorId="state.modalTranslatorId" onClose="() => this.state.modalTranslatorId = undefined" />
   <div class="container mx-auto px-10 lg:px-0">
     <div class="py-10">
       <h3 class="text-slate-600 font-light text-2xl mb-1">Compassion</h3>
@@ -8,9 +8,9 @@
     <div class="relative bg-white rounded-sm shadow-lg flex-1 overflow-hidden">
       <DAOTable key="'users-page-table'"
         columns="state.columns"
-        keyCol="'username'"
+        keyCol="'translatorId'"
         dao="dao"
-        onRowClick="(item) => this.state.modalUserId = item.username" />
+        onRowClick="(item) => this.state.modalTranslatorId = item.translatorId" />
     </div>
   </div>
 </div>

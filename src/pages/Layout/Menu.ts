@@ -1,5 +1,5 @@
 import { Component, useState, xml } from "@odoo/owl";
-import useCurrentUser from "../../hooks/useCurrentUser";
+import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 import RouterLink from "../../components/Router/RouterLink";
 import MenuButton from "./MenuButton";
 import Icon from "../../components/Icon";
@@ -16,7 +16,7 @@ class Menu extends Component {
           <Icon prefix="'fas'" icon="'home'" class="'text-xl'" />
         </MenuButton>
       </RouterLink>
-      <RouterLink to="'/users'" t-slot-scope="scope" t-if="user.data.role === 'admin'">
+      <RouterLink to="'/translators'" t-slot-scope="scope" t-if="currentTranslator.data.role === 'admin'">
         <MenuButton tooltip="'Translators'" active="scope.active">
           <Icon prefix="'fas'" icon="'user-group'" class="'text-xl'" />
         </MenuButton>
@@ -48,7 +48,7 @@ class Menu extends Component {
     settingsModal: false,
   });
 
-  user = useCurrentUser();
+  currentTranslator = useCurrentTranslator();
 }
 
 export default Menu;

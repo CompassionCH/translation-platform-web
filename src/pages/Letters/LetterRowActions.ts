@@ -1,12 +1,12 @@
 import { Component, xml } from "@odoo/owl";
 import RouterLink from "../../components/Router/RouterLink";
-import useCurrentUser from "../../hooks/useCurrentUser";
+import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 
 class LetterRowActions extends Component {
 
   static template = xml`
     <div class="flex gap-1 pl-3">
-      <t t-if="user.data.role === 'admin'">
+      <t t-if="currentTranslator.data.role === 'admin'">
         <RouterLink to="'/letters/letter-view/' + props.letter.id">
           <button class="text-blue-500 hover:text-compassion transition-colors">View</button>
         </RouterLink>
@@ -18,7 +18,7 @@ class LetterRowActions extends Component {
     </div>
   `;
 
-  user = useCurrentUser();
+  currentTranslator = useCurrentTranslator();
 
   static props = {
     letter: { type: Object },

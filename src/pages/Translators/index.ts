@@ -1,15 +1,18 @@
 import { Component, useState } from "@odoo/owl";
 import DAOTable from "../../components/Table/DAOTable";
 import { Column } from "../../components/Table/Row";
-import template from './users.xml';
+import template from './translators.xml';
 import Button from "../../components/Button";
 import TranslatorModal from "../../components/TranslatorModal";
-import { models, User } from "../../models";
+import { models } from "../../models";
 import TableHeader from "../../components/Table/TableHeader";
 import _ from "../../i18n";
 
 const columns: Column[] = [
-  'username',
+  'translatorId',
+  'name',
+  'email',
+  'role',
   'age',
   {
     name: 'lastYear',
@@ -21,12 +24,6 @@ const columns: Column[] = [
   },
   'total',
   {
-    name: 'available',
-    header: 'Available',
-    formatter: (val: User) => _(val.available ? 'Yes' : 'No'),
-    searchable: false,
-  },
-  {
     name: 'language',
     translatable: true,
   }
@@ -34,7 +31,7 @@ const columns: Column[] = [
 
 type State = {
   columns: Column[];
-  modalUserId?: string;
+  modalTranslatorId?: string;
 };
 
 export default class Users extends Component {
@@ -47,10 +44,10 @@ export default class Users extends Component {
     TableHeader,
   };
 
-  dao = models.users;
+  dao = models.translators;
 
   state = useState<State>({
     columns,
-    modalUserId: undefined,
+    modalTranslatorId: undefined,
   });
 }

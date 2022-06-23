@@ -13,7 +13,7 @@ import _ from "../../i18n";
 
 type State = {
   columns: Column[];
-  usernameModal?: string;
+  translatorModal?: number;
 };
 
 
@@ -30,7 +30,7 @@ class Letters extends Component {
   dao = models.letters; // Directly passed to the dataTables component
 
   state = useState<State>({
-    usernameModal: undefined,
+    translatorModal: undefined,
     columns: [
       {
         name: 'priority',
@@ -57,13 +57,13 @@ class Letters extends Component {
       {
         name: 'translatorId',
         header: 'Translator',
-        component: (translatorId?: string) => {
+        component: (translatorId?: number) => {
           if (!translatorId) return null;
           return {
             component: TranslatorButton,
             props: {
-              username: translatorId,
-              onClick: () => this.state.usernameModal = translatorId,
+              translatorId,
+              onClick: () => this.state.translatorModal = translatorId,
             }
           };
         },

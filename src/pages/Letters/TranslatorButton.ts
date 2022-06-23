@@ -2,9 +2,9 @@ import { Component, xml } from "@odoo/owl";
 
 class TranslatorButton extends Component {
 
-  static props = ['username', 'onClick'];
+  static props = ['translatorId', 'onClick'];
   static template = xml`
-    <button class="text-blue-600 hover:text-compassion" t-esc="props.username" t-on-click="props.onClick" />
+    <button class="text-blue-600 hover:text-compassion" t-esc="props.translatorId" t-on-click="props.onClick" />
   `;
 }
 

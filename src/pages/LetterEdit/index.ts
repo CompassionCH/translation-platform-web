@@ -11,6 +11,7 @@ import { BlurLoader } from '../../components/Loader';
 import LetterSubmittedModal from "./LetterSubmittedModal";
 import store from "../../store";
 import _ from "../../i18n";
+import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 
 type State = {
   loading: boolean;
@@ -46,6 +47,8 @@ class LetterEdit extends Component {
 
   contentGetter: undefined | (() => Element[]) = undefined;
 
+  currentTranslator = useCurrentTranslator();
+
   setup() {
     this.state.loading = true;
     onMounted(() => this.refreshLetter());
@@ -61,7 +64,7 @@ class LetterEdit extends Component {
       ...this.state.letter as Letter,
       lastUpdate: new Date(),
       status: 'done',
-      translatorId: store.username,
+      translatorId: store.userId,
       translatedElements: this.contentGetter(),
     });
 
@@ -82,11 +85,16 @@ class LetterEdit extends Component {
       this.state.internalLoading = true;
     }
 
+    if (!this.currentTranslator.data) {
+      await this.currentTranslator.refresh();
+    }
+
     const res = await models.letters.update({
       ...this.state.letter as Letter,
       lastUpdate: new Date(),
       status: 'in progress',
-      translatorId: store.username,
+      // Currently editing user is submitting his letter
+      translatorId: this.currentTranslator.data?.translatorId,
       translatedElements: this.contentGetter(),
     });
 

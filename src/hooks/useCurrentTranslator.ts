@@ -1,14 +1,13 @@
 import { reactive, useState } from "@odoo/owl";
-import { models, User } from "../models";
-import store from "../store";
+import { models, Translator } from "../models";
 
 type Callback = (s: State) => void;
 const watchers: Callback[] = [];
 
 type State = {
   loading: boolean;
-  data?: User;
-  refresh: (username?: string) => Promise<void>;
+  data?: Translator;
+  refresh: (userId?: number) => Promise<void>;
   watch: (callback: Callback) => void;
 };
 
@@ -22,13 +21,11 @@ type State = {
  */
 const state = reactive<State>({
   loading: false,
-  data: undefined as User | undefined,
+  data: undefined as Translator | undefined,
 
-  async refresh(username?: string) {
-    const searchUsername = username ?? store.username ?? undefined;
-    if (!searchUsername || state.loading) return; // nothing
+  async refresh() {
     this.loading = true;
-    this.data = await models.users.find(searchUsername);
+    this.data = await models.translators.current();
     this.loading = false;  
   },
 

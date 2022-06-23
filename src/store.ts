@@ -4,7 +4,7 @@ type Store = {
   username?: string;
   // AuthData
   // Set only on the currently authenticated user
-  userId?: string;
+  userId?: number;
   password?: string;
 };
 

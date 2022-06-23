@@ -46,7 +46,7 @@ class Transition extends Component<Props> {
     class: '',
     show: this.props.active,
     previous: null as null | boolean,
-    timer: null as number | null,
+    timer: null as NodeJS.Timeout | null,
   });
 
   setup(): void {

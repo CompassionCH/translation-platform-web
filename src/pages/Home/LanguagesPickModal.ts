@@ -5,20 +5,20 @@ import TranslationSkills from "../../components/TranslationSkills";
 import useLanguages from "../../hooks/useLanguages";
 import _ from "../../i18n";
 import { models } from "../../models";
-import { TranslationSkill, User } from "../../models/UserDAO";
+import { TranslationSkill, Translator } from "../../models/TranslatorDAO";
 import notyf from "../../notifications";
 
 class LanguagePickModal extends Component {
 
   static template = xml`
     <Modal active="props.active" loading="languages.loading or state.loading" onClose="props.onClose" title="'Languages'" subtitle="'Your translation skills'" closeButtonText="'Cancel'">
-      <div t-if="state.user" t-att-class="{
-        'w-192 grid grid-cols-2': state.user.skills.length gt 0,
-        'w-96': state.user.skills.length === 0
+      <div t-if="state.translator" t-att-class="{
+        'w-192 grid grid-cols-2': state.translator.skills.length gt 0,
+        'w-96': state.translator.skills.length === 0
       }">
-        <div class="p-4 flex flex-col items-center" t-if="state.user.skills.length gt 0">
+        <div class="p-4 flex flex-col items-center" t-if="state.translator.skills.length gt 0">
           <h4 class="font-medium text-slate-700 mb-2">Your current translation skills</h4>
-          <TranslationSkills skills="state.user.skills" />
+          <TranslationSkills skills="state.translator.skills" />
         </div>
         <div class="p-4 bg-slate-100 flex flex-col items-center">
           <h4 class="font-medium text-slate-700 mb-2">Register a new translation skill</h4>
@@ -60,7 +60,7 @@ class LanguagePickModal extends Component {
   languages = useLanguages();
   state = useState({
     potentialSkills: [] as Partial<TranslationSkill>[],
-    user: undefined as User | undefined,
+    translator: undefined as Translator | undefined,
     loading: false,
   });
 
@@ -68,13 +68,13 @@ class LanguagePickModal extends Component {
     active: { type: Boolean },
     onClose: { type: Function },
     onChange: { type: Function },
-    username: { type: String },
+    translatorId: { type: Number },
   }
 
   setup(): void {
     this.state.loading = true;
-    models.users.find(this.props.username).then((user) => {
-      this.state.user = user;
+    models.translators.find(this.props.translatorId).then((translator) => {
+      this.state.translator = translator;
       this.state.loading = false;
     });
   }
@@ -88,7 +88,7 @@ class LanguagePickModal extends Component {
 
   async registerSkills() {
     this.state.loading = true;
-    const res = await models.users.registerSkills(this.props.username, this.state.potentialSkills.map(it => ({
+    const res = await models.translators.registerSkills(this.props.translatorId, this.state.potentialSkills.map(it => ({
       ...it,
       verified: false,
     } as TranslationSkill)));

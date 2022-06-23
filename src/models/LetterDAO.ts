@@ -37,7 +37,7 @@ export type Letter = {
   source: string;
   target: string;
   unreadComments: boolean;
-  translatorId?: string;
+  translatorId?: number;
   lastUpdate?: Date;
   date: Date;
   translatedElements: Element[];
@@ -98,7 +98,7 @@ const allLetters: Letter[] = [...Array(100).keys()].map((i) => {
     unreadComments: elements.filter(it => it.type === 'paragraph' && it.comments !== undefined).length > 0,
     source: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
     target: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
-    translatorId: status === 'to do' ? undefined : `user-${Math.round(Math.random() * 20)}`,
+    translatorId: status === 'to do' ? undefined : Math.round(Math.random() * 20),
     lastUpdate: elements.length > 0 ? new Date(Date.now() - (Math.round(Math.random() * 10000000000))) : undefined,
     date: new Date(Date.now() - (Math.round(Math.random() * 50000000000))),
     translatedElements: elements,
