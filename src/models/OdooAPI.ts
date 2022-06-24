@@ -8,6 +8,11 @@
  */
 
 import store from "../store";
+import { XmlRpcClient } from '@foxglove/xmlrpc';
+
+// Declare the two XML-RPC clients
+const authClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/common");
+const apiClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/object");
 
 const OdooAPI = {
 
@@ -31,10 +36,8 @@ const OdooAPI = {
       }
     }, Math.random() * 500 + 500));
 
-    /*
     // Build an XML-RPC client specific for authentication
-    const client = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/common");
-    const userId = await client.methodCall('authenticate', [
+    const userId = await authClient.methodCall('authenticate', [
       import.meta.env.VITE_ODOO_DBNAME,
       username,
       password,
@@ -48,7 +51,27 @@ const OdooAPI = {
       store.password = password;
       return true;
     }
-    */
+  },
+
+  ifNoneElse<V, T extends any = undefined>(val: V, other?: T): V | T {
+    if ((val as any) === "None") return other as T;
+    return val;
+  },
+
+  async execute_kw<T>(model: string, method: string, ...args: any[]): Promise<T | undefined> {
+    try {
+      return apiClient.methodCall('execute_kw', [
+        import.meta.env.VITE_ODOO_DBNAME,
+        store.userId,
+        store.password,
+        model,
+        method,
+        ...args,
+      ]) as any as Promise<T>;
+    } catch (e) {
+      console.error(e);
+      return undefined;
+    }
   }
 }
 

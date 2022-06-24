@@ -10,6 +10,11 @@ import { defineConfig } from 'vite';
  * }
  */
 export default defineConfig({
+  resolve: {
+    alias: {
+      stream: 'stream-browserify',
+    },
+  },
   plugins: [
     {
       name: 'vite-template-plugin',

@@ -1,4 +1,6 @@
-import BaseDAO from "./BaseDAO";
+import notyf from "../notifications";
+import BaseDAO, { FieldsMapping, generateSearchDomain, generateSearchQuery, generateSortString } from "./BaseDAO";
+import OdooAPI from "./OdooAPI";
 import { Language, randomLanguage } from "./SettingsDAO";
 import simulator from "./simulator";
 
@@ -10,15 +12,29 @@ export type TranslationSkill = {
 
 export type Translator = {
   translatorId: number;
-  email: string;
+  email?: string;
   role: 'user' | 'admin';
-  name: string;
-  age: number;
-  language: Language;
-  total: number;
-  year: number;
-  lastYear: number;
+  name?: string;
+  age?: number;
+  language?: Language;
+  total?: number;
+  year?: number;
+  lastYear?: number;
   skills: TranslationSkill[];
+};
+
+/**
+ * Define the set of available fields in the Translator Model which can be sorted
+ * and searched
+ */
+export const translatorFieldsMapping: FieldsMapping<Translator> = {
+  total: { field: 'nb_translated_letters', format: 'number' },
+  year: { field: 'nb_translated_letters_this_year', format: 'number' },
+  lastYear: { field: 'nb_translated_letters_last_year', format: 'number' },
+  age: { field: 'partner_id.age', format: 'number'},
+  name: 'partner_id.name',
+  language: 'partner_id.lang',
+  email: 'user_id.email',
 };
 
 export const allTranslators: Translator[] = [...Array(100).keys()].map(i => ({
@@ -42,8 +58,15 @@ export const allTranslators: Translator[] = [...Array(100).keys()].map(i => ({
 type TranslatorDAOApi = {
 
   /**
+   * Takes a translator object coming from an xml-rpc request and sanitize it
+   * @param data 
+   * @returns 
+   */
+  cleanTranslator(data: Translator | undefined): Translator | undefined;
+
+  /**
    * Registers a potential skill in a user
-   * @param username
+   * @param translatorId
    * @param skills
    */
   registerSkills(translatorId: number, skills: TranslationSkill[]): Promise<boolean>;
@@ -55,17 +78,40 @@ type TranslatorDAOApi = {
   current(): Promise<Translator>;
 };
 
-const UserDAO: BaseDAO<Translator> & TranslatorDAOApi = {
+const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async find(id) {
     return simulator.simulateFind(allTranslators, id, 'translatorId');
+    return this.cleanTranslator(
+      await OdooAPI.execute_kw<Translator>('translation.user', 'get_user_info', [id])
+    );
   },
 
   async list(params) {
-    return simulator.simulateList(allTranslators, params);
+    const searchParams = generateSearchQuery<Translator>(params, translatorFieldsMapping);
+    console.log(searchParams);
+    // return simulator.simulateList(allTranslators, params);
+    const [translatorIds, total] = await Promise.all([
+      OdooAPI.execute_kw('translation.user', 'search', searchParams),
+      OdooAPI.execute_kw('translation.user', 'search', [searchParams, true])
+    ]);
+
+    const translators = await OdooAPI.execute_kw<Translator[]>('translation.user', 'get_user_info', translatorIds);
+    return {
+      total,
+      data: translators ? translators.map(it => this.cleanTranslator(it)).filter(it => it !== undefined) : [],
+    };
   },
 
   async listIds(params) {
+    OdooAPI.execute_kw('translation.user', 'search', [
+      // domain
+      [],
+
+      // offset
+      params.search
+    ]);
+
     return simulator.simulateListIds(allTranslators, params, 'translatorId');
   },
 
@@ -86,7 +132,29 @@ const UserDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async current() {
     return allTranslators[0];
+    const data = await OdooAPI.execute_kw<Translator>('translation.user', 'get_my_info', []);
+    if (!data) {
+      console.error('Unable to find current authenticated user!', JSON.stringify(this.store));
+      notyf.error('A critical error occured, please contact Compassion.');
+      throw new Error('A Critical error occured');
+    }
+    
+    return this.cleanTranslator(data) as Translator;
+  },
+
+  cleanTranslator(data: Translator | undefined): Translator | undefined {
+    if (!data) return undefined;
+    return {
+      ...data,
+      email: OdooAPI.ifNoneElse(data.email),
+      name: OdooAPI.ifNoneElse(data.name),
+      age: OdooAPI.ifNoneElse(data.age),
+      language: OdooAPI.ifNoneElse(data.language),
+      total: OdooAPI.ifNoneElse(data.total),
+      lastYear: OdooAPI.ifNoneElse(data.lastYear),
+      skills: OdooAPI.ifNoneElse(data.skills, [] as TranslationSkill[]),
+    };
   }
 }
 
-export default UserDAO;
+export default TranslatorDAO;
