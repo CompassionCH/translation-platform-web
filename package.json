@@ -21,7 +21,6 @@
     "@editorjs/list": "^1.7.0",
     "@editorjs/simple-image": "^1.4.1",
     "@editorjs/underline": "^1.0.0",
-    "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@foxglove/xmlrpc": "^1.2.1",
