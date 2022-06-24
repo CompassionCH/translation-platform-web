@@ -1,8 +1,6 @@
-import notyf from "../notifications";
-import BaseDAO, { FieldsMapping, generateSearchDomain, generateSearchQuery, generateSortString } from "./BaseDAO";
+import BaseDAO, { FieldsMapping, generateSearchDomain, generateSearchQuery } from "./BaseDAO";
 import OdooAPI from "./OdooAPI";
-import { Language, randomLanguage } from "./SettingsDAO";
-import simulator from "./simulator";
+import { Language } from "./SettingsDAO";
 
 export type TranslationSkill = {
   source: Language;
@@ -37,24 +35,6 @@ export const translatorFieldsMapping: FieldsMapping<Translator> = {
   email: 'user_id.email',
 };
 
-export const allTranslators: Translator[] = [...Array(100).keys()].map(i => ({
-  translatorId: i,
-  email: `email${i}@random.org`,
-  role: Math.random() > 0 ? 'admin' : 'user',
-  name: `Mister User ${i}`,
-  age: Math.round(Math.random() * 20 + 20),
-  language: randomLanguage(),
-  total: Math.round(Math.random() * 100 + 100),
-  year: Math.round(Math.random() * 10 + 5),
-  lastYear: Math.round(Math.random() * 100 + 50),
-  available: Math.random() > 0.3,
-  skills: [...Array(Math.round(1)).keys()].map(() => ({
-    source: randomLanguage(),
-    target: randomLanguage(),
-    verified: true, //Math.random() > 0.5,
-  })),
-}));
-
 type TranslatorDAOApi = {
 
   /**
@@ -65,11 +45,10 @@ type TranslatorDAOApi = {
   cleanTranslator(data: Translator | undefined): Translator | undefined;
 
   /**
-   * Registers a potential skill in a user
-   * @param translatorId
+   * Registers a translation skill on the currently authenticated user
    * @param skills
    */
-  registerSkills(translatorId: number, skills: TranslationSkill[]): Promise<boolean>;
+  registerSkills(skills: number[]): Promise<boolean>;
 
    /**
     * Returns the Translator object related to the currently
@@ -81,7 +60,6 @@ type TranslatorDAOApi = {
 const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async find(id) {
-    return simulator.simulateFind(allTranslators, id, 'translatorId');
     return this.cleanTranslator(
       await OdooAPI.execute_kw<Translator>('translation.user', 'get_user_info', [id])
     );
@@ -93,49 +71,41 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
     // return simulator.simulateList(allTranslators, params);
     const [translatorIds, total] = await Promise.all([
       OdooAPI.execute_kw('translation.user', 'search', searchParams),
-      OdooAPI.execute_kw('translation.user', 'search', [searchParams, true])
+      OdooAPI.execute_kw('translation.user', 'search', [searchParams, true]) as Promise<number>
     ]);
 
-    const translators = await OdooAPI.execute_kw<Translator[]>('translation.user', 'get_user_info', translatorIds);
+    const rawTranslators = await OdooAPI.execute_kw<Translator[]>('translation.user', 'get_user_info', translatorIds);
+    const data = (rawTranslators || []).map(it => this.cleanTranslator(it)).filter(it => it !== undefined) as Translator[];
     return {
       total,
-      data: translators ? translators.map(it => this.cleanTranslator(it)).filter(it => it !== undefined) : [],
+      data,
     };
   },
 
   async listIds(params) {
-    OdooAPI.execute_kw('translation.user', 'search', [
-      // domain
-      [],
-
-      // offset
-      params.search
-    ]);
-
-    return simulator.simulateListIds(allTranslators, params, 'translatorId');
+    const searchParams = generateSearchDomain(params.search, translatorFieldsMapping);
+    const ids = await OdooAPI.execute_kw<number[]>('translation.user', 'search', searchParams);
+    if (!ids) {
+      console.error('Unable to retrieve ids', params.search);
+      return [];
+    } else {
+      return ids;
+    }
   },
 
-  async registerSkills(translatorId, skills) {
-    const user = allTranslators.find(it => it.translatorId === translatorId);
-    if (!user) return false;
+  async registerSkills(skills) {
+    for await (const skillId of skills) {
+      // Add skills sequentially to avoid overloading the server with parallel API calls
+      OdooAPI.execute_kw('translation.user', 'add_translation_skill', [skillId]);
+    }
 
-    return new Promise((resolve) => setTimeout(() => {
-      for (const skill of skills) {
-        user.skills.push({
-          ...skill,
-          verified: false,
-        });
-      }
-      resolve(true);
-    }, 700));
+    return true;
   },
 
   async current() {
-    return allTranslators[0];
     const data = await OdooAPI.execute_kw<Translator>('translation.user', 'get_my_info', []);
     if (!data) {
       console.error('Unable to find current authenticated user!', JSON.stringify(this.store));
-      notyf.error('A critical error occured, please contact Compassion.');
       throw new Error('A Critical error occured');
     }
     

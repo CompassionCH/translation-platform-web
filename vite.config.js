@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
 /**
  * We define a small home made Vite plugin to be able to load xml file
@@ -15,7 +16,17 @@ export default defineConfig({
       stream: 'stream-browserify',
     },
   },
+  optimizeDeps: {
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+    },
+  },
   plugins: [
+    NodeGlobalsPolyfillPlugin({
+      buffer: true
+    }),
     {
       name: 'vite-template-plugin',
       transform(src, id) {

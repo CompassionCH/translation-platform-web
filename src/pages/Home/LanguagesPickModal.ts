@@ -5,7 +5,8 @@ import TranslationSkills from "../../components/TranslationSkills";
 import useLanguages from "../../hooks/useLanguages";
 import _ from "../../i18n";
 import { models } from "../../models";
-import { TranslationSkill, Translator } from "../../models/TranslatorDAO";
+import { TranslationCompetence } from "../../models/SettingsDAO";
+import { Translator } from "../../models/TranslatorDAO";
 import notyf from "../../notifications";
 
 class LanguagePickModal extends Component {
@@ -59,7 +60,8 @@ class LanguagePickModal extends Component {
 
   languages = useLanguages();
   state = useState({
-    potentialSkills: [] as Partial<TranslationSkill>[],
+    competences: [] as TranslationCompetence[],
+    potentialSkills: [] as TranslationCompetence[],
     translator: undefined as Translator | undefined,
     loading: false,
   });
@@ -73,25 +75,30 @@ class LanguagePickModal extends Component {
 
   setup(): void {
     this.state.loading = true;
-    models.translators.find(this.props.translatorId).then((translator) => {
-      this.state.translator = translator;
+
+    Promise.all([
+      models.settings.translationCompetences(),
+      models.translators.find(this.props.translatorId),
+    ]).then((res) => {
+      if (!res[1]) {
+        notyf.error(_('Unable to load translator information'));
+        this.props.onClose();
+        this.state.loading = false;
+      }
+
+      this.state.competences = res[0];
+      this.state.translator = res[1];
       this.state.loading = false;
     });
   }
 
   addSkill() {
-    this.state.potentialSkills.push({
-      source: this.languages.data[0],
-      target: this.languages.data[1],
-    });
+    this.state.potentialSkills.push(this.state.competences[0]);
   }
 
   async registerSkills() {
     this.state.loading = true;
-    const res = await models.translators.registerSkills(this.props.translatorId, this.state.potentialSkills.map(it => ({
-      ...it,
-      verified: false,
-    } as TranslationSkill)));
+    const res = await models.translators.registerSkills(this.state.potentialSkills.map(it => it.id));
     this.state.loading = false;
     if (!res) {
       notyf.error(_('Unable to register translation skills'));
