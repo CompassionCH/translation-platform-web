@@ -7,7 +7,7 @@
  * stored in the store to perform such API calls
  */
 
-import store from "../store";
+import store, { clearStoreCache } from "../store";
 import { XmlRpcClient } from '@foxglove/xmlrpc';
 
 // Declare the two XML-RPC clients
@@ -25,6 +25,7 @@ const OdooAPI = {
    */
   async authenticate(username: string, password: string): Promise<boolean> {
 
+    /*
     return new Promise(resolve => setTimeout(() => {
       if (username === 'toto' && password === 'toto') {
         // Set store authentication data
@@ -35,8 +36,8 @@ const OdooAPI = {
         resolve(false);
       }
     }, Math.random() * 500 + 500));
+    */
 
-    // Build an XML-RPC client specific for authentication
     const userId = await authClient.methodCall('authenticate', [
       import.meta.env.VITE_ODOO_DBNAME,
       username,
@@ -48,6 +49,7 @@ const OdooAPI = {
       return false;
     } else {
       store.userId = userId as number;
+      store.username = username;
       store.password = password;
       return true;
     }
@@ -60,17 +62,20 @@ const OdooAPI = {
 
   async execute_kw<T>(model: string, method: string, ...args: any[]): Promise<T | undefined> {
     try {
-      return apiClient.methodCall('execute_kw', [
+      const response = await apiClient.methodCall('execute_kw', [
         import.meta.env.VITE_ODOO_DBNAME,
         store.userId,
         store.password,
         model,
         method,
         ...args,
-      ]) as any as Promise<T>;
+      ]);
+
+      return response as any as T;
     } catch (e) {
       console.error(e);
-      return undefined;
+      clearStoreCache();
+      window.location.reload();
     }
   }
 }

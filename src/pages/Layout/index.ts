@@ -4,7 +4,7 @@ import Router, { navigateTo } from '../../components/Router/Router';
 import RouterView from '../../components/Router/RouterView';
 import { BlurLoader } from '../../components/Loader';
 import { routes, guards } from '../../routes';
-import { useStore, watchStore } from '../../store';
+import store, { useStore, watchStore } from '../../store';
 import useCurrentTranslator from '../../hooks/useCurrentTranslator';
 import Menu from './Menu';
 import _ from '../../i18n';
@@ -41,21 +41,15 @@ export default class Layout extends Component {
   _ = _;
 
   setup() {
-    if (!this.currentTranslator.data) {
-      // Fetch current user data if not already here
-      // Login page loads it to have a single spinner displayed to user
+    this.checkStore();
+  }
+
+  checkStore() {
+    if (!store.username || !store.userId || !store.password) {
+      navigateTo("/login");
+    } else if (!this.currentTranslator.data) {
       this.refreshCurrentTranslator();
     }
-
-    // Watch store to redirect user if he's not authenticated, I.E
-    // no info about him are in store
-    watchStore((store) => {
-      if (!store.username || !store.userId || !store.password) {
-        navigateTo("/login");
-      } else if (!this.currentTranslator.data) {
-        this.refreshCurrentTranslator();
-      }
-    });
   }
 
   async refreshCurrentTranslator() {

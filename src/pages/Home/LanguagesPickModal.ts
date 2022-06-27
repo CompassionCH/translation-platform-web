@@ -24,18 +24,10 @@ class LanguagePickModal extends Component {
         <div class="p-4 bg-slate-100 flex flex-col items-center">
           <h4 class="font-medium text-slate-700 mb-2">Register a new translation skill</h4>
           <p class="text-sm text-center text-slate-700 mb-4">Please note that translating from a language to another and back is considered two different skills</p>
-          <div t-foreach="state.potentialSkills" t-as="skill" t-key="skill_index" class="flex items-center ring ring-slate-300 rounded-sm mb-4">
-            <div class="w-28">
-              <select class="compassion-input text-sm" t-model="skill.source">
-                <option t-foreach="languages.data" t-as="lang" t-key="lang" t-att-value="lang" t-esc="_(lang)" />
-              </select>
-            </div>
-            <p class="text-slate-500 font-semibold text-sm mx-4">-></p>
-            <div class="w-28">
-              <select class="compassion-input text-sm" t-model="skill.target">
-                <option t-foreach="languages.data" t-as="lang" t-key="lang" t-att-value="lang" t-esc="_(lang)" />
-              </select>
-            </div>
+          <div t-foreach="state.potentialSkills" t-as="skill" t-key="skill_index" class="flex w-full items-center ring ring-slate-300 rounded-sm mb-4">
+            <select class="compassion-input text-sm" t-model="skill.target">
+              <option t-foreach="state.competences" t-as="competence" t-key="competence.id" t-att-value="competence.ic" t-esc="_(competence.source) + ' -> ' + _(competence.target)" />
+            </select>
             <Button square="true" level="'secondary'" icon="'trash'" onClick="() => this.state.potentialSkills.splice(skill_index, 1)" />
           </div>
           <div class="flex justify-center">

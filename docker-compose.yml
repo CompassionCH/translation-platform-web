@@ -1,0 +1,12 @@
+# Ships an Nginx reverse proxy to bypass
+# those annoying CORS
+
+version: '3.8'
+
+services:
+  proxy:
+    image: nginx:alpine
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template
