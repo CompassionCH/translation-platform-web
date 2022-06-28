@@ -1,4 +1,4 @@
-<LetterViewer letter="state.letter" loading="state.loading" smallLoading="state.saveLoading and state.internalLoading !== true">
+<LetterViewer letter="state.letter" letterId="props.letterId" loading="state.loading" smallLoading="state.saveLoading and state.internalLoading !== true">
   <!-- action bar buttons -->
   <t t-set-slot="action-buttons" t-slot-scope="buttons">
     <Button color="'red'" level="'secondary'" icon="'triangle-exclamation'" onClick="() => state.signalProblemModal = true" size="'sm'">Signal a Problem</Button>
@@ -8,7 +8,7 @@
 
   <!-- signal problem modal in unsafe slot (no letter) -->
   <t t-set-slot="unsafe">
-    <SignalProblem active="state.signalProblemModal" onClose="() => state.signalProblemModal = false" />
+    <SignalProblem active="state.signalProblemModal" letterId="props.letterId" onClose="() => state.signalProblemModal = false" />
   </t>
 
   <!-- loader for letter loading -->

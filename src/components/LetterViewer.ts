@@ -9,6 +9,7 @@ import Button from "./Button";
 
 const props = {
   letter: { type: Object, optional: true },
+  letterId: { optional: false }, // Given even if letter is not found, for signal problem modal
   loading: { type: Boolean, optional: true },
   smallLoading: { type: Boolean, optional: true },
   'slots': { optional: true },
@@ -18,7 +19,7 @@ class LetterViewer extends Component {
 
   static template = xml`
     <div class="h-full relative">
-      <SignalProblem active="state.signalProblemModal" onClose="() => state.signalProblemModal = false" />
+      <SignalProblem active="state.signalProblemModal" letterId="props.letterId" onClose="() => state.signalProblemModal = false" />
       <t t-slot="unsafe" />
       <div t-if="props.letter" class="flex h-full">
         <div class="h-full relative bg-blue-300 w-2/5" t-ref="letterPanel">

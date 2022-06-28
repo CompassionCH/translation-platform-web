@@ -1,3 +1,5 @@
+import _ from "../i18n";
+import notyf from "../notifications";
 import OdooAPI from "./OdooAPI";
 
 export type Language = string;
@@ -13,6 +15,11 @@ export type TranslationCompetence = {
   source: Language;
   target: Language;
 };
+
+export type IssueType = {
+  id: string;
+  text: string;
+}
 
 const SettingsDAO = {
 
@@ -38,6 +45,16 @@ const SettingsDAO = {
     const languages: string[] = skills.flatMap(it => ([it.source, it.target]));
     return [...new Set(languages)]; // Remove duplicates
   },
+
+  async letterIssues(): Promise<IssueType[]> {
+    const issues = await OdooAPI.execute_kw<[string, string][]>('correspondence', 'get_translation_issue_list', []);
+    if (!issues) {
+      notyf.error(_('Unable to load issues list'));
+      return [];
+    } else {
+      return issues.map(([id, text]) => ({ id, text }));
+    }
+  }
 }
 
 export default SettingsDAO;

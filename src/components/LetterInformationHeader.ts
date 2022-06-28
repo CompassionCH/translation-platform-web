@@ -54,7 +54,7 @@ class LetterInformationHeader extends Component {
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Identifier</p>
-            <p class="">1501077</p>
+            <p class="" t-esc="props.letter.id" />
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Language</p>

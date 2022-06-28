@@ -1,6 +1,7 @@
 import { OutputBlockData, OutputData } from "@editorjs/editorjs";
 import BaseDAO, { FieldsMapping, generateSearchDomain, generateSearchQuery } from "./BaseDAO";
 import OdooAPI from "./OdooAPI";
+import { IssueType } from "./SettingsDAO";
 
 type Status = 'done' | 'to do' | 'to validate' | 'in progress';
 type Priority = 0 | 1 | 2 | 3 | 4;
@@ -56,6 +57,7 @@ export const letterFieldsMapping: FieldsMapping<Letter> = {
   translatorId: { field: 'translator_id', format: 'number' },
 };
 
+const int = (val: string | number) => typeof val === 'string' ? parseInt(val, 10) : val;
 
 type LetterDAOApi = {
 
@@ -99,6 +101,11 @@ type LetterDAOApi = {
    * @param letter 
    */
   submit(letter: Letter): Promise<boolean>;
+
+  /**
+   * Reports an issue regarding a letter
+   */
+  reportIssue(letterId: string | number, issueType: string, message: string): Promise<boolean>;
 };
 
 const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
@@ -116,7 +123,7 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
 
   async find(id) {
     return this.cleanLetter(
-      await OdooAPI.execute_kw<Letter>('correspondence', 'get_letter_info', [typeof id === 'string' ? parseInt(id) : id])
+      await OdooAPI.execute_kw<Letter>('correspondence', 'get_letter_info', [int(id)])
     );
   },
 
@@ -184,6 +191,7 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
   },
 
   async update(letter) {
+    console.log(JSON.stringify(letter));
     try {
       await OdooAPI.execute_kw('correspondence', 'save_translation', [
         letter.id,
@@ -206,6 +214,16 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
         letter.translatorId || "None",
       ]);
 
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  },
+
+  async reportIssue(letterId, type, message) {
+    try {
+      await OdooAPI.execute_kw('correspondence', 'raise_translation_issue', [int(letterId), type, message]);
       return true;
     } catch (e) {
       console.error(e);
