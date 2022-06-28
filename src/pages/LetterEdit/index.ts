@@ -57,20 +57,30 @@ class LetterEdit extends Component {
     this.state.loading = true;
     onMounted(() => this.refreshLetter());
 
+    // This effect registers the auto-save functionnalities
     useEffect(() => {
+      // Keep track of a running timer that will execute later
       let timeout: NodeJS.Timeout | null = null;
 
       const listener = (event: KeyboardEvent) => {
+
+        // On key press, if timer, clear it (avoid multiple parallel timers)
         if (timeout) {
           clearTimeout(timeout);
+          timeout = null;
         }
 
+        // Set the timer to automatically save in 1,5 secs
         timeout = setTimeout(() => this.save(true), 1500);
 
+        // If CTRL-S
         if (event.ctrlKey && event.key === 's') {
           event.preventDefault();
+
+          // Remove timer if any as we manually save
           if (timeout) {
             clearTimeout(timeout);
+            timeout = null;
           }
           this.save(true);
         }
@@ -84,7 +94,7 @@ class LetterEdit extends Component {
   async submit() {
     if (!this.contentGetter) {
       return;
-    }
+    }  
 
     this.state.internalLoading = true;
     const res = await models.letters.submit({

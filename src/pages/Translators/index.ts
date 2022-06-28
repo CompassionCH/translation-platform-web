@@ -8,6 +8,11 @@ import { models } from "../../models";
 import TableHeader from "../../components/Table/TableHeader";
 import _ from "../../i18n";
 
+/**
+ * Columns are built according to translatorFieldsMapping in models/TranslatorDAO.
+ * A compound mapped field (partner_id.name) is NOT sortable
+ * A non-listed field is neither searchable nor sortable
+ */
 const columns: Column[] = [
   {
     name: 'translatorId',
@@ -15,29 +20,45 @@ const columns: Column[] = [
     searchable: false,
     sortable: false,
   },
-  'name',
-  'email',
+  {
+    name: 'name',
+    header: 'Name',
+    sortable: false,
+  },
+  {
+    name: 'email',
+    header: 'E-Mail',
+    sortable: false,
+  },
   {
     name: 'role',
     header: 'Role',
     searchable: false,
     sortable: false,
   },
-  'age',
+  {
+    name: 'age',
+    header: 'Age',
+    sortable: false,
+  },
   {
     name: 'lastYear',
-    header: 'last year',
+    header: 'Last Year',
   },
   {
     name: 'year',
-    header: 'this year',
+    header: 'This Year',
   },
-  'total',
+  {
+    name: 'total',
+    header: 'Total',
+  },
   {
     name: 'language',
     header: 'Language',
     searchable: false,
     translatable: false,
+    sortable: false,
   }
 ];
 

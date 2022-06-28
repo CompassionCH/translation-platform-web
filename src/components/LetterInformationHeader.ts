@@ -76,7 +76,7 @@ class LetterInformationHeader extends Component {
         <span class="rounded-sm py-0.5 px-1 text-xs font-medium text-white bg-slate-500" t-esc="props.letter.status" />
         <p class="text-sm text-slate-600">
           <t t-if="props.letter.lastUpdate">
-            Last updated the <span t-esc="props.letter.lastUpdate.toLocaleDateString()" />
+            Last updated the <span t-esc="props.letter.lastUpdate.toLocaleString()" />
           </t>
           <span t-else="">Never Modified</span>
         </p>

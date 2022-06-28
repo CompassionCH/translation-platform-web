@@ -1,5 +1,5 @@
 import { Component, onMounted, onWillUpdateProps, useState } from "@odoo/owl";
-import Row, { Column } from './Row';
+import Row, { Column, ColumnObject } from './Row';
 import template from './DAOTable.xml';
 import Transition from '../Transition';
 import PageSelector from './PageSelector';
@@ -33,10 +33,10 @@ const props = {
 };
 
 type State<T> = {
-  columns: Column[];
+  columns: ColumnObject[];
   selectedIds: Array<string | number>;
   allSelectedIds: boolean;
-  searchTimeout?: number;
+  searchTimeout?: NodeJS.Timeout;
   loading: boolean;
   pageData: T[];
   total: number;
@@ -201,6 +201,9 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
   }
 
   updateSortOrder(colName: string) {
+    const column = this.state.columns.find(it => it.name === colName);
+    if (!column || column.sortable === false) return;
+
     if (this.filters.sortOrder === 'asc') {
       this.filters.sortOrder = 'desc';
     } else {

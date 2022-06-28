@@ -15,7 +15,7 @@ type ComponentTemplate = {
  * Note that a column can also be defined with a string, which
  * will be used as name and header.
  */
-export type Column = {
+export type ColumnObject = {
   /**
    * The header is displayed on top of the column, if
    * not provided the name will be used
@@ -56,7 +56,9 @@ export type Column = {
    * Whether this column's values are translatable or not, false by default
    */
   translatable?: boolean;
-} | string;
+};
+
+export type Column = ColumnObject | string;
 
 const props = {
   data: { type: Object },

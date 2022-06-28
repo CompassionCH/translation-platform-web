@@ -49,10 +49,12 @@ class Letters extends Component {
       {
         name: 'source',
         translatable: true,
+        sortable: false,
       },
       {
         name: 'target',
         translatable: true,
+        sortable: false,
       },
       {
         name: 'translatorId',
