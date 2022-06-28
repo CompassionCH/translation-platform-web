@@ -40,3 +40,42 @@ body {
   @apply bg-slate-200;
   background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23adb2b9' fill-opacity='0.7' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
 }
+
+/* shepherd */
+.shepherd-element {
+  @apply bg-white shadow-xl w-96;
+  z-index: 70;
+}
+
+.shepherd-text {
+  @apply p-4 font-light text-slate-700;
+}
+
+.shepherd-footer {
+  @apply p-4 flex justify-end border-t border-solid border-slate-200 gap-2;
+}
+
+.shepherd-button {
+  @apply text-sm px-2 py-1.5 opacity-80 hover:opacity-100 transition-opacity rounded-sm;
+}
+
+.shepherd-modal-overlay-container {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+}
+
+.shepherd-modal-overlay-container.shepherd-modal-is-visible {
+  height: 100vh;
+  opacity: 1;
+  transition: opacity .3s;
+  z-index: 60;
+}
+
+.shepherd-modal-overlay-container.shepherd-modal-is-visible path {
+  @apply opacity-30;
+}
