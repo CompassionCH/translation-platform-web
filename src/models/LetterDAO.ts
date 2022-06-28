@@ -1,6 +1,6 @@
 import { OutputBlockData, OutputData } from "@editorjs/editorjs";
-import BaseDAO from "./BaseDAO";
-import simulator from "./simulator";
+import BaseDAO, { FieldsMapping, generateSearchDomain, generateSearchQuery } from "./BaseDAO";
+import OdooAPI from "./OdooAPI";
 
 type Status = 'done' | 'to do' | 'to validate' | 'in progress';
 type Priority = 0 | 1 | 2 | 3 | 4;
@@ -45,69 +45,26 @@ export type Letter = {
   sponsor: Person,
 };
 
-const loremIpsum = `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-Why do we use it?
-It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-Where does it come from?
-Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.`;
-
-function personGenerator(): Person {
-  const firstName = ['John', 'Emma', 'Guillaume', 'Michel', 'Olivier', 'David', 'Stephane', 'André', 'Tom'];
-  const lastName = ['Machin', 'Truc', 'Bidule', 'Bouteille', 'Vin', 'Rouge', 'Blanc'];
-  return {
-    firstName: firstName[Math.floor(Math.random() * firstName.length)],
-    lastName: lastName[Math.floor(Math.random() * lastName.length)],
-    age: Math.round(Math.random() * 10 + 15),
-    sex: Math.random() > 0.5 ? 'M' : 'F',
-  };
+export const letterFieldsMapping: FieldsMapping<Letter> = {
+  status: { field: 'translation_status' },
+  title: { field: 'name' },
+  priority: { field: 'translation_priority', format: 'number' },
+  unreadComments: { field: 'unread_comments', format: 'boolean' },
+  date: { field: 'scanned_date', format: (v) => new Date(v) },
+  source: { field: 'src_translation_lang_id.name' },
+  target: { field: 'translation_language_id.name' },
+  translatorId: { field: 'translator_id', format: 'number' },
 };
 
-const allLetters: Letter[] = [...Array(100).keys()].map((i) => {
-
-  let index = 0;
-  const elements: Element[] = [];
-  const nbParagraphs = Math.floor(Math.random() * 3);
-
-  for (let i = 0; i < nbParagraphs; i++) {
-    const txtStart = Math.round(Math.random() * (loremIpsum.length / 2));
-    const txtEnd = txtStart + Math.round(Math.random() * (loremIpsum.length / 2));
-    const text = loremIpsum.slice(txtStart, txtEnd);
-    elements.push({
-      id: index++,
-      type: 'paragraph',
-      content: text,
-      comments: Math.random() > 0.6 ? text.slice(0, Math.round(text.length / 5)) : undefined,
-    });
-
-    if (Math.random() > 0.6 && i !== nbParagraphs - 1) {
-      elements.push({
-        id: index++,
-        type: 'pageBreak',
-      });
-    }
-  }
-
-  const status = elements.length === 0 ? 'to do' : ['done', 'in process', 'to review'][Math.floor(Math.random() * 3)] as any;
-
-  return {
-    id: i,
-    status,
-    priority: Math.floor(Math.random() * 5) as any,
-    title: `letter-${i}.pdf`,
-    unreadComments: elements.filter(it => it.type === 'paragraph' && it.comments !== undefined).length > 0,
-    source: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
-    target: ['french', 'english', 'spanish', 'portugese', 'german', 'italian'][Math.floor(Math.random() * 6)],
-    translatorId: status === 'to do' ? undefined : Math.round(Math.random() * 20),
-    lastUpdate: elements.length > 0 ? new Date(Date.now() - (Math.round(Math.random() * 10000000000))) : undefined,
-    date: new Date(Date.now() - (Math.round(Math.random() * 50000000000))),
-    translatedElements: elements,
-    child: personGenerator(),
-    sponsor: personGenerator(),
-  };
-});
 
 type LetterDAOApi = {
+
+  /**
+   * Takes a letter object coming from an xml-rpc request and sanitizes it
+   * @param data 
+   */
+  cleanLetter(data: Letter | undefined): Letter | undefined; 
+
   /**
    * This method will be called when an administrator replied to a comment writen by a translator
    * on a letter. It should send an email or do something
@@ -147,15 +104,36 @@ type LetterDAOApi = {
 const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
 
   async listIds(params) {
-    return simulator.simulateListIds(allLetters, params, 'id');
+    const searchParams = generateSearchDomain(params.search, letterFieldsMapping);
+    const ids = await OdooAPI.execute_kw<number[]>('correspondence', 'search', searchParams);
+    if (!ids) {
+      console.error('Unable to retrieve letter ids', params.search);
+      return [];
+    } else {
+      return ids;
+    }
   },
 
   async find(id) {
-    return simulator.simulateFind(allLetters, id, 'id');
+    return this.cleanLetter(
+      await OdooAPI.execute_kw<Letter>('correspondence', 'get_letter_info', [typeof id === 'string' ? parseInt(id) : id])
+    );
   },
 
   async list(params) {
-    return simulator.simulateList(allLetters, params);
+    const searchParams = generateSearchQuery<Letter>(params, letterFieldsMapping);
+    console.log(searchParams);
+    const [letterIds, total] = await Promise.all([
+      OdooAPI.execute_kw('correspondence', 'search', searchParams),
+      OdooAPI.execute_kw('correspondence', 'search', [...searchParams, true]) as Promise<number>
+    ]);
+
+    const rawLetters = await OdooAPI.execute_kw<Letter[]>('correspondence', 'list_letters', [letterIds]);
+    const data = (rawLetters || []).map(it => this.cleanLetter(it)) as Letter[];
+    return {
+      data,
+      total,
+    };
   },
 
   async replyToComment(letter, elementId, { blocks }) {
@@ -184,58 +162,69 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
   },
 
   async deleteLetter(letter) {
-    const index = allLetters.findIndex(item => item.id === letter.id);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (index >= 0) {
-          allLetters.splice(index, 1);
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      }, 1000);
-    });
+    try {
+      await OdooAPI.execute_kw('correspondence', 'remove_local_translate', [letter.id]);
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
   },
 
   async makeTranslatable(letter) {
-    const item = allLetters.find(item => item.id === letter.id);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (!item) {
-          resolve(false);
-        } else {
-          item.status = 'to do';
-          item.translatorId = undefined;
-          item.translatedElements = [];
-          item.lastUpdate = undefined;
-          resolve(true);
-        }
-      }, 1000);
-    });
+    try {
+      await OdooAPI.execute_kw('correspondence', 'resubmit_to_translation', [[letter.id]]);
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
   },
 
   async update(letter) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const index = allLetters.findIndex(it => it.id === letter.id);
-        if (index >= 0) {
-          allLetters.splice(index, 1, letter);
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      }, Math.random() * 1000 + 500);
-    });
+    try {
+      await OdooAPI.execute_kw('correspondence', 'save_translation', [
+        letter.id,
+        letter.translatedElements,
+        letter.translatorId || "None",
+      ]);
+
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
   },
 
   async submit(letter) {
-    const save = await LetterDAO.update(letter);
-    if (!save) return false;
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, Math.random() * 1000 + 500);
-    });
+    try {
+      await OdooAPI.execute_kw('correspondence', 'submit_translation', [
+        letter.id,
+        letter.translatedElements,
+        letter.translatorId || "None",
+      ]);
+
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  },
+
+  cleanLetter(letter) {
+    if (!letter) {
+      return undefined;
+    }
+
+    return {
+      ...letter,
+      status: letter.status || 'to do',
+      date: new Date(OdooAPI.ifNoneElse(letter.date, Date.now())),
+      // @ts-ignore
+      lastUpdate: OdooAPI.ifNoneElse(letter.lastUpdate) ? new Date(letter.lastUpdate) : undefined,
+      translatorId: OdooAPI.ifNoneElse(letter.translatorId),
+      translatedElements: OdooAPI.ifNoneElse(letter.translatedElements, []),
+    };
   }
 };
 

@@ -31,7 +31,6 @@ export const translatorFieldsMapping: FieldsMapping<Translator> = {
   lastYear: { field: 'nb_translated_letters_last_year', format: 'number' },
   age: { field: 'partner_id.age', format: 'number'},
   name: 'partner_id.name',
-  language: 'partner_id.lang',
   email: 'user_id.email',
 };
 
@@ -67,14 +66,12 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async list(params) {
     const searchParams = generateSearchQuery<Translator>(params, translatorFieldsMapping);
-    console.log(searchParams);
-    // return simulator.simulateList(allTranslators, params);
     const [translatorIds, total] = await Promise.all([
       OdooAPI.execute_kw('translation.user', 'search', searchParams),
-      OdooAPI.execute_kw('translation.user', 'search', [searchParams, true]) as Promise<number>
+      OdooAPI.execute_kw('translation.user', 'search', [...searchParams, true]) as Promise<number>
     ]);
 
-    const rawTranslators = await OdooAPI.execute_kw<Translator[]>('translation.user', 'get_user_info', translatorIds);
+    const rawTranslators = await OdooAPI.execute_kw<Translator[]>('translation.user', 'list_users', [translatorIds]);
     const data = (rawTranslators || []).map(it => this.cleanTranslator(it)).filter(it => it !== undefined) as Translator[];
     return {
       total,
@@ -120,8 +117,9 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
       name: OdooAPI.ifNoneElse(data.name),
       age: OdooAPI.ifNoneElse(data.age),
       language: OdooAPI.ifNoneElse(data.language),
-      total: OdooAPI.ifNoneElse(data.total),
-      lastYear: OdooAPI.ifNoneElse(data.lastYear),
+      total: OdooAPI.ifNoneElse(data.total, 0),
+      year: OdooAPI.ifNoneElse(data.year, 0),
+      lastYear: OdooAPI.ifNoneElse(data.lastYear, 0),
       skills: OdooAPI.ifNoneElse(data.skills, [] as TranslationSkill[]),
     };
   }

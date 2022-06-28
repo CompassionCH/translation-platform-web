@@ -92,7 +92,7 @@ export function generateSearchDomain<T>(domain: SearchDomain<T>[], fieldsMapping
 
       // Using find, will match first operator, so start with 2chars operators
       const [field, formatter] = fieldMappingItems(item.column, fieldsMapping);
-      const op = Object.keys(operators).find(op => item.term.startsWith(op)) || '=';
+      const op = Object.keys(operators).find(op => item.term.startsWith(op)) || 'ilike';
 
       // Remove operator from actual term search
       const term = item.term.replace(op, '').trim();
@@ -116,7 +116,7 @@ export function generateSearchQuery<T>(params: Partial<ListQueryParams<T>>, fiel
     generateSearchDomain<T>(params.search || [], fieldsMapping),
     page * amount,
     amount,
-    params.sortBy && params.sortOrder ? generateSortString<T>(params.sortBy, params.sortOrder, fieldsMapping) : null,
+    params.sortBy && params.sortOrder ? generateSortString<T>(params.sortBy, params.sortOrder, fieldsMapping) : undefined,
   ];
 }
 

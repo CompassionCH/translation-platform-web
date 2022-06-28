@@ -9,10 +9,20 @@ import TableHeader from "../../components/Table/TableHeader";
 import _ from "../../i18n";
 
 const columns: Column[] = [
-  'translatorId',
+  {
+    name: 'translatorId',
+    header: 'ID Translator',
+    searchable: false,
+    sortable: false,
+  },
   'name',
   'email',
-  'role',
+  {
+    name: 'role',
+    header: 'Role',
+    searchable: false,
+    sortable: false,
+  },
   'age',
   {
     name: 'lastYear',
@@ -25,7 +35,9 @@ const columns: Column[] = [
   'total',
   {
     name: 'language',
-    translatable: true,
+    header: 'Language',
+    searchable: false,
+    translatable: false,
   }
 ];
 

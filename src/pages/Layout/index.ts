@@ -4,7 +4,7 @@ import Router, { navigateTo } from '../../components/Router/Router';
 import RouterView from '../../components/Router/RouterView';
 import { BlurLoader } from '../../components/Loader';
 import { routes, guards } from '../../routes';
-import store, { useStore, watchStore } from '../../store';
+import store, { useStore } from '../../store';
 import useCurrentTranslator from '../../hooks/useCurrentTranslator';
 import Menu from './Menu';
 import _ from '../../i18n';

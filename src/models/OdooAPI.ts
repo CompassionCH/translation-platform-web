@@ -74,8 +74,8 @@ const OdooAPI = {
       return response as any as T;
     } catch (e) {
       console.error(e);
-      clearStoreCache();
-      window.location.reload();
+      // clearStoreCache();
+      // window.location.reload();
     }
   }
 }
