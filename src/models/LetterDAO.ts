@@ -122,7 +122,9 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
 
   async list(params) {
     const searchParams = generateSearchQuery<Letter>(params, letterFieldsMapping);
-    console.log(searchParams);
+    // Add global state
+    // @ts-ignore
+    searchParams[0].push(['state', '=', 'Global Partner translation queue']);
     const [letterIds, total] = await Promise.all([
       OdooAPI.execute_kw('correspondence', 'search', searchParams),
       OdooAPI.execute_kw('correspondence', 'search', [...searchParams, true]) as Promise<number>

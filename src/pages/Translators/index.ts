@@ -11,7 +11,7 @@ import _ from "../../i18n";
 const columns: Column[] = [
   {
     name: 'translatorId',
-    header: 'ID Translator',
+    header: 'ID',
     searchable: false,
     sortable: false,
   },

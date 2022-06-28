@@ -6,12 +6,14 @@ import store from "../store";
 import Transition from "../components/Transition";
 import Loader from "../components/Loader";
 import useCurrentTranslator from "../hooks/useCurrentTranslator";
+import SettingsModal from "../components/SettingsModal";
 import { navigateTo } from "../components/Router/Router";
 import _ from "../i18n";
 
 class Login extends Component {
 
   static template = xml`
+    <SettingsModal active="state.settingsModal" onClose="() => state.settingsModal = false" />
     <div class="w-full h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
       <div class="flex shadow-xl relative rounded-sm overflow-hidden">
         <div class="h-full bg-white py-20 w-80 px-10">
@@ -22,8 +24,9 @@ class Login extends Component {
             <input class="compassion-input text-sm mb-3" type="text" placeholder="Username" t-model="state.username" />
             <input class="compassion-input text-sm mb-3" type="password" placeholder="Password" t-model="state.password" />
             <Button color="'compassion'" class="'w-full mb-2'" size="'sm'">Login</Button>
-            <div class="flex justify-center">
+            <div class="flex justify-between">
               <a href="#" class="text-xs text-slate-500 hover:text-slate-800 transition-colors">Forgot my password</a>
+              <a href="#" class="text-xs text-slate-500 hover:text-slate-800 transition-colors" t-on-click="() => state.settingsModal = true">Language</a>
             </div>
           </form>
         </div>
@@ -44,12 +47,14 @@ class Login extends Component {
     username: '',
     password: '',
     loading: false,
+    settingsModal: false,
   });
 
   static components = {
     Button,
     Loader,
     Transition,
+    SettingsModal,
   };
 
   async login() {
