@@ -1,4 +1,4 @@
-<LetterViewer letter="state.letter" loading="state.loading">
+<LetterViewer letter="state.letter" loading="state.loading" smallLoading="state.saveLoading">
   <!-- action bar buttons -->
   <t t-set-slot="action-buttons" t-slot-scope="buttons">
     <Button color="'red'" level="'secondary'" icon="'triangle-exclamation'" onClick="() => state.signalProblemModal = true" size="'sm'">Signal a Problem</Button>

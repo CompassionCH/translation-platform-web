@@ -1,5 +1,6 @@
 import { Component, useState, xml } from "@odoo/owl";
 import TranslatorModal from './TranslatorModal';
+import Loader from "./Loader";
 
 class LetterInformationHeader extends Component {
 
@@ -79,6 +80,7 @@ class LetterInformationHeader extends Component {
           </t>
           <span t-else="">Never Modified</span>
         </p>
+        <Loader t-if="props.loading" />
       </div>
       <div class="flex gap-3">
         <t t-slot="default" />
@@ -88,11 +90,13 @@ class LetterInformationHeader extends Component {
 
   static components = {
     TranslatorModal,
+    Loader,
   };
 
   static props = {
     letter: { type: Object, optional: true },
     slots: { optional: true },
+    loading: { type: Boolean, optional: true },
   }
 
   state = useState({

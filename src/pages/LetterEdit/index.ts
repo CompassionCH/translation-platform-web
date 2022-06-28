@@ -1,4 +1,4 @@
-import { Component, onMounted, useState } from "@odoo/owl";
+import { Component, onMounted, useEffect, useState } from "@odoo/owl";
 import template from './letterEdit.xml';
 import { Letter, models } from "../../models";
 import { Element } from "../../models/LetterDAO";
@@ -14,8 +14,10 @@ import _ from "../../i18n";
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 
 type State = {
+  dirty: false;
   loading: boolean;
   internalLoading: boolean;
+  saveLoading: boolean;
   letter?: Letter;
   signalProblemModal: boolean;
   letterSubmitted: boolean;
@@ -38,7 +40,9 @@ class LetterEdit extends Component {
   };
 
   state = useState<State>({
+    dirty: false,
     loading: false,
+    saveLoading: false,
     internalLoading: false,
     letter: undefined,
     signalProblemModal: false,
@@ -52,6 +56,29 @@ class LetterEdit extends Component {
   setup() {
     this.state.loading = true;
     onMounted(() => this.refreshLetter());
+
+    useEffect(() => {
+      let timeout: NodeJS.Timeout | null = null;
+
+      const listener = (event: KeyboardEvent) => {
+        if (timeout) {
+          clearTimeout(timeout);
+        }
+
+        timeout = setTimeout(() => this.save(true), 1500);
+
+        if (event.ctrlKey && event.key === 's') {
+          event.preventDefault();
+          if (timeout) {
+            clearTimeout(timeout);
+          }
+          this.save(true);
+        }
+      }
+
+      document.addEventListener('keydown', listener);
+      return () => document.removeEventListener('keydown', listener);
+    });
   }
 
   async submit() {
@@ -77,13 +104,14 @@ class LetterEdit extends Component {
   }
 
   async save(background = false) {
-    if (!this.contentGetter) {
+    if (!this.contentGetter || this.state.saveLoading) {
       return;
     }
 
     if (!background) {
       this.state.internalLoading = true;
     }
+    this.state.saveLoading = true;
 
     if (!this.currentTranslator.data) {
       await this.currentTranslator.refresh();
@@ -118,6 +146,7 @@ class LetterEdit extends Component {
     if (!background) {
       this.state.internalLoading = false;
     }
+    this.state.saveLoading = false;
   }
 
   async refreshLetter() {

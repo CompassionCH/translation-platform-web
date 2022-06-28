@@ -10,6 +10,7 @@ import Button from "./Button";
 const props = {
   letter: { type: Object, optional: true },
   loading: { type: Boolean, optional: true },
+  smallLoading: { type: Boolean, optional: true },
   'slots': { optional: true },
 };
 
@@ -33,7 +34,7 @@ class LetterViewer extends Component {
           <t t-slot="right-pane" />
           <div class="flex-1 w-full flex flex-col relative">
             <div t-ref="header">
-              <LetterInformationHeader letter="props.letter">
+              <LetterInformationHeader letter="props.letter" loading="props.smallLoading">
                 <t t-slot="action-buttons" letter="props.letter" />
               </LetterInformationHeader>        
             </div>

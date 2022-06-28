@@ -14,6 +14,7 @@ type Props = {
 
 const props = {
   letter: { type: Object },
+  onChange: { type: Function, optional: true },
   contentRetriever: { type: Function },
 };
 
