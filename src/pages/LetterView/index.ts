@@ -70,6 +70,11 @@ class LetterView extends Component {
     }
   }
 
+  mailSent() {
+    this.state.showReplyModal = false;
+    this.markCommentsRead();
+  }
+
   async putBackToTranslate() {
     if (!this.state.letter) {
       notyf.error(_('Letter not found'));

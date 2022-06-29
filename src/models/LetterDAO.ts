@@ -71,11 +71,10 @@ type LetterDAOApi = {
    * This method will be called when an administrator replied to a comment writen by a translator
    * on a letter. It should send an email or do something
    * @param letter 
-   * @param elementId 
    * @param reply 
    * @returns Promise<boolean>, true if successful, false otherwise
    */
-  replyToComments(letter: Letter, reply: OutputData): Promise<boolean>;
+  replyToComments(letter: Letter, reply: string): Promise<boolean>;
 
   /**
    * Delete the given letter object
@@ -151,20 +150,10 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
     };
   },
 
-  async replyToComments(letter, { blocks }) {
-
-    const mappers = {
-      paragraph: (item: OutputBlockData) => `<p>${item.data.text}</p>`,
-      image: (item: OutputBlockData) => `<img src="${item.data.file.url}" alt="${item.data.caption}" />`,
-      list: (item: OutputBlockData) => {
-        const tag = item.data.style === 'ordered' ? 'ol' : 'ul';
-        return `<${tag}>${item.data.items.map((it: string) => `<li>${it}</li>`).join('')}</${tag}>`;
-      },
-    };
-
+  async replyToComments(letter, html) {
     try {
-      const html = blocks.map(it => Object.keys(mappers).includes(it.type) ? mappers[it.type as keyof typeof mappers](it) : '').join('');
       await OdooAPI.execute_kw('correspondence', 'reply_to_comments', [letter.id, html]);
+      console.log('OK');
       return true;
     } catch (e) {
       console.error(e);

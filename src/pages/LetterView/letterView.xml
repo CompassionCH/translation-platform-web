@@ -4,7 +4,7 @@
     <t t-if="state.letter.unreadComments">
       <p class="text-sm text-slate-700">This letter has unread comments</p>
       <Button level="'secondary'" icon="'check'" size="'sm'" onClick="() => this.markCommentsRead()">Mark as read</Button>
-      <Button color="'compassion'" level="'secondary'" icon="'reply'" size="'sm'" onClick="() => this.deleteLetter()">Reply to all</Button>
+      <Button color="'compassion'" level="'secondary'" icon="'reply'" size="'sm'" onClick="() => this.state.showReplyModal = true">Reply to all</Button>
     </t>
     <t t-else="">
       <Button color="'red'" level="'secondary'" icon="'trash'" size="'sm'" onClick="() => this.deleteLetter()">Delete Letter</Button>
@@ -17,7 +17,7 @@
 
   <!-- content -->
   <t t-set-slot="content" t-slot-scope="scope">
-    <CommentReplyModal letter="scope.letter" show="state.showReplyModal" elementId="state.replyCommentId" onClose="() => this.state.showReplyModal = false" />
+    <CommentReplyModal letter="scope.letter" show="state.showReplyModal" onSent="() => this.mailSent()" onClose="() => this.state.showReplyModal = false" />
     <div t-foreach="scope.letter.translatedElements" t-as="element" t-key="element.id">
       <div t-if="element.type == 'pageBreak'" class="relative w-full flex items-center justify-center px-4">
         <div class="bg-slash p-4 w-full flex justify-center">
