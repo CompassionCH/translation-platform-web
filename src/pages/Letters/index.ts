@@ -4,8 +4,7 @@ import { Letter, models } from "../../models";
 import DAOTable from "../../components/Table/DAOTable";
 import { Column } from "../../components/Table/Row";
 import LetterPriority from "./LetterPriority";
-import TranslatorButton from "./TranslatorButton";
-import TranslatorModal from '../../components/TranslatorModal';
+import TranslatorButton from "../../components/TranslatorButton";
 import Button from '../../components/Button';
 import TableHeader from '../../components/Table/TableHeader';
 import LetterRowActions from "./LetterRowActions";
@@ -13,7 +12,6 @@ import _ from "../../i18n";
 
 type State = {
   columns: Column[];
-  translatorModal?: number;
 };
 
 
@@ -22,7 +20,6 @@ class Letters extends Component {
   static template = template;
   static components = {
     DAOTable,
-    TranslatorModal,
     Button,
     TableHeader,
   };
@@ -30,7 +27,6 @@ class Letters extends Component {
   dao = models.letters; // Directly passed to the dataTables component
 
   state = useState<State>({
-    translatorModal: undefined,
     columns: [
       {
         name: 'priority',
@@ -65,7 +61,6 @@ class Letters extends Component {
             component: TranslatorButton,
             props: {
               translatorId,
-              onClick: () => this.state.translatorModal = translatorId,
             }
           };
         },

@@ -35,7 +35,6 @@
           <div class="col-span-2 bg-slate-50 p-4">
             <div class="flex">
               <h4 class="font-medium text-slate-700">Comment</h4>
-              <button class="text-blue-500 hover:text-compassion transition-colors cursor-pointer text-xs ml-2" t-on-click="() => { state.replyCommentId = element.id; state.showReplyModal = true; }">Reply</button>
             </div>
             <p t-if="element.comments" class="text-xs text-slate-700" t-esc="element.comments" />
           </div>

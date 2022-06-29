@@ -1,11 +1,10 @@
-import { Component, useState, xml } from "@odoo/owl";
-import TranslatorModal from './TranslatorModal';
+import { Component, xml } from "@odoo/owl";
 import Loader from "./Loader";
+import TranslatorButton from "./TranslatorButton";
 
 class LetterInformationHeader extends Component {
 
   static template = xml`
-    <TranslatorModal onClose="() => this.state.translatorId = undefined" translatorId="state.translatorId" />
     <div t-if="props.letter">
       <div class="flex bg-white relative border-b border-solid border-slate-300">
         <div class="pt-3 pb-5 px-4 mr-10">
@@ -66,7 +65,7 @@ class LetterInformationHeader extends Component {
           </div>
           <div class="flex text-sm text-slate-800">
             <p class="w-32  font-medium">Translator</p>
-            <p t-if="props.letter.translatorId" class="text-blue-600 hover:text-compassion cursor-pointer" t-on-click="() => this.state.translatorId = props.letter.translatorId" t-esc="props.letter.translatorId" />
+            <TranslatorButton translatorId="props.letter.translatorId" />
           </div>
         </div>
       </div>
@@ -89,8 +88,8 @@ class LetterInformationHeader extends Component {
   `;
 
   static components = {
-    TranslatorModal,
     Loader,
+    TranslatorButton,
   };
 
   static props = {
@@ -98,10 +97,6 @@ class LetterInformationHeader extends Component {
     slots: { optional: true },
     loading: { type: Boolean, optional: true },
   }
-
-  state = useState({
-    translatorId: undefined,
-  });
 }
 
 export default LetterInformationHeader;

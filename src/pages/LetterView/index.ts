@@ -11,7 +11,6 @@ import _ from "../../i18n";
 
 type State = {
   loading: boolean;
-  replyCommentId?: string | number;
   showReplyModal: boolean;
   letter?: Letter;
 };
@@ -33,7 +32,6 @@ class LetterView extends Component {
   state = useState<State>({
     loading: false,
     letter: undefined,
-    replyCommentId: 0,
     showReplyModal: false,
   });
 
@@ -92,6 +90,7 @@ class LetterView extends Component {
       return this.refreshLetter();
     } else {
       notyf.error(_('Operation failed, letter remains in current state'));
+      this.state.loading = false;
     }
   }
 
