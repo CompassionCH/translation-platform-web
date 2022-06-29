@@ -15,6 +15,7 @@ type State = {
 type Props = {
   letter: Letter;
   contentRetriever: (callback: (() => Element[])) => void;
+  onChange: () => void;
 };
 
 const props = {
@@ -88,7 +89,8 @@ class ContentEditor extends Component<Props> {
     </div>
     <Modal active="state.modalSourceElem !== undefined" title="'Source Text'" onClose="() => this.state.modalSourceElem = undefined">
       <div class="p-4 w-128">
-        <p class="text-sm text-slate-800" t-esc="state.modalSourceElem" />
+        <p class="text-sm text-slate-800" t-if="state.modalSourceElem and state.modalSourceElem.trim() !== ''" t-esc="state.modalSourceElem" />
+        <p t-else="" class="italic text-slate-600 font-light">No source text available</p>
       </div>
     </Modal>
   `;
@@ -129,6 +131,10 @@ class ContentEditor extends Component<Props> {
       source: '',
       content: '',
     });
+    
+    if (this.props.onChange) {
+      this.props.onChange();
+    }
   }
 
   addPageBreak() {
@@ -137,11 +143,19 @@ class ContentEditor extends Component<Props> {
       type: 'pageBreak',
       readonly: false,
     });
+
+    if (this.props.onChange) {
+      this.props.onChange();
+    }
   }
 
   remove(elemId: string | number) {
     const index = this.state.elements.findIndex(it => it.id === elemId);
     this.state.elements.splice(index, 1);
+
+    if (this.props.onChange) {
+      this.props.onChange();
+    }
   }
 
   openSource(elemId: string | number) {
@@ -163,6 +177,10 @@ class ContentEditor extends Component<Props> {
     items.splice(i, 1);
     items.splice(i + delta, 0, elem);
     this.state.elements = items;
+
+    if (this.props.onChange) {
+      this.props.onChange();
+    }
   }
 }
 

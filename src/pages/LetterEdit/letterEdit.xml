@@ -18,6 +18,6 @@
 
   <t t-set-slot="content" t-slot-scope="scope">
     <LetterSubmittedModal active="state.letterSubmitted" letter="scope.letter" />
-    <ContentEditor letter="scope.letter" contentRetriever="(cb) => this.contentGetter = cb" />
+    <ContentEditor letter="scope.letter" contentRetriever="(cb) => this.contentGetter = cb" onChange="() => this.queueSave()" />
   </t>
 </LetterViewer>

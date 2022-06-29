@@ -21,6 +21,7 @@ type State = {
   letter?: Letter;
   signalProblemModal: boolean;
   letterSubmitted: boolean;
+  saveTimeout?: NodeJS.Timeout;
 };
 
 class LetterEdit extends Component {
@@ -47,6 +48,7 @@ class LetterEdit extends Component {
     letter: undefined,
     signalProblemModal: false,
     letterSubmitted: false,
+    saveTimeout: undefined,
   });
 
   contentGetter: undefined | (() => Element[]) = undefined;
@@ -59,28 +61,19 @@ class LetterEdit extends Component {
 
     // This effect registers the auto-save functionnalities
     useEffect(() => {
-      // Keep track of a running timer that will execute later
-      let timeout: NodeJS.Timeout | null = null;
-
       const listener = (event: KeyboardEvent) => {
 
-        // On key press, if timer, clear it (avoid multiple parallel timers)
-        if (timeout) {
-          clearTimeout(timeout);
-          timeout = null;
-        }
-
-        // Set the timer to automatically save in 1,5 secs
-        timeout = setTimeout(() => this.save(true), 1500);
+        // On key press, enqueue a save if necessary
+        this.queueSave();
 
         // If CTRL-S
         if (event.ctrlKey && event.key === 's') {
           event.preventDefault();
 
           // Remove timer if any as we manually save
-          if (timeout) {
-            clearTimeout(timeout);
-            timeout = null;
+          if (this.state.saveTimeout) {
+            clearTimeout(this.state.saveTimeout);
+            this.state.saveTimeout = undefined;
           }
           this.save(true);
         }
@@ -111,6 +104,15 @@ class LetterEdit extends Component {
       this.state.internalLoading = false;
       this.state.letterSubmitted = true;
     }
+  }
+
+  queueSave() {
+    if (this.state.saveTimeout) {
+      clearTimeout(this.state.saveTimeout);
+    }
+
+    // Set the timer to automatically save in 1,5 secs
+    this.state.saveTimeout = setTimeout(() => this.save(true), 1500);
   }
 
   async save(background = false) {
