@@ -1,11 +1,18 @@
 <LetterViewer letter="state.letter" loading="state.loading" letterId="props.letterId">
   <!-- action bar buttons -->
   <t t-set-slot="action-buttons" t-slot-scope="buttons">
-    <Button color="'red'" level="'secondary'" icon="'trash'" size="'sm'" onClick="() => this.deleteLetter()">Delete Letter</Button>
-    <Button color="'yellow'" level="'secondary'" size="'sm'" icon="'rotate-left'" onClick="() => this.putBackToTranslate()">Put Back to Translate</Button>
-    <RouterLink to="'/letters/letter-edit/' + state.letter.id">
-      <Button color="'compassion'" icon="'edit'" size="'sm'">Open in Editor</Button>
-    </RouterLink>
+    <t t-if="state.letter.unreadComments">
+      <p class="text-sm text-slate-700">This letter has unread comments</p>
+      <Button level="'secondary'" icon="'check'" size="'sm'" onClick="() => this.markCommentsRead()">Mark as read</Button>
+      <Button color="'compassion'" level="'secondary'" icon="'reply'" size="'sm'" onClick="() => this.deleteLetter()">Reply to all</Button>
+    </t>
+    <t t-else="">
+      <Button color="'red'" level="'secondary'" icon="'trash'" size="'sm'" onClick="() => this.deleteLetter()">Delete Letter</Button>
+      <Button color="'yellow'" level="'secondary'" size="'sm'" icon="'rotate-left'" onClick="() => this.putBackToTranslate()">Put Back to Translate</Button>
+      <RouterLink to="'/letters/letter-edit/' + state.letter.id">
+        <Button color="'compassion'" icon="'edit'" size="'sm'">Open in Editor</Button>
+      </RouterLink>
+    </t>
   </t>
 
   <!-- content -->

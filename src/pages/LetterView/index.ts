@@ -43,6 +43,7 @@ class LetterView extends Component {
   }
 
   async refreshLetter() {
+    this.state.loading = true;
     models.letters.find(this.props.letterId).then((letter) => {
       if (!letter) {
         notyf.error(_('Unable to find letter with identifier') + this.props.letterId);
@@ -51,6 +52,22 @@ class LetterView extends Component {
       }
       this.state.loading = false;
     });
+  }
+
+  async markCommentsRead() {
+    if (!this.state.letter) {
+      notyf.error(_('Letter not found'));
+      return;
+    }
+
+    this.state.loading = true;
+    const res = await models.letters.markCommentsAsRead(this.state.letter);
+    if (res) {
+      await this.refreshLetter();
+      notyf.success(_('Comments marked as read'));
+    } else {
+      notyf.error(_('Unable to mark comments as read'));
+    }
   }
 
   async putBackToTranslate() {

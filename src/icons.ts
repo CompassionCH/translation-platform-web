@@ -27,6 +27,7 @@ import {
   faTriangleExclamation,
   faCaretUp,
   faCaretDown,
+  faReply,
   faOtter,
   faCheck,
 } from '@fortawesome/free-solid-svg-icons';
@@ -42,6 +43,7 @@ library.add(
   faFloppyDisk,
   faPaperPlane,
   faDownload,
+  faReply,
   faEdit,
   faHome,
   faUserGroup,

@@ -75,7 +75,7 @@ type LetterDAOApi = {
    * @param reply 
    * @returns Promise<boolean>, true if successful, false otherwise
    */
-  replyToComment(letter: Letter, elementId: string | number, reply: OutputData): Promise<boolean>;
+  replyToComments(letter: Letter, reply: OutputData): Promise<boolean>;
 
   /**
    * Delete the given letter object
@@ -106,6 +106,12 @@ type LetterDAOApi = {
    * Reports an issue regarding a letter
    */
   reportIssue(letterId: string | number, issueType: string, message: string): Promise<boolean>;
+
+  /**
+   * Mark all comments as read
+   * @param letter 
+   */
+  markCommentsAsRead(letter: Letter): Promise<boolean>;
 };
 
 const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
@@ -145,7 +151,7 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
     };
   },
 
-  async replyToComment(letter, elementId, { blocks }) {
+  async replyToComments(letter, { blocks }) {
 
     const mappers = {
       paragraph: (item: OutputBlockData) => `<p>${item.data.text}</p>`,
@@ -156,18 +162,14 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
       },
     };
 
-    return new Promise((resolve) => {
-      try {
-        const html = blocks.map(it => Object.keys(mappers).includes(it.type) ? mappers[it.type as keyof typeof mappers](it) : '').join('');
-        setTimeout(() => {
-          console.log('Sending reply email', letter.id, elementId, html);
-          resolve(true);
-        }, 2000);
-      } catch (e) {
-        console.error(e);
-        resolve(false);
-      }
-    });
+    try {
+      const html = blocks.map(it => Object.keys(mappers).includes(it.type) ? mappers[it.type as keyof typeof mappers](it) : '').join('');
+      await OdooAPI.execute_kw('correspondence', 'reply_to_comments', [letter.id, html]);
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
   },
 
   async deleteLetter(letter) {
@@ -193,13 +195,12 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
   async update(letter) {
     console.log(JSON.stringify(letter));
     try {
-      await OdooAPI.execute_kw('correspondence', 'save_translation', [
+      const res = await OdooAPI.execute_kw<boolean>('correspondence', 'save_translation', [
         letter.id,
         letter.translatedElements,
         letter.translatorId || "None",
       ]);
-
-      return true;
+      return res || false;
     } catch (e) {
       console.error(e);
       return false;
@@ -224,6 +225,16 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
   async reportIssue(letterId, type, message) {
     try {
       await OdooAPI.execute_kw('correspondence', 'raise_translation_issue', [int(letterId), type, message]);
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  },
+
+  async markCommentsAsRead(letter) {
+    try {
+      await OdooAPI.execute_kw('correspondence', 'mark_comments_read', [letter.id]);
       return true;
     } catch (e) {
       console.error(e);

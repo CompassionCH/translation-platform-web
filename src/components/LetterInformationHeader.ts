@@ -82,7 +82,7 @@ class LetterInformationHeader extends Component {
         </p>
         <Loader t-if="props.loading" />
       </div>
-      <div class="flex gap-3">
+      <div class="flex gap-3 items-center">
         <t t-slot="default" />
       </div>
     </div>
