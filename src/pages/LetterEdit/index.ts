@@ -165,7 +165,6 @@ class LetterEdit extends Component {
         notyf.error(_('Unable to find letter with identifier') + this.props.letterId);
       } else {
         this.state.letter = letter;
-        console.log(letter.translatedElements);
       }
       this.state.loading = false;
     });

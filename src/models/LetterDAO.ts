@@ -55,7 +55,7 @@ export const letterFieldsMapping: FieldsMapping<Letter> = {
   date: { field: 'scanned_date', format: (v) => new Date(v) },
   source: { field: 'src_translation_lang_id.name' },
   target: { field: 'translation_language_id.name' },
-  translatorId: { field: 'translator_id', format: 'number' },
+  translatorId: { field: 'new_translator_id', format: 'number' },
 };
 
 const int = (val: string | number) => typeof val === 'string' ? parseInt(val, 10) : val;
@@ -138,6 +138,7 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
     // Add global state
     // @ts-ignore
     searchParams[0].push(['state', '=', 'Global Partner translation queue']);
+    console.log(searchParams);
     const [letterIds, total] = await Promise.all([
       OdooAPI.execute_kw('correspondence', 'search', searchParams),
       OdooAPI.execute_kw('correspondence', 'search', [...searchParams, true]) as Promise<number>
