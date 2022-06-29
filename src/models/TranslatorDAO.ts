@@ -1,3 +1,4 @@
+import store from "../store";
 import BaseDAO, { FieldsMapping, generateSearchDomain, generateSearchQuery } from "./BaseDAO";
 import OdooAPI from "./OdooAPI";
 import { Language } from "./SettingsDAO";
@@ -45,9 +46,8 @@ type TranslatorDAOApi = {
 
   /**
    * Registers a translation skill on the currently authenticated user
-   * @param skills
    */
-  registerSkills(skills: number[]): Promise<boolean>;
+  registerSkills(translatorId: number, skills: number[]): Promise<boolean>;
 
    /**
     * Returns the Translator object related to the currently
@@ -90,10 +90,10 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
     }
   },
 
-  async registerSkills(skills) {
+  async registerSkills(translatorId, skills) {
     for await (const skillId of skills) {
       // Add skills sequentially to avoid overloading the server with parallel API calls
-      OdooAPI.execute_kw('translation.user', 'add_translation_skill', [skillId]);
+      await OdooAPI.execute_kw('translation.user', 'add_skill', [translatorId, skillId]);
     }
 
     return true;

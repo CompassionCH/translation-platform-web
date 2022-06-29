@@ -1,5 +1,5 @@
-import { Component, useState, xml } from '@odoo/owl';
-import Transition from '../../components/Transition';
+import { Component, xml } from '@odoo/owl';
+import Tippy from '../../components/Tippy';
 import _ from '../../i18n';
 
 type Props = {
@@ -12,20 +12,16 @@ type Props = {
  */
 class MenuButton extends Component<Props> {
   static template = xml`
-    <div class="relative w-20 h-20 flex justify-center items-center transition-colors"
-      t-att-class="{
-        [props.class]: true,
-        'bg-gradient-to-b from-slate-100 to-sky-50 text-compassion': props.active,
-        'text-white hover:bg-black-10': !props.active,
-      }"
-      t-on-mouseenter="() => this.state.tooltipVisible = true"
-      t-on-mouseleave="() => this.state.tooltipVisible = false"
-    >
-      <Transition active="state.tooltipVisible" t-slot-scope="scope" delay="200">
-        <div class="absolute bg-black-90 shadow whitespace-nowrap rounded-sm p-3 ml-6 text-white text-sm left-16 tooltip-arrow-left" t-att-class="scope.itemClass" t-esc="_(props.tooltip)" />
-      </Transition>
-      <t t-slot="default" />
-    </div>
+    <Tippy placement="'right'" content="props.tooltip">
+      <div class="relative w-20 h-20 flex justify-center items-center transition-colors"
+        t-att-class="{
+          [props.class]: true,
+          'bg-gradient-to-b from-slate-100 to-sky-50 text-compassion': props.active,
+          'text-white hover:bg-black-10': !props.active,
+        }">
+        <t t-slot="default" />
+      </div>
+    </Tippy>
   `;
 
   _ = _;
@@ -38,12 +34,8 @@ class MenuButton extends Component<Props> {
   };
 
   static components = {
-    Transition,
+    Tippy,
   };
-
-  state = useState({
-    tooltipVisible: false,
-  });
 };
 
 export default MenuButton;

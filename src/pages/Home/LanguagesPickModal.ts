@@ -90,7 +90,7 @@ class LanguagePickModal extends Component {
 
   async registerSkills() {
     this.state.loading = true;
-    const res = await models.translators.registerSkills(this.state.potentialSkills.map(it => it.id));
+    const res = await models.translators.registerSkills(this.props.translatorId, this.state.potentialSkills.map(it => it.id));
     this.state.loading = false;
     if (!res) {
       notyf.error(_('Unable to register translation skills'));
