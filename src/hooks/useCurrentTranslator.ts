@@ -8,6 +8,7 @@ type State = {
   loading: boolean;
   data?: Translator;
   refresh: (userId?: number) => Promise<void>;
+  loadIfNotInitialized: () => Promise<void>;
   watch: (callback: Callback) => void;
 };
 
@@ -27,6 +28,12 @@ const state = reactive<State>({
     this.loading = true;
     this.data = await models.translators.current();
     this.loading = false;  
+  },
+
+  async loadIfNotInitialized() {
+    if (!this.data) {
+      await this.refresh();
+    }
   },
 
   watch(callback) {

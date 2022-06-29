@@ -40,6 +40,7 @@ export type Letter = {
   unreadComments: boolean;
   translatorId?: number;
   lastUpdate?: Date;
+  pdfUrl?: string;
   date: Date;
   translatedElements: Element[];
   child: Person,

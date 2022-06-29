@@ -6,6 +6,7 @@ import RouterLink from "./Router/RouterLink";
 import SignalProblem from "./SignalProblem";
 import LetterInformationHeader from "./LetterInformationHeader";
 import Button from "./Button";
+import useCurrentTranslator from "../hooks/useCurrentTranslator";
 
 const props = {
   letter: { type: Object, optional: true },
@@ -21,11 +22,11 @@ class LetterViewer extends Component {
     <div class="h-full relative">
       <SignalProblem active="state.signalProblemModal" letterId="props.letterId" onClose="() => state.signalProblemModal = false" />
       <t t-slot="unsafe" />
-      <div t-if="props.letter" class="flex h-full">
+      <div t-if="props.letter and !currentTranslator.loading" class="flex h-full">
         <div class="h-full relative bg-blue-300 w-2/5" t-ref="letterPanel">
           <div class="shadow-sm overflow-hidden h-full border-gray-400 flex">
             <t t-if="state.active === false">
-              <iframe src="/text.pdf" class="w-full h-full" />
+              <iframe t-att-src="props.letter.pdfUrl + '?translatorId=' + currentTranslator.data.translatorId" class="w-full h-full" />
             </t>
             <div class="w-2 h-full" />
             <div t-ref="panelDrag" class="absolute right-0 w-2 h-full bg-slate-400 z-30 hover:bg-compassion cursor-ew-resize select-none" />
@@ -58,7 +59,7 @@ class LetterViewer extends Component {
           </RouterLink>
         </div>
       </div>
-      <Transition t-slot-scope="scope" active="props.loading">
+      <Transition t-slot-scope="scope" active="props.loading or currentTranslator.loading">
         <div class="absolute z-40 bg-slate-200 flex justify-center items-center flex-col top-0 left-0 w-full h-full" t-att-class="scope.itemClass">
           <Loader class="'text-4xl'" />
         </div>
@@ -83,6 +84,8 @@ class LetterViewer extends Component {
   infoHeader = useRef('header');
   contentContainer = useRef('contentContainer');
 
+  currentTranslator = useCurrentTranslator();
+
   // Store as class attribute to avoid repatch component
   // whenever it changes
   resizeCallback = null as any;
@@ -98,6 +101,7 @@ class LetterViewer extends Component {
   });
 
   setup() {
+    this.currentTranslator.loadIfNotInitialized();
 
     // Initialize callbacks
     this.resizeCallback = (event: MouseEvent) => this.resize(event);
