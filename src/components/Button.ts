@@ -38,6 +38,7 @@ type Props = {
   icon?: [string, string] | string;
   circle?: boolean;
   square?: boolean;
+  title?: string;
   class?: string;
   onClick: Function;
   disabled?: boolean;
@@ -48,7 +49,7 @@ type Props = {
 class Button extends Component<Props> {
 
   static template = xml`
-    <button t-att-class="props.class + ' ' + state.buttonClass" t-on-click="props.onClick || (() => null)">
+    <button t-att-class="props.class + ' ' + state.buttonClass" t-on-click="props.onClick || (() => null)" t-att-title="props.title">
       <Icon t-if="props.icon" prefix="state.iconPrefix" icon="state.iconName" class="state.iconClass" />
       <t t-slot="default" />
     </button>
@@ -64,6 +65,7 @@ class Button extends Component<Props> {
     size: { type: String, optional: true },
     icon: { type: String, optional: true },
     class: { type: String, optional: true },
+    title: { type: String, optional: true },
     circle: { type: Boolean, optional: true },
     onClick: { type: Function, optional: true },
     disabled: { type: Boolean, optional: true },

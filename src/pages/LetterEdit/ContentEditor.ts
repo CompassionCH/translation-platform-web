@@ -1,10 +1,14 @@
 import { Component, onWillStart, useState, xml } from "@odoo/owl";
-import { Element, Letter } from "../../models/LetterDAO";
+import { Element, Letter, Paragraph } from "../../models/LetterDAO";
 import Button from '../../components/Button';
+import Modal from '../../components/Modal';
+import notyf from "../../notifications";
+import _ from "../../i18n";
 
 type State = {
   elements: Element[];
   hovered?: string | number;
+  modalSourceElem?: string;
 };
 
 type Props = {
@@ -32,17 +36,17 @@ class ContentEditor extends Component<Props> {
         'border-transparent': state.hovered !== element.id,
       }">
         <div t-if="element.type == 'pageBreak'" class="flex">
-            <div class="relative bg-slash flex-1 flex justify-center items-center">
+            <div class="relative bg-slash flex-1 flex justify-center items-center" t-att-class="{'ring-2 ring-purple-400 ring-opacity-50': element.readonly}">
               <span class="text-slate-500 font-medium text-xs">Page Break</span>
             </div>
-          <div class="flex flex-col justify-center gap-2 ml-2">
-            <div t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
+          <div class="flex flex-col justify-center gap-2 ml-2 w-9">
+            <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
               <Button square="true" color="'red'" level="'secondary'" icon="'trash'" onClick="() => this.remove(element.id)" />
             </div>
           </div>
         </div>
         <div t-if="element.type == 'paragraph'" class="flex">
-          <div class="bg-white shadow-xl relative z-10 grid grid-cols-6 flex-1">
+          <div class="bg-white shadow-xl relative z-10 grid grid-cols-6 flex-1" t-att-class="{'ring-2 ring-purple-400 ring-opacity-50': element.readonly}">
             <div class="col-span-4 py-4 px-4">
               <h4 class="font-medium text-slate-700 mb-2">Translated Content</h4>
               <textarea class="compassion-input w-full h-32 text-xs" t-model="element.content" />
@@ -52,16 +56,18 @@ class ContentEditor extends Component<Props> {
               <textarea class="compassion-input w-full h-32 text-xs" t-model="element.comments" />
             </div>
           </div>
-          <div class="flex flex-col justify-center gap-2 ml-2">
-            <div t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
-              <Button square="true" level="'secondary'" t-if="!element_first" icon="'angle-up'" onClick="() => this.move(element.id, -1)" />
+          <div class="flex flex-col justify-center gap-2 ml-2 w-9">
+            <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
+              <Button square="true" level="'secondary'" t-if="!element_first and !state.elements[element_index - 1].readonly" icon="'angle-up'" onClick="() => this.move(element.id, -1)" />
             </div>
-            <div t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
+            <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
               <Button square="true" color="'red'" level="'secondary'" icon="'trash'" onClick="() => this.remove(element.id)" />
             </div>
-            <div t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
-              <Button square="true" level="'secondary'" t-if="!element_last" icon="'angle-down'" onClick="() => this.move(element.id, 1)" />
+            <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
+              <Button square="true" level="'secondary'" t-if="!element_last and !state.elements[element_index + 1].readonly" icon="'angle-down'" onClick="() => this.move(element.id, 1)" />
             </div>
+            
+            <Button title="'Open source text'" square="true" level="'secondary'" t-if="element.readonly" icon="'eye'" onClick="() => this.openSource(element.id)" />
           </div>
         </div>
       </div>
@@ -70,12 +76,18 @@ class ContentEditor extends Component<Props> {
         <Button size="'sm'" icon="'plus'" level="'secondary'" onClick="() => this.addPageBreak()">PageBreak</Button>
       </div>
     </div>
+    <Modal active="state.modalSourceElem !== undefined" title="'Source Text'" onClose="() => this.state.modalSourceElem = undefined">
+      <div class="p-4 w-128">
+        <p class="text-sm text-slate-800" t-esc="state.modalSourceElem" />
+      </div>
+    </Modal>
   `;
 
   static props = props;
 
   static components = {
     Button,
+    Modal,
   };
 
   state = useState<State>({
@@ -100,6 +112,8 @@ class ContentEditor extends Component<Props> {
     this.state.elements.push({
       id: Date.now(),
       type: 'paragraph',
+      readonly: false,
+      source: '',
       content: '',
     });
   }
@@ -108,12 +122,22 @@ class ContentEditor extends Component<Props> {
     this.state.elements.push({
       id: Date.now(),
       type: 'pageBreak',
+      readonly: false,
     });
   }
 
   remove(elemId: string | number) {
     const index = this.state.elements.findIndex(it => it.id === elemId);
     this.state.elements.splice(index, 1);
+  }
+
+  openSource(elemId: string | number) {
+    const elem = this.state.elements.find(it => it.id === elemId);
+    if (!elem || elem.type !== 'paragraph') {
+      notyf.error(_('Unable to find element'));
+    } else {
+      this.state.modalSourceElem = (elem as Paragraph).source;
+    }
   }
 
   move(elemId: string | number, delta: number) {

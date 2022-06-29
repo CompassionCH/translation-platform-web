@@ -1,7 +1,5 @@
-import { OutputBlockData, OutputData } from "@editorjs/editorjs";
 import BaseDAO, { FieldsMapping, generateSearchDomain, generateSearchQuery } from "./BaseDAO";
 import OdooAPI from "./OdooAPI";
-import { IssueType } from "./SettingsDAO";
 
 type Status = 'done' | 'to do' | 'to validate' | 'in progress';
 type Priority = 0 | 1 | 2 | 3 | 4;
@@ -9,11 +7,13 @@ type Priority = 0 | 1 | 2 | 3 | 4;
 interface BaseElement {
   type: 'paragraph' | 'pageBreak';
   id: number | string;
+  readonly: boolean;
 };
 
 export interface Paragraph extends BaseElement {
   type: 'paragraph';
   content: string;
+  source: string;
   comments?: string;
 };
 

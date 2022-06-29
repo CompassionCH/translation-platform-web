@@ -24,10 +24,30 @@ class LetterViewer extends Component {
       <t t-slot="unsafe" />
       <div t-if="props.letter and !currentTranslator.loading" class="flex h-full">
         <div class="h-full relative bg-blue-300 w-2/5" t-ref="letterPanel">
-          <div class="shadow-sm overflow-hidden h-full border-gray-400 flex">
-            <t t-if="state.active === false">
-              <iframe t-att-src="props.letter.pdfUrl + '?translatorId=' + currentTranslator.data.translatorId" class="w-full h-full" />
-            </t>
+          <div class="shadow-sm overflow-hidden h-full border-gray-400 flex group">
+            <div class="w-full h-full relative">
+              <t t-if="state.active === false and state.mode === 'letter'">
+                <iframe t-att-src="props.letter.pdfUrl + '?translatorId=' + currentTranslator.data.translatorId" class="w-full h-full" />
+              </t>
+              <div t-elif="state.mode === 'source'" class="w-full h-full bg-slate-600 py-4 px-5">
+                <h3 class="font-semibold text-slate-100 text-2xl">Source Text to translate</h3>
+                <h4 class="text-slate-200 max-w-xl mt-3 mb-5 text-sm">Text might not be available, in this case, and if the letter is unavailable too, please contact Compassion by signaling a problem.</h4>
+                <div t-foreach="props.letter.translatedElements" t-as="element" t-key="element.id">
+                  <t t-if="element.readonly">
+                    <div t-if="element.type === 'paragraph'" class="bg-slate-300 p-4 mb-2 rounded-sm shadow">
+                      <p t-esc="element.source" class="text-slate-900 text-sm" />
+                    </div>
+                    <div t-if="element.type === 'pageBreak'" class="bg-slate-400 mb-2 rounded-sm text-slate-100 text-xs flex justify-center py-3">Page Break</div>
+                  </t>
+                </div>
+              </div>
+              <div class="flex justify-center w-full absolute top-0">
+                <div class="flex gap-2 p-2 bg-white shadow-xl -mt-12 group-hover:mt-0 transition-all">
+                  <Button size="'sm'" level="'secondary'" onClick="() => this.state.mode = 'letter'" disabled="state.mode === 'letter'">Letter</Button>
+                  <Button size="'sm'" level="'secondary'" onClick="() => this.state.mode = 'source'" disabled="state.mode === 'source'">Source</Button>
+                </div>
+              </div> 
+            </div>
             <div class="w-2 h-full" />
             <div t-ref="panelDrag" class="absolute right-0 w-2 h-full bg-slate-400 z-30 hover:bg-compassion cursor-ew-resize select-none" />
           </div>
@@ -95,6 +115,7 @@ class LetterViewer extends Component {
   dx = 0;
 
   state = useState({
+    mode: 'letter' as 'letter' | 'source',
     displayHeight: 0,
     active: false,
     signalProblemModal: false,

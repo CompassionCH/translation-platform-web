@@ -8,6 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faTrash,
   faPlus,
+  faEye,
   faAngleUp,
   faRightFromBracket,
   faCog,
@@ -39,6 +40,7 @@ library.add(
   faRightFromBracket,
   faCog,
   faRotateLeft,
+  faEye,
   faAngleDown,
   faFloppyDisk,
   faPaperPlane,
