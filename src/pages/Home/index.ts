@@ -7,6 +7,7 @@ import { ListResponse } from '../../models/BaseDAO';
 import { Letter, models, Translator } from "../../models";
 import { BlurLoader } from '../../components/Loader';
 import LanguagesPickModal from './LanguagesPickModal';
+import tutorial from "./tutorial";
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 import _ from "../../i18n";
 
@@ -46,7 +47,9 @@ export default class Home extends Component {
 
   setup() {
     // Fetch letters to display to the user for each of his translation skill
-    this.refresh();
+    this.refresh().then(() => {
+      tutorial.start();
+    });
   }
 
   async refresh() {
@@ -56,12 +59,12 @@ export default class Home extends Component {
       this.currentTranslator.refresh();
     }
 
-    Promise.all([
+    await Promise.all([
       this.fetchLetters(),
       this.fetchSaved(),
-    ]).then(() => {
-      this.state.loading = false;
-    });
+    ]);
+
+    this.state.loading = false;
   }
 
   async onSkillsChange() {
@@ -75,8 +78,8 @@ export default class Home extends Component {
   async fetchSaved() {
     if (!this.currentTranslator.data) return;
     this.state.savedLetters = await models.letters.list({
-      sortBy: 'date',
-      sortOrder: 'asc',
+      sortBy: 'priority',
+      sortOrder: 'desc',
       pageNumber: 0,
       pageSize: 5,
       search: [
@@ -90,8 +93,8 @@ export default class Home extends Component {
     if (!this.currentTranslator.data) return;
     const skillLetters = await Promise.all(this.currentTranslator.data.skills.map(async (skill) => {
       const skillLetters = await models.letters.list({
-        sortBy: 'date',
-        sortOrder: 'asc',
+        sortBy: 'priority',
+        sortOrder: 'desc',
         pageSize: 5,
         pageNumber: 0,
         search: [

@@ -78,4 +78,5 @@ body {
 
 .shepherd-modal-overlay-container.shepherd-modal-is-visible path {
   @apply opacity-50;
+  @apply pointer-events-auto;
 }
