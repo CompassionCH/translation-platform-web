@@ -2,6 +2,7 @@ import { Component, xml } from "@odoo/owl";
 
 import Button from "../../components/Button";
 import RouterLink from "../../components/Router/RouterLink";
+import Helper from "../../components/Helper";
 import _ from "../../i18n";
 import { Letter } from "../../models";
 
@@ -19,10 +20,16 @@ class TranslationCard extends Component<Props> {
       'ring-yellow-300 ring-opacity-80': props.status === 'unverified',
       'ring-slate-200 ring-opacity-30': props.status === undefined,
     }">
-      <div class="bg-slate-100 px-4 py-3">
-        <h4 class="font-light text-lg text-slate-700" t-esc="props.title" />
-        <p t-if="props.status !== 'unverified'" class="text-slate-600 text-xs"><t t-esc="props.remaining" /> Texts remaining</p>
-        <p t-else="" class="text-slate-600 text-xs">Waiting for validation</p>
+      <div class="bg-slate-100 px-4 py-3 flex justify-between">
+        <div>
+          <h4 class="font-light text-lg text-slate-700" t-esc="props.title" />
+          <p t-if="props.status !== 'unverified'" class="text-slate-600 text-xs"><t t-esc="props.remaining" /> Texts remaining</p>
+          <p t-else="" class="text-slate-600 text-xs">Waiting for validation</p>
+        </div>
+        <div>
+          <Helper t-if="props.status === 'highlight'" content="_('These letters are your saved work in progress waiting to be submitted')" />
+          <Helper t-if="props.status === 'unverified'" content="_('This translation skill is currently waiting to be validated, please translate the given letter for it to be reviewed')" />
+        </div>
       </div>
       <div class="p-4 bg-white flex-1">
         <div t-if="props.letters.length gt 0 and props.status !== 'unverified'">
@@ -71,6 +78,7 @@ class TranslationCard extends Component<Props> {
   static components = {
     Button,
     RouterLink,
+    Helper,
   };
 
   _ = _;
