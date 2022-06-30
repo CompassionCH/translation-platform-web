@@ -9,7 +9,6 @@ import { BlurLoader } from '../../components/Loader';
 import LanguagesPickModal from './LanguagesPickModal';
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 import _ from "../../i18n";
-import { runTutorial } from "../../tutorial";
 
 type ArrayElement<ArrayType extends readonly unknown[]> = 
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
@@ -48,22 +47,6 @@ export default class Home extends Component {
   setup() {
     // Fetch letters to display to the user for each of his translation skill
     this.refresh();
-
-    runTutorial([
-      {
-        id: 'start',
-        text: _('Welcome to the Compassion Translation Platform! This tour will walk you through how to get started with it.'),
-        buttons: [
-          {
-            classes: 'bg-compassion text-white',
-            action() {
-              return this.next();
-            },
-            text: "Let's go!"
-          }
-        ]
-      }
-    ]);
   }
 
   async refresh() {

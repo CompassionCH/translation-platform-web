@@ -1,9 +1,9 @@
 <LetterViewer letter="state.letter" letterId="props.letterId" loading="state.loading" smallLoading="state.saveLoading and state.internalLoading !== true">
   <!-- action bar buttons -->
   <t t-set-slot="action-buttons" t-slot-scope="buttons">
-    <Button color="'red'" level="'secondary'" icon="'triangle-exclamation'" onClick="() => state.signalProblemModal = true" size="'sm'">Signal a Problem</Button>
-    <Button color="'green'" onClick="() => this.save()" icon="'floppy-disk'" level="'secondary'" size="'sm'">Save</Button>
-    <Button color="'compassion'" onClick="() => this.submit()" icon="'paper-plane'" size="'sm'">Submit</Button>
+    <Button color="'red'" level="'secondary'" icon="'triangle-exclamation'" onClick="() => state.signalProblemModal = true" size="'sm'" class="'action-problem'">Signal a Problem</Button>
+    <Button color="'green'" onClick="() => this.save()" icon="'floppy-disk'" level="'secondary'" size="'sm'" class="'action-save'">Save</Button>
+    <Button color="'compassion'" onClick="() => this.submit()" icon="'paper-plane'" size="'sm'" class="'action-submit'">Submit</Button>
   </t>
 
   <!-- signal problem modal in unsafe slot (no letter) -->
@@ -18,6 +18,6 @@
 
   <t t-set-slot="content" t-slot-scope="scope">
     <LetterSubmittedModal active="state.letterSubmitted" letter="scope.letter" />
-    <ContentEditor letter="scope.letter" contentRetriever="(cb) => this.contentGetter = cb" onChange="() => this.queueSave()" />
+    <ContentEditor letter="scope.letter" contentRetriever="(cb) => this.contentGetter = cb" />
   </t>
 </LetterViewer>

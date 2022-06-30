@@ -42,7 +42,7 @@ class Modal extends Component<PropsType<typeof props>> {
   static template = xml`
     <Transition t-if="state.mounted" active="state.display" t-slot-scope="scope" duration="state.duration">
       <div class="fixed overflow-auto top-0 left-0 z-50 bg-black-60 w-screen h-screen flex justify-center items-start backdrop-blur-sm" t-att-class="scope.itemClass">
-        <div class="bg-white rounded-sm overflow-hidden shadow-2xl my-20 relative">
+        <div class="bg-white rounded-sm overflow-hidden shadow-2xl my-20 relative modal">
           <ModalLoader loading="props.loading || false" />
           <div class="border-b border-solid border-slate-200 px-5 py-4 flex justify-between items-start" t-if="!props.empty">
             <div>

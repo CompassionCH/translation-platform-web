@@ -1,4 +1,4 @@
-import { Component, onWillStart, useState, xml } from "@odoo/owl";
+import { Component, onWillStart, onWillUpdateProps, useState, xml } from "@odoo/owl";
 import { Element, Letter, Paragraph } from "../../models/LetterDAO";
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
@@ -32,8 +32,8 @@ const props = {
 class ContentEditor extends Component<Props> {
 
   static template = xml`
-    <div>
-      <div t-foreach="state.elements" t-as="element" t-key="element.id" class="mx-4 mb-4 border border-solid transition-all" t-att-class="{
+    <div id="content-editor">
+      <div t-foreach="state.elements" t-as="element" t-key="element.id" class="mx-4 mb-4 border border-solid transition-all editor-element" t-att-class="{
         'border-compassion ring ring-2 ring-compassion ring-opacity-30 ring-offset-0': state.hovered === element.id,
         'border-transparent': state.hovered !== element.id,
       }">
@@ -44,7 +44,7 @@ class ContentEditor extends Component<Props> {
           <div class="flex flex-col justify-center gap-2 ml-2">
             <t t-if="element.readonly" >
               <Tippy placement="'left'" content="_('This page break is locked and cannot be removed, it is part of the original content')">
-                <Button square="true" disabled="true" level="'secondary'" icon="'lock'" />
+                <Button square="true" disabled="true" level="'secondary'" icon="'lock'" class="'editor-paragraph-locked'" />
               </Tippy>
             </t>
             <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
@@ -52,18 +52,18 @@ class ContentEditor extends Component<Props> {
             </div>
           </div>
         </div>
-        <div t-if="element.type == 'paragraph'" class="flex">
+        <div t-if="element.type == 'paragraph'" class="flex editor-paragraph">
           <div class="bg-white shadow-xl relative z-10 grid grid-cols-6 flex-1">
-            <div class="col-span-4 py-4 px-4">
+            <div class="col-span-4 py-4 px-4 editor-paragraph-content">
               <h4 class="font-medium text-slate-700 mb-2">Translated Content</h4>
-              <textarea class="compassion-input w-full h-32 text-xs" t-model="element.content" />
+              <textarea class="compassion-input w-full h-32 text-xs flex" t-model="element.content" />
             </div>
-            <div class="col-span-2 bg-slate-50 p-4">
+            <div class="col-span-2 bg-slate-50 p-4 editor-paragraph-comment">
               <h4 class="font-medium text-slate-700 mb-2">Comment</h4>
-              <textarea class="compassion-input w-full h-32 text-xs" t-model="element.comments" />
+              <textarea class="compassion-input w-full h-32 text-xs flex" t-model="element.comments" />
             </div>
           </div>
-          <div class="flex flex-col justify-center gap-2 ml-2 w-9">
+          <div class="flex flex-col justify-center gap-2 ml-2 buttons-element-state">
             <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
               <Button square="true" level="'secondary'" t-if="!element_first and !state.elements[element_index - 1].readonly" icon="'angle-up'" onClick="() => this.move(element.id, -1)" />
             </div>
@@ -86,9 +86,11 @@ class ContentEditor extends Component<Props> {
           </div>
         </div>
       </div>
-      <div class="flex justify-center mt-4 gap-2">
-        <Button size="'sm'" icon="'plus'" level="'secondary'" onClick="() => this.addParagraph()">Paragraph</Button>
-        <Button size="'sm'" icon="'plus'" level="'secondary'" onClick="() => this.addPageBreak()">PageBreak</Button>
+      <div class="flex justify-center mt-4">
+        <div class="flex gap-2 buttons-add-elements">
+          <Button size="'sm'" icon="'plus'" level="'secondary'" onClick="() => this.addParagraph()">Paragraph</Button>
+          <Button size="'sm'" icon="'plus'" level="'secondary'" onClick="() => this.addPageBreak()">PageBreak</Button>
+        </div>
       </div>
     </div>
     <Modal active="state.modalSourceElem !== undefined" title="'Source Text'" onClose="() => this.state.modalSourceElem = undefined">
@@ -125,6 +127,8 @@ class ContentEditor extends Component<Props> {
       // a function to retrieve the state of the edited translation elements
       this.props.contentRetriever(() => ([...this.state.elements]));
     });
+
+    onWillUpdateProps((nextProps) => this.state.elements = JSON.parse(JSON.stringify(nextProps.letter.translatedElements)));
   }
 
   addParagraph() {

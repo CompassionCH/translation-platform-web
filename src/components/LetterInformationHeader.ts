@@ -5,7 +5,7 @@ import TranslatorButton from "./TranslatorButton";
 class LetterInformationHeader extends Component {
 
   static template = xml`
-    <div t-if="props.letter">
+    <div t-if="props.letter" id="letter-viewer-header">
       <div class="flex bg-white relative border-b border-solid border-slate-300">
         <div class="pt-3 pb-5 px-4 mr-10">
           <h4 class="font-semibold text-gray-800 mb-2 text-lg">Child Data</h4>
@@ -65,7 +65,7 @@ class LetterInformationHeader extends Component {
           </div>
           <div class="flex text-sm text-slate-800">
             <p class="w-32  font-medium">Translator</p>
-            <TranslatorButton translatorId="props.letter.translatorId" />
+            <TranslatorButton t-if="translatorId" translatorId="props.letter.translatorId" />
           </div>
         </div>
       </div>

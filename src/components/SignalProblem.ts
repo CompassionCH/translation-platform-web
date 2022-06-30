@@ -9,7 +9,7 @@ import _ from "../i18n";
 class SignalProblem extends Component {
   static template = xml`  
     <Modal active="props.active" onClose="props.onClose" title="'Signal a Problem'" subtitle="'Notify Compassion of a problem with this letter'" loading="state.loading">
-      <div class="p-4">
+      <div class="p-4 signal-problem-modal">
         <select class="compassion-input text-sm mb-2" t-model="state.type">
           <option t-foreach="state.types" t-as="type" t-key="type.id" t-att-value="type.id" t-esc="type.text" />
         </select>

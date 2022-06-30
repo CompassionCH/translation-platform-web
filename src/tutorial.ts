@@ -1,4 +1,3 @@
-import { onMounted, useState } from '@odoo/owl';
 import Shepherd from 'shepherd.js';
 import _ from './i18n';
 
@@ -9,18 +8,16 @@ import _ from './i18n';
 const TUTORIAL_DISPLAY_KEY = 'show-tutorial';
 const showTutorial = window.localStorage.getItem(TUTORIAL_DISPLAY_KEY) || '1';
 
-export function runTutorial(steps: Shepherd.Step.StepOptions[]) {
+export function buildTutorial(steps: Shepherd.Step.StepOptions[]) {
   const tutorial = new Shepherd.Tour({
     useModalOverlay: true,
   });
 
-  steps.forEach((step) => {
-    if (!step.buttons) {
-      step.buttons = [];
-    }
+  steps.forEach((step, i) => {
 
-    // @ts-ignore chuis qu'un thug wesh
-    step.buttons.splice(0, 0, {
+    const buttons = step.buttons as Shepherd.Step.StepOptionsButton[] || [];
+
+    buttons.splice(0, 0, {
       classes: 'bg-slate-700 text-white',
       action: () => {
         tutorial.cancel();
@@ -28,11 +25,18 @@ export function runTutorial(steps: Shepherd.Step.StepOptions[]) {
       },
       text: _('Close'),
     });
+
+    if (i < steps.length - 1) {
+      buttons.push({
+        classes: 'bg-compassion text-white',
+        action: () => tutorial.next(),
+        text: _('Next'),
+      });
+    }
+
+    step.buttons = buttons;
   });
 
   tutorial.addSteps(steps);
-
-  return useState({
-    
-  });
+  return tutorial;
 };

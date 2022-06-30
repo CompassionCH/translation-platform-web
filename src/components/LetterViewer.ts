@@ -25,7 +25,7 @@ class LetterViewer extends Component {
       <div t-if="props.letter and !currentTranslator.loading" class="flex h-full">
         <div class="h-full relative bg-blue-300 w-2/5" t-ref="letterPanel">
           <div class="shadow-sm overflow-hidden h-full border-gray-400 flex group">
-            <div class="w-full h-full relative">
+            <div class="w-full h-full relative" id="letter-viewer">
               <t t-if="state.active === false and state.mode === 'letter'">
                 <iframe t-att-src="props.letter.pdfUrl + '?translatorId=' + currentTranslator.data.translatorId" class="w-full h-full" />
               </t>
@@ -49,7 +49,7 @@ class LetterViewer extends Component {
               </div> 
             </div>
             <div class="w-2 h-full" />
-            <div t-ref="panelDrag" class="absolute right-0 w-2 h-full bg-slate-400 z-30 hover:bg-compassion cursor-ew-resize select-none" />
+            <div t-ref="panelDrag" class="absolute right-0 w-2 h-full bg-slate-400 z-30 hover:bg-compassion cursor-ew-resize select-none letter-viewer-dragger" />
           </div>
         </div>
         <div class="flex-1 flex flex-col relative">
@@ -62,7 +62,7 @@ class LetterViewer extends Component {
             </div>
             <div class="flex-1 relative bg-slate-200">
               <div class="absolute top-0 w-full h-4 bg-gradient-to-b from-slate-300 to-transparent z-10" />
-              <div class="overflow-auto py-4" t-ref="contentContainer">
+              <div class="overflow-auto py-4" t-ref="contentContainer" id="letter-viewer-content">
                 <t t-slot="content" letter="props.letter" />
               </div>
             </div>
