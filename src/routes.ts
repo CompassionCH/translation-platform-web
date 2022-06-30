@@ -1,4 +1,5 @@
 import { Guard, Route } from "./components/Router/Router";
+import t_ from "./i18n";
 import store from "./store";
 
 /**
@@ -25,6 +26,11 @@ const routes: Route[] = [
     // You can define parameters in your route paths, they will be available as
     // props in your page components
     path: '/letters/letter-view/:letterId',
+  },
+  {
+    component: () => import('./pages/LetterEdit/LetterEditDemo'),
+    name: 'Edit Letter Demo',
+    path: '/letters/demo-edit-letter'
   },
   {
     component: () => import('./pages/LetterEdit'),
@@ -64,6 +70,12 @@ const guards: Guard[] = [
     } else {
       return;
     }
+  },
+
+  // Guard to update page title when routing somewhere
+  async (_, to) => {
+    const title = (to ? t_(to) + " | " : '') + t_("Compassion Translation Platform");
+    document.title = title;
   },
 ];
 
