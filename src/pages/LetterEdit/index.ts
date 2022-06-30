@@ -1,6 +1,6 @@
 import { Component, onMounted, useEffect, useState } from "@odoo/owl";
 import template from './letterEdit.xml';
-import { Letter, models } from "../../models";
+import { Letter, models, Translator } from "../../models";
 import { Element } from "../../models/LetterDAO";
 import notyf from "../../notifications";
 import LetterViewer from "../../components/LetterViewer";
@@ -9,7 +9,6 @@ import SignalProblem from "../../components/SignalProblem";
 import ContentEditor from './ContentEditor';
 import { BlurLoader } from '../../components/Loader';
 import LetterSubmittedModal from "./LetterSubmittedModal";
-import store from "../../store";
 import _ from "../../i18n";
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 
@@ -89,17 +88,21 @@ class LetterEdit extends Component {
       return;
     }  
 
+    await this.currentTranslator.loadIfNotInitialized();
+    const translatorId = this.state.letter?.translatorId || (this.currentTranslator.data as Translator).translatorId;
+
     this.state.internalLoading = true;
     const res = await models.letters.submit({
       ...this.state.letter as Letter,
       lastUpdate: new Date(),
       status: 'done',
-      translatorId: store.userId,
+      translatorId,
       translatedElements: this.contentGetter(),
     });
 
     if (!res) {
       notyf.error(_('Unable to save and submit letter, please save it first and retry.'));
+      this.state.internalLoading = false;
     } else {
       this.state.internalLoading = false;
       this.state.letterSubmitted = true;

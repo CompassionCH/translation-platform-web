@@ -184,7 +184,6 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
   },
 
   async update(letter) {
-    console.log(JSON.stringify(letter));
     try {
       const res = await OdooAPI.execute_kw<boolean>('correspondence', 'save_translation', [
         letter.id,

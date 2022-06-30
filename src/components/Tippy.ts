@@ -1,5 +1,5 @@
-import { Component, useEffect, useRef, xml } from "@odoo/owl";
-import tippy from 'tippy.js';
+import { Component, onMounted, onWillUnmount, useRef, xml } from "@odoo/owl";
+import tippy, { Instance } from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 
 class Tippy extends Component {
@@ -21,7 +21,9 @@ class Tippy extends Component {
   };
 
   setup() {
-    useEffect(() => {
+    let instance: Instance | null = null;
+
+    onMounted(() => {
       const parent = this.element.el;
       if (!parent) {
         console.error('Tippy component requires an actual container element');
@@ -30,18 +32,22 @@ class Tippy extends Component {
       
       const child = parent.children[0];
       if (!child) {
-        console.error('Tippy child not found, aborting');
+        console.error(parent, 'Tippy child not found, aborting');
         return;
       }
 
-      const instance = tippy(child, {
+      instance = tippy(child, {
         content: this.props.content,
         delay: [this.props.delay || 200, 0],
         duration: this.props.duration,
         placement: this.props.placement,
       });
+    });
 
-      return () => instance.destroy();
+    onWillUnmount(() => {
+      if (instance) {
+        instance.destroy();
+      }
     });
   }
 }

@@ -42,9 +42,11 @@ class ContentEditor extends Component<Props> {
               <span class="text-slate-500 font-medium text-xs">Page Break</span>
             </div>
           <div class="flex flex-col justify-center gap-2 ml-2">
-            <Tippy t-if="element.readonly" placement="'left'" content="_('This page break is locked and cannot be removed, it is part of the original content')">
-              <Button square="true" disabled="true" level="'secondary'" icon="'lock'" />
-            </Tippy>
+            <t t-if="element.readonly" >
+              <Tippy placement="'left'" content="_('This page break is locked and cannot be removed, it is part of the original content')">
+                <Button square="true" disabled="true" level="'secondary'" icon="'lock'" />
+              </Tippy>
+            </t>
             <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
               <Button square="true" color="'red'" level="'secondary'" icon="'trash'" onClick="() => this.remove(element.id)" />
             </div>
@@ -76,9 +78,11 @@ class ContentEditor extends Component<Props> {
                 <Button disabled="true" level="'secondary'" icon="'lock'" square="true" />
               </Tippy>
             </div>
-            <Tippy placement="'left'" content="_('Open Paragraph source text')" delay="200">
-              <Button title="'Open source text'" square="true" level="'secondary'" t-if="element.readonly" icon="'eye'" onClick="() => this.openSource(element.id)" />
-            </Tippy>
+            <t t-if="element.readonly">
+              <Tippy placement="'left'" content="_('Open Paragraph source text')" delay="200">
+                <Button title="'Open source text'" square="true" level="'secondary'" icon="'eye'" onClick="() => this.openSource(element.id)" />
+              </Tippy>
+            </t>
           </div>
         </div>
       </div>
