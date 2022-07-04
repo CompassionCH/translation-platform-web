@@ -1,4 +1,3 @@
-import store from "../store";
 import BaseDAO, { FieldsMapping, generateSearchDomain, generateSearchQuery } from "./BaseDAO";
 import OdooAPI from "./OdooAPI";
 import { Language } from "./SettingsDAO";
@@ -11,6 +10,7 @@ export type TranslationSkill = {
 
 export type Translator = {
   translatorId: number;
+  api_key?: string;
   email?: string;
   role: 'user' | 'admin';
   name?: string;
@@ -101,6 +101,7 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async current() {
     const data = await OdooAPI.execute_kw<Translator>('translation.user', 'get_my_info', []);
+    console.log(data);
     if (!data) {
       console.error('Unable to find current authenticated user!', JSON.stringify(this.store));
       throw new Error('A Critical error occured');
@@ -113,6 +114,7 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
     if (!data) return undefined;
     return {
       ...data,
+      api_key: OdooAPI.ifNoneElse(data.api_key || undefined),
       email: OdooAPI.ifNoneElse(data.email),
       name: OdooAPI.ifNoneElse(data.name),
       age: OdooAPI.ifNoneElse(data.age),

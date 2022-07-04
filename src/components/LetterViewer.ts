@@ -27,7 +27,7 @@ class LetterViewer extends Component {
           <div class="shadow-sm overflow-hidden h-full border-gray-400 flex group">
             <div class="w-full h-full relative" id="letter-viewer">
               <t t-if="state.active === false and state.mode === 'letter'">
-                <iframe t-att-src="props.letter.pdfUrl + '?translatorId=' + currentTranslator.data.translatorId" class="w-full h-full" />
+                <iframe t-att-src="props.letter.pdfUrl + '?api_key=' + currentTranslator.data.api_key" class="w-full h-full" />
               </t>
               <div t-elif="state.mode === 'source'" class="w-full h-full bg-slate-600 py-4 px-5">
                 <h3 class="font-semibold text-slate-100 text-2xl">Source Text to translate</h3>

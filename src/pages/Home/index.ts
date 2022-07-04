@@ -48,7 +48,6 @@ export default class Home extends Component {
 
 
   tutorial = buildTutorial([
-    /*
     {
       text: _('Welcome to the Compassion Translation Platform. This small tutorial will guide you through its features and how it works. You can close it whenever you want to by clicking the "Exit" button.')
     },
@@ -58,7 +57,6 @@ export default class Home extends Component {
         ? _('You currently have no skills defined, let us begin by registering one or more')
         : _('It seems you already have translation skills defined, let us see how you can manage them'),
     },
-    */
     {
       beforeShowPromise: () => new Promise((resolve) => {
         this.state.manageSkillsModal = true;

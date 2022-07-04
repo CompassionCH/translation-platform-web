@@ -6,7 +6,7 @@ import _ from './i18n';
  * Settings are saved in local storage
  */
 const TUTORIAL_DISPLAY_KEY = 'show-tutorial';
-const showTutorial = window.localStorage.getItem(TUTORIAL_DISPLAY_KEY) || '1';
+const showTutorial = () => (window.localStorage.getItem(TUTORIAL_DISPLAY_KEY) || '1') === '1';
 
 export function buildTutorial(steps: Shepherd.Step.StepOptions[]) {
   const tutorial = new Shepherd.Tour({
@@ -48,7 +48,7 @@ export function buildTutorial(steps: Shepherd.Step.StepOptions[]) {
  * @param tutorial 
  */
 export const startTutorial = (tutorial: Shepherd.Tour) => {
-  if (showTutorial === '1') {
+  if (showTutorial()) {
     tutorial.start();
   }
 };
