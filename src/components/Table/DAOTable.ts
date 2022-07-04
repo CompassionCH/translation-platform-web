@@ -20,6 +20,7 @@ type Props<T extends Record<string, any>> = {
   onSelect?: Function;
   class?: string;
   onRowClick?: Function;
+  baseDomain?: Function;
 };
 
 const props = {
@@ -30,6 +31,7 @@ const props = {
   onSelect: { type: Function, optional: true },
   class: { type: String, optional: true },
   onRowClick: { type: Function, optional: true },
+  baseDomain: { type: Function, optional: true },
 };
 
 type State<T> = {
@@ -88,6 +90,18 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
     sortOrder: 'desc',
   }, this.props.key);
 
+  setup(): void {
+    this.update(this.props);
+
+    onMounted(() => {
+      this.updateData();
+    });
+
+    onWillUpdateProps((nextProps) => {
+      this.update(nextProps);
+    });
+  }
+
   toggleAll() {
     if (this.state.allSelectedIds) {
       this.state.allSelectedIds = false;
@@ -136,25 +150,16 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
     }
   }
 
-  updateData(filters: ListQueryParams<T> = this.filters) {
+  async updateData(filters: ListQueryParams<T> = this.filters) {
     this.state.loading = true;
-    this.props.dao.list(filters).then((data) => {
-      this.state.pageData = data.data;
-      this.state.total = data.total;
-      this.state.loading = false;
-    });
-  }
+    const domain = this.props.baseDomain ? await this.props.baseDomain() : [];
+    filters.search = [...domain, ...filters.search];
 
-  setup(): void {
-    this.update(this.props);
-
-    onMounted(() => {
-      this.updateData();
-    });
-
-    onWillUpdateProps((nextProps) => {
-      this.update(nextProps);
-    });
+    console.log(domain, filters);
+    const data = await this.props.dao.list(filters);
+    this.state.pageData = data.data;
+    this.state.total = data.total;
+    this.state.loading = false;
   }
 
   changePage(page: number) {

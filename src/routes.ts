@@ -1,8 +1,19 @@
 import Shepherd from "shepherd.js";
 import { Guard, Route } from "./components/Router/Router";
+import { getCurrentTranslator } from "./hooks/useCurrentTranslator";
+import _ from "./i18n";
 import t_ from "./i18n";
+import notyf from "./notifications";
 import store from "./store";
 
+const adminGuard = async () => {
+  if (getCurrentTranslator()?.role !== 'admin') {
+    notyf.error(_('Access denied'));
+    return '/';
+  } else {
+    return;
+  }
+};
 /**
  * The first route matching by path is taken, so more generic routes
  * such as /letters must come after /letters/letter-edit/:letterId for example.
@@ -20,6 +31,7 @@ const routes: Route[] = [
     component: () => import('./pages/Translators'),
     name: 'Translators',
     path: '/translators',
+    guards: [adminGuard],
   },
   {
     component: () => import('./pages/LetterView'),
@@ -42,6 +54,7 @@ const routes: Route[] = [
     component: () => import('./pages/Letters'),
     name: 'Letters',
     path: '/letters',
+    guards: [adminGuard],
   },
   {
     component: () => import('./pages/Login'),

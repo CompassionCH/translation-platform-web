@@ -45,4 +45,9 @@ const state = reactive<State>({
   }
 });
 
+// Readonly current translator
+export const getCurrentTranslator = () => state.data
+  ? JSON.parse(JSON.stringify(state.data)) as Translator
+  : undefined;
+
 export default () => useState(state);

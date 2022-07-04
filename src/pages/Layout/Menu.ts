@@ -21,7 +21,7 @@ class Menu extends Component {
           <Icon prefix="'fas'" icon="'user-group'" class="'text-xl'" />
         </MenuButton>
       </RouterLink>
-      <RouterLink to="'/letters'" t-slot-scope="scope">
+      <RouterLink to="'/letters'" t-slot-scope="scope" t-if="currentTranslator.data.role === 'admin'">
         <MenuButton tooltip="'Letters'" active="scope.active">
           <Icon prefix="'fas'" icon="'envelope'" class="'text-xl'" />
         </MenuButton>

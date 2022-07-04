@@ -9,8 +9,12 @@ import Button from '../../components/Button';
 import TableHeader from '../../components/Table/TableHeader';
 import LetterRowActions from "./LetterRowActions";
 import _ from "../../i18n";
+import useCurrentTranslator from "../../hooks/useCurrentTranslator";
+import notyf from "../../notifications";
+import { navigateTo } from "../../components/Router/Router";
 
 type State = {
+  loading: boolean;
   columns: Column[];
 };
 
@@ -24,9 +28,12 @@ class Letters extends Component {
     TableHeader,
   };
 
+  translator = useCurrentTranslator();
+
   dao = models.letters; // Directly passed to the dataTables component
 
   state = useState<State>({
+    loading: false,
     columns: [
       {
         name: 'priority',
@@ -52,7 +59,8 @@ class Letters extends Component {
         translatable: true,
         sortable: false,
       },
-      {
+      // Display translator only if admin
+      ...(this.translator.data?.role === 'admin' ? [{
         name: 'translatorId',
         header: 'Translator',
         component: (translatorId?: number) => {
@@ -64,7 +72,7 @@ class Letters extends Component {
             }
           };
         },
-      },
+      }] : []),
       {
         name: 'date',
         searchable: false,
@@ -83,6 +91,17 @@ class Letters extends Component {
       }
     ],
   });
+
+  setup() {
+    this.state.loading = true;
+    this.translator.loadIfNotInitialized().then(() => {
+      if (this.translator.data?.skills.filter(it => it.verified).length === 0) {
+        this.state.loading = false;
+        notyf.error(_('You cannot list letters while having 0 verified translation skill'));
+        navigateTo('/');
+      }
+    });
+  }
 };
 
 export default Letters;

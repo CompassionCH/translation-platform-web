@@ -67,6 +67,32 @@ export function generateSortString<T>(sortBy: keyof T, sortOrder: 'asc' | 'desc'
   }
 };
 
+export function fieldSearchDomain<T>(item: SearchDomain<T>, fieldsMapping: FieldsMapping<T>) {
+  if (!(item.column in fieldsMapping)) {
+    console.error(`Unknown field ${item.column as string}, you must define it in the fields mapping table to search it`);
+    return undefined;
+  } else {
+    // Defines a list of supported operators the user can add in the beginning of the search term
+    const operators = {
+      '!=': '!=',
+      '>=': '>=',
+      '<=': '<=',
+      '=': '=',
+      '<': '<',
+      '>': '>',
+      '%': 'ilike',
+    };
+
+    // Using find, will match first operator, so start with 2chars operators
+    const [field, formatter] = fieldMappingItems(item.column, fieldsMapping);
+    const op = Object.keys(operators).find(op => item.term.startsWith(op)) || 'ilike';
+
+    // Remove operator from actual term search
+    const term = item.term.replace(op, '').trim();
+    return [field, op, formatter(term)];
+  }
+}
+
 /**
  * Generates a search domain for a given set of search terms and columns
  * @param domain 
@@ -76,27 +102,9 @@ export function generateSortString<T>(sortBy: keyof T, sortOrder: 'asc' | 'desc'
 export function generateSearchDomain<T>(domain: SearchDomain<T>[], fieldsMapping: FieldsMapping<T>) {
   const result = [];
   for (const item of domain) {
-    if (!(item.column in fieldsMapping)) {
-      console.error(`Unknown field ${item.column as string}, you must define it in the fields mapping table to search it`);
-    } else {
-      // Defines a list of supported operators the user can add in the beginning of the search term
-      const operators = {
-        '!=': '!=',
-        '>=': '>=',
-        '<=': '<=',
-        '=': '=',
-        '<': '<',
-        '>': '>',
-        '%': 'ilike',
-      };
-
-      // Using find, will match first operator, so start with 2chars operators
-      const [field, formatter] = fieldMappingItems(item.column, fieldsMapping);
-      const op = Object.keys(operators).find(op => item.term.startsWith(op)) || 'ilike';
-
-      // Remove operator from actual term search
-      const term = item.term.replace(op, '').trim();
-      result.push([field, op, formatter(term)]);
+    const search = fieldSearchDomain(item, fieldsMapping);
+    if (search) {
+      result.push(search);
     }
   }
 

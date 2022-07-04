@@ -166,6 +166,8 @@ export default class Home extends Component {
       };
     }));
 
+    console.log(skillLetters);
+
     this.state.skillLetters = skillLetters.sort((a, b) => {
       if (a.skill.verified) return 1;
       if (b.skill.verified) return -1;

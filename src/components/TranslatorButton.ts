@@ -3,13 +3,15 @@ import { models } from "../models";
 import Loader from "./Loader";
 import TranslatorModal from "./TranslatorModal";
 
+const ERROR_DETECTED = '__error__';
+
 // Ships with a small cache to avoid reloading translators that were already
 // loaded, as we only need the name and nothing else
 const cache = new Map<number, string | undefined>();
 const listeners = new Map<number, Function[]>();
 
 const getTranslatorName = async (translatorId: number): Promise<string | undefined> => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     // Already in cache, return it
     if (cache.has(translatorId)) {
       resolve(cache.get(translatorId));
@@ -26,7 +28,7 @@ const getTranslatorName = async (translatorId: number): Promise<string | undefin
     else {
       // Add current listener
       listeners.set(translatorId, [
-        (name?: string) => resolve(name),
+        (name?: string, err?: Error) => err ? reject(err) : resolve(name),
       ]);
 
       models.translators.find(translatorId).then((translator) => {
@@ -37,6 +39,11 @@ const getTranslatorName = async (translatorId: number): Promise<string | undefin
         const waitingListeners = listeners.get(translatorId) || [];
         listeners.delete(translatorId);
         waitingListeners.forEach(callback => callback(name));
+      }).catch((err) => {
+        cache.set(translatorId, ERROR_DETECTED); // Quick and dirty
+        const waitingListeners = listeners.get(translatorId) || [];
+        listeners.delete(translatorId);
+        waitingListeners.forEach(callback => callback(undefined, err));
       });
     }
   });
@@ -45,11 +52,11 @@ const getTranslatorName = async (translatorId: number): Promise<string | undefin
 class TranslatorButton extends Component {
 
   static template = xml`
-    <button class="text-blue-700 hover:text-compassion transition-colors flex gap-2" t-att-class="props.class || ''" t-on-click="() => state.active = true">
+    <button t-if="state.authorized" class="text-blue-700 hover:text-compassion transition-colors flex gap-2" t-att-class="props.class || ''" t-on-click="() => state.active = true">
       <t t-if="state.translatorName" t-esc="state.translatorName" />
-      <t t-else="" t-esc="props.translatorId" />
-      <Loader t-if="state.loading" />
     </button>
+    <span t-else="!state.authorized" class="text-slate-500 text-sm italic">Hidden</span>
+    <Loader t-if="state.loading" />
     <TranslatorModal translatorId="state.active ? props.translatorId : undefined" onClose="() => state.active = false" />
   `;
 
@@ -65,6 +72,7 @@ class TranslatorButton extends Component {
 
   state = useState({
     loading: false,
+    authorized: true,
     translatorName: undefined as undefined | string,
     active: false,
   });
@@ -72,7 +80,14 @@ class TranslatorButton extends Component {
   setup() {
     this.state.loading = true;
     getTranslatorName(this.props.translatorId).then((name) => {
-      this.state.translatorName = name;
+      if (name === ERROR_DETECTED) {
+        this.state.authorized = false;
+      } else {
+        this.state.translatorName = name;
+      }
+    }).catch(() => {
+      this.state.authorized = false;
+    }).finally(() => {
       this.state.loading = false;
     });
   }

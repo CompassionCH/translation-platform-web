@@ -101,7 +101,6 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async current() {
     const data = await OdooAPI.execute_kw<Translator>('translation.user', 'get_my_info', []);
-    console.log(data);
     if (!data) {
       console.error('Unable to find current authenticated user!', JSON.stringify(this.store));
       throw new Error('A Critical error occured');
