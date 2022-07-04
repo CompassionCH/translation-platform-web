@@ -17,16 +17,18 @@ export function buildTutorial(steps: Shepherd.Step.StepOptions[]) {
 
     const buttons = step.buttons as Shepherd.Step.StepOptionsButton[] || [];
 
-    buttons.splice(0, 0, {
-      classes: 'bg-slate-700 text-white',
-      action: () => {
-        tutorial.cancel();
-        window.localStorage.setItem(TUTORIAL_DISPLAY_KEY, '0');
-      },
-      text: _('Close'),
-    });
+    if (!step.classes?.includes('no-exit')) {
+      buttons.splice(0, 0, {
+        classes: 'bg-slate-700 text-white',
+        action: () => {
+          tutorial.cancel();
+          window.localStorage.setItem(TUTORIAL_DISPLAY_KEY, '0');
+        },
+        text: _('Exit'),
+      });
+    }
 
-    if (i < steps.length - 1) {
+    if (i < steps.length - 1 && !step.classes?.includes('no-next')) {
       buttons.push({
         classes: 'bg-compassion text-white',
         action: () => tutorial.next(),
@@ -39,4 +41,14 @@ export function buildTutorial(steps: Shepherd.Step.StepOptions[]) {
 
   tutorial.addSteps(steps);
   return tutorial;
+};
+
+/**
+ * Starts the given tutorial only if the user has no settings saying otherwise
+ * @param tutorial 
+ */
+export const startTutorial = (tutorial: Shepherd.Tour) => {
+  if (showTutorial === '1') {
+    tutorial.start();
+  }
 };

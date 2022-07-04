@@ -32,29 +32,28 @@ class TranslationCard extends Component<Props> {
         </div>
       </div>
       <div class="p-4 bg-white flex-1">
-        <div t-if="props.letters.length gt 0 and props.status !== 'unverified'">
-          <RouterLink to="'/letters/letter-edit/' + props.letters[0].id">
-            <Button icon="'star'" color="'compassion'" level="props.status === 'highlight' ? 'primary' : 'secondary'" class="'w-full mb-2'" size="'sm'">Take the first</Button>
-          </RouterLink>
-
-          <!-- letters -list -->
-          <RouterLink t-foreach="props.letters" t-as="text" t-key="text.id" to="'/letters/letter-edit/' + text.id">
-            <button class="block text-sm text-slate-700 hover:text-compassion hover:translate-x-0.5 transform transition-all mb-1">
-              <span class="font-semibold" t-esc="text.id" />
-              <span class="pl-2" t-esc="'(' + _(text.source) + ' -> ' + _(text.target) + ')'" />
-            </button>
-          </RouterLink>
+        <div t-if="props.letters.length === 0">
+          <p class="text-slate-400 text-center">There's currently no letters to translate here</p>
         </div>
-        <div t-elif="props.status !== 'unverified'">
-          <RouterLink t-if="props.letters.length gt 0" to="'/letters/letter-edit/' + props.letters[0].id">
-            <Button icon="'star'" color="'compassion'" level="props.highlight ? 'primary' : 'secondary'" class="'w-full mb-2'" size="'sm'">Translate Verification Letter</Button>
-          </RouterLink>
-          <p t-else="" class="px-3 py-1.5 bg-yellow-50 border border-solid border-yellow-200 text-sm text-center text-yellow-700 mb-1">There are currently no letters</p>
-          <p class="text-center text-slate-600 text-sm">This skill must be validated, to do so you must first translate a letter which will be double checked at Compassion</p>
-        </div>
-        <div t-else="" class="flex h-full items-center justify-center flex-col">
-          <p class="text-slate-400 text-center">There's currently no text to translate here</p>
-        </div>
+        <t t-else="">
+          <div t-if="props.status !== 'unverified'">
+            <RouterLink to="'/letters/letter-edit/' + props.letters[0].id">
+              <Button icon="'star'" color="'compassion'" level="props.status === 'highlight' ? 'primary' : 'secondary'" class="'w-full mb-2'" size="'sm'">Take the first</Button>
+            </RouterLink>
+            <RouterLink t-foreach="props.letters" t-as="text" t-key="text.id" to="'/letters/letter-edit/' + text.id">
+              <button class="block text-sm text-slate-700 hover:text-compassion hover:translate-x-0.5 transform transition-all mb-1">
+                <span class="font-semibold" t-esc="text.id" />
+                <span class="pl-2" t-esc="'(' + _(text.source) + ' -> ' + _(text.target) + ')'" />
+              </button>
+            </RouterLink>
+          </div>
+          <div t-else="">
+            <RouterLink t-if="props.letters.length gt 0" to="'/letters/letter-edit/' + props.letters[0].id">
+              <Button icon="'star'" color="'compassion'" level="props.highlight ? 'primary' : 'secondary'" class="'w-full mb-2'" size="'sm'">Translate Verification Letter</Button>
+            </RouterLink>
+            <p class="text-center text-slate-600 text-sm">This skill must be validated, to do so you must first translate a letter which will be double checked at Compassion</p>
+          </div>
+        </t>
       </div>
     </div>
   `;
@@ -82,6 +81,10 @@ class TranslationCard extends Component<Props> {
   };
 
   _ = _;
+  
+  setup() {
+    console.log(this.props.status, this.props.letters);
+  }
 }
 
 export default TranslationCard;

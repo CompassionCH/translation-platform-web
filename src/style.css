@@ -43,8 +43,12 @@ body {
 
 /* shepherd */
 .shepherd-element {
-  @apply bg-white shadow-xl w-96;
+  @apply p-5;
   z-index: 70;
+}
+
+.shepherd-content {
+  @apply bg-white shadow-xl w-96;
 }
 
 .shepherd-text {
@@ -80,3 +84,4 @@ body {
   @apply opacity-50;
   @apply pointer-events-auto;
 }
+

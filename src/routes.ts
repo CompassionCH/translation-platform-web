@@ -1,3 +1,4 @@
+import Shepherd from "shepherd.js";
 import { Guard, Route } from "./components/Router/Router";
 import t_ from "./i18n";
 import store from "./store";
@@ -76,6 +77,13 @@ const guards: Guard[] = [
   async (_, to) => {
     const title = (to ? t_(to) + " | " : '') + t_("Compassion Translation Platform");
     document.title = title;
+  },
+
+  // Guard to close any tutorial running in-between pages
+  async () => {
+    if (Shepherd.activeTour) {
+      Shepherd.activeTour.cancel();
+    }
   },
 ];
 

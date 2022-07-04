@@ -7,9 +7,10 @@ import { ListResponse } from '../../models/BaseDAO';
 import { Letter, models, Translator } from "../../models";
 import { BlurLoader } from '../../components/Loader';
 import LanguagesPickModal from './LanguagesPickModal';
-import tutorial from "./tutorial";
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 import _ from "../../i18n";
+import { buildTutorial, startTutorial } from "../../tutorial";
+import { navigateTo } from "../../components/Router/Router";
 
 type ArrayElement<ArrayType extends readonly unknown[]> = 
   ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
@@ -45,10 +46,55 @@ export default class Home extends Component {
     loading: false,
   });
 
+
+  tutorial = buildTutorial([
+    /*
+    {
+      text: _('Welcome to the Compassion Translation Platform. This small tutorial will guide you through its features and how it works. You can close it whenever you want to by clicking the "Exit" button.')
+    },
+    {
+      // Defined, tutorial is called from within setup, post refresh, meaning the translator is fetched
+      text: this.currentTranslator.data?.skills.length === 0
+        ? _('You currently have no skills defined, let us begin by registering one or more')
+        : _('It seems you already have translation skills defined, let us see how you can manage them'),
+    },
+    */
+    {
+      beforeShowPromise: () => new Promise((resolve) => {
+        this.state.manageSkillsModal = true;
+        setTimeout(resolve, 300);
+      }),
+      classes: 'no-next no-exit',
+      text: _('This tool allows you to register new skills. If you want to remove some please contact the Compassion team. You can add new skills by clicking the "Add Skill" button. Once done click "Cancel" if you have no changes to do, or "Register new Skills" to validate'),
+      attachTo: {
+        element: '.modal',
+        on: 'right',
+      }
+    },
+    {
+      id: 'post-manage-skills',
+      text: _('Your saved letters will be displayed here along with the ones waiting to be translated. Before picking one, let us review how the translation window works.'),
+      attachTo: {
+        element: '.waiting-letters-cards',
+        on: 'top',
+      },
+      classes: 'no-next',
+      buttons: [{
+        classes: 'bg-compassion text-white',
+        text: _('Next'),
+        action: () => {
+          this.tutorial.complete();
+          console.log('SWAG');
+          navigateTo('/letters/demo-edit-letter');
+        },
+      }],
+    },
+  ]);
+
   setup() {
     // Fetch letters to display to the user for each of his translation skill
     this.refresh().then(() => {
-      tutorial.start();
+      startTutorial(this.tutorial);
     });
   }
 
@@ -73,6 +119,17 @@ export default class Home extends Component {
     this.state.loading = true;
     await this.currentTranslator.refresh();
     this.refresh();
+    this.postSkillsModal();
+  }
+
+  async closeSkillsModal() {
+    this.state.manageSkillsModal = false;
+    this.postSkillsModal();
+  }
+
+  async postSkillsModal() {
+    this.tutorial.getCurrentStep()?.hide();
+    setTimeout(() => this.tutorial.getById('post-manage-skills')?.show(), 300);
   }
 
   async fetchSaved() {

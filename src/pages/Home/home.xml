@@ -1,7 +1,7 @@
 <div class="relative">
   <BlurLoader active="state.loading or currentTranslator.loading" fixed="true" class="'ml-10'" />
   <div class="container mx-auto" t-if="!state.loading and !currentTranslator.loading">
-    <LanguagesPickModal active="state.manageSkillsModal" onClose="() => this.state.manageSkillsModal = false" translatorId="currentTranslator.data.translatorId" onChange="() => this.onSkillsChange()" />
+    <LanguagesPickModal active="state.manageSkillsModal" onClose="() => this.closeSkillsModal()" translatorId="currentTranslator.data.translatorId" onChange="() => this.onSkillsChange()" />
     <div class="pt-20">
       <h3 class="text-slate-600 font-light text-2xl text-center">Compassion</h3>
       <h1 class="text-slate-700 font-light text-5xl text-center">Translation Platform</h1>
@@ -14,7 +14,7 @@
       <div class="flex justify-center mb-10">
         <Button size="'sm'" level="'secondary'" onClick="() => this.state.manageSkillsModal = true">Add new translation skills</Button>
       </div>
-      <div class="flex flex-wrap mt-5 gap-10 justify-center">
+      <div class="flex flex-wrap mt-5 gap-10 justify-center waiting-letters-cards">
         <TranslationCard t-if="state.savedLetters and state.savedLetters.total gt 0" title="_('Saved Letters')"
           remaining="state.savedLetters.total"
           letters="state.savedLetters.data"
