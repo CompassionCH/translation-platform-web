@@ -31,7 +31,8 @@ class LanguagePickModal extends Component {
             <Button square="true" level="'secondary'" icon="'trash'" onClick="() => this.state.potentialSkills.splice(skill_index, 1)" />
           </div>
           <div class="flex justify-center">
-            <Button onClick="() => this.addSkill()" level="'secondary'" size="'sm'">Add Skill</Button>
+            <Button onClick="() => this.addSkill()" level="'secondary'" t-if="state.allowedCompetences.length > 0" size="'sm'">Add Skill</Button>
+            <p t-else="" class="text-sm text-slate-700 font-semibold">You already have all the translation skills!</p>
           </div>
         </div>
       </div>
