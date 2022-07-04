@@ -1,4 +1,4 @@
-import { Component, onMounted, useState } from '@odoo/owl';
+import { Component, useState } from '@odoo/owl';
 import template from './layout.xml';
 import Router, { navigateTo } from '../../components/Router/Router';
 import RouterView from '../../components/Router/RouterView';
