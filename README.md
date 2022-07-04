@@ -119,4 +119,12 @@ Patch the `application_unproxied` function like so:
     return werkzeug.exceptions.NotFound("No handler found.\n")(environ, start_response)
 ```
 
+Then you also have to update the `/odoo/addons/base/controllers/rpc.py`, update both `xmlrpc/2/<service>` and `/xmlrpc/<service>` route params
+```python
+@route("/xmlrpc/<service>", auth="none", methods=["POST"], csrf=False, save_session=False, cors='*')
+
+@route("/xmlrpc/2/<service>", auth="none", methods=["POST"], csrf=False, save_session=False, cors='*')
+```
+By adding the `cors="*"` parameter.
+
 Note that this only tested with Odoo 12 and responds accordingly to the preflight Option request.
