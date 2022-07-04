@@ -71,3 +71,36 @@ of the component.
 Whenever a missing translation is found it will be logged to the browser's console. you can easily dump
 the various missing translations by running `dumpMissingTranslations()` in your browser console, which will
 log a JSON object containing them.
+
+#### ODOO Dev environment and CORS requests
+
+When running the platform in dev environment, you will very probably run into a cross-origin requests
+problem. To fix it quick and dirty, edit the `/odoo/service/wsgi_server.py` in Odoo's source code.
+Patch the `application_unproxied` function like so:
+
+```python
+def application_unproxied(environ, start_response):
+  """ WSGI entry point."""
+  # cleanup db/uid trackers - they're set at HTTP dispatch in
+  # web.session.OpenERPSession.send() and at RPC dispatch in
+  # odoo.service.web_services.objects_proxy.dispatch().
+  # /!\ The cleanup cannot be done at the end of this `application`
+  # method because werkzeug still produces relevant logging afterwards
+  if hasattr(threading.current_thread(), 'uid'):
+      del threading.current_thread().uid
+  if hasattr(threading.current_thread(), 'dbname'):
+      del threading.current_thread().dbname
+  if hasattr(threading.current_thread(), 'url'):
+      del threading.current_thread().url
+
+  if environ['REQUEST_METHOD'] == "OPTIONS":
+      response = werkzeug.wrappers.Response('OPTIONS METHOD DETECTED')
+      response.headers['Access-Control-Allow-Origin'] = '*'
+      response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+      response.headers['Access-Control-Max-Age'] = 1000
+      # note that '*' is not valid for Access-Control-Allow-Headers
+      response.headers['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
+      return response(environ, start_response)
+```
+
+Note that this only tested with Odoo 12 and responds accordingly to the preflight Option request.
