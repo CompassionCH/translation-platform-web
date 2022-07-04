@@ -85,28 +85,38 @@ problem. To fix it quick and dirty, edit the `/odoo/service/wsgi_server.py` in O
 Patch the `application_unproxied` function like so:
 
 ```python
-def application_unproxied(environ, start_response):
-  """ WSGI entry point."""
-  # cleanup db/uid trackers - they're set at HTTP dispatch in
-  # web.session.OpenERPSession.send() and at RPC dispatch in
-  # odoo.service.web_services.objects_proxy.dispatch().
-  # /!\ The cleanup cannot be done at the end of this `application`
-  # method because werkzeug still produces relevant logging afterwards
-  if hasattr(threading.current_thread(), 'uid'):
-      del threading.current_thread().uid
-  if hasattr(threading.current_thread(), 'dbname'):
-      del threading.current_thread().dbname
-  if hasattr(threading.current_thread(), 'url'):
-      del threading.current_thread().url
+  def application_unproxied(environ, start_response):
+    """ WSGI entry point."""
+    # cleanup db/uid trackers - they're set at HTTP dispatch in
+    # web.session.OpenERPSession.send() and at RPC dispatch in
+    # odoo.service.web_services.objects_proxy.dispatch().
+    # /!\ The cleanup cannot be done at the end of this `application`
+    # method because werkzeug still produces relevant logging afterwards
+    if hasattr(threading.current_thread(), 'uid'):
+        del threading.current_thread().uid
+    if hasattr(threading.current_thread(), 'dbname'):
+        del threading.current_thread().dbname
+    if hasattr(threading.current_thread(), 'url'):
+        del threading.current_thread().url
 
-  if environ['REQUEST_METHOD'] == "OPTIONS":
-      response = werkzeug.wrappers.Response('OPTIONS METHOD DETECTED')
-      response.headers['Access-Control-Allow-Origin'] = '*'
-      response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-      response.headers['Access-Control-Max-Age'] = 1000
-      # note that '*' is not valid for Access-Control-Allow-Headers
-      response.headers['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
-      return response(environ, start_response)
+    if environ['REQUEST_METHOD'] == "OPTIONS":
+        response = werkzeug.wrappers.Response('OPTIONS METHOD DETECTED')
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+        response.headers['Access-Control-Max-Age'] = 1000
+        # note that '*' is not valid for Access-Control-Allow-Headers
+        response.headers['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
+        return response(environ, start_response)
+
+
+
+    with odoo.api.Environment.manage():
+        result = odoo.http.root(environ, start_response)
+        if result is not None:
+            return result
+
+    # We never returned from the loop.
+    return werkzeug.exceptions.NotFound("No handler found.\n")(environ, start_response)
 ```
 
 Note that this only tested with Odoo 12 and responds accordingly to the preflight Option request.
