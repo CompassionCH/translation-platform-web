@@ -9,7 +9,7 @@ import { BlurLoader } from '../../components/Loader';
 import LanguagesPickModal from './LanguagesPickModal';
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 import _ from "../../i18n";
-import { buildTutorial, startTutorial } from "../../tutorial";
+import { buildTutorial, startTutorial, showTutorial } from "../../tutorial";
 import { navigateTo } from "../../components/Router/Router";
 
 type ArrayElement<ArrayType extends readonly unknown[]> = 
@@ -126,8 +126,10 @@ export default class Home extends Component {
   }
 
   async postSkillsModal() {
-    this.tutorial.getCurrentStep()?.hide();
-    setTimeout(() => this.tutorial.getById('post-manage-skills')?.show(), 300);
+    if (showTutorial()) {
+      this.tutorial.getCurrentStep()?.hide();
+      setTimeout(() => this.tutorial.getById('post-manage-skills')?.show(), 300);
+    }
   }
 
   async fetchSaved() {
@@ -165,8 +167,6 @@ export default class Home extends Component {
         letters: skillLetters.data,
       };
     }));
-
-    console.log(skillLetters);
 
     this.state.skillLetters = skillLetters.sort((a, b) => {
       if (a.skill.verified) return 1;

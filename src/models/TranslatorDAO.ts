@@ -91,6 +91,7 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
   },
 
   async registerSkills(translatorId, skills) {
+    console.log(skills);
     for await (const skillId of skills) {
       // Add skills sequentially to avoid overloading the server with parallel API calls
       await OdooAPI.execute_kw('translation.user', 'add_skill', [translatorId, skillId]);

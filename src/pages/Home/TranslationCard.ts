@@ -81,10 +81,6 @@ class TranslationCard extends Component<Props> {
   };
 
   _ = _;
-  
-  setup() {
-    console.log(this.props.status, this.props.letters);
-  }
 }
 
 export default TranslationCard;
