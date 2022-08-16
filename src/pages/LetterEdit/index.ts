@@ -1,7 +1,6 @@
 import { Component, onMounted, useEffect, useState } from "@odoo/owl";
 import template from './letterEdit.xml';
-import { Letter, models, Translator } from "../../models";
-import { Element } from "../../models/LetterDAO";
+import { Letter, models } from "../../models";
 import notyf from "../../notifications";
 import LetterViewer from "../../components/LetterViewer";
 import Button from '../../components/Button';
@@ -50,8 +49,6 @@ class LetterEdit extends Component {
     saveTimeout: undefined,
   });
 
-  contentGetter: undefined | (() => Element[]) = undefined;
-
   currentTranslator = useCurrentTranslator();
 
   setup() {
@@ -83,21 +80,78 @@ class LetterEdit extends Component {
     });
   }
 
-  async submit() {
-    if (!this.contentGetter) {
+  addParagraph() {
+    if (!this.state.letter?.translatedElements) {
       return;
-    }  
+    }
+    this.state.letter.translatedElements.push({
+      id: Date.now(),
+      type: 'paragraph',
+      readonly: false,
+      source: '',
+      content: '',
+    });
+    
+    if (this.props.onChange) {
+      this.props.onChange();
+    }
+  }
 
+  addPageBreak() {
+    if (!this.state.letter?.translatedElements) {
+      return;
+    }
+    this.state.letter.translatedElements.push({
+      id: Date.now(),
+      type: 'pageBreak',
+      readonly: false,
+    });
+
+    if (this.props.onChange) {
+      this.props.onChange();
+    }
+  }
+
+  remove(elemId: string | number) {
+    if (!this.state.letter?.translatedElements) {
+      return;
+    }
+    const index = this.state.letter.translatedElements.findIndex(it => it.id === elemId);
+    this.state.letter.translatedElements.splice(index, 1);
+
+    if (this.props.onChange) {
+      this.props.onChange();
+    }
+  }
+
+  move(elemId: string | number, delta: number) {
+    if (!this.state.letter?.translatedElements) {
+      return;
+    }
+    // Copy array so that we dont trigger useless repatching
+    const items = [...this.state.letter.translatedElements];
+    const i = items.findIndex(it => it.id === elemId);
+    const elem = items[i];
+
+    // Remove elem from array before adding it back
+    items.splice(i, 1);
+    items.splice(i + delta, 0, elem);
+    this.state.letter.translatedElements = items;
+
+    if (this.props.onChange) {
+      this.props.onChange();
+    }
+  }
+
+  async submit() {
+    if (!this.state.letter?.translatedElements) {
+      return;
+    }
     await this.currentTranslator.loadIfNotInitialized();
-    const translatorId = this.state.letter?.translatorId || (this.currentTranslator.data as Translator).translatorId;
 
     this.state.internalLoading = true;
     const res = await models.letters.submit({
       ...this.state.letter as Letter,
-      lastUpdate: new Date(),
-      status: 'done',
-      translatorId,
-      translatedElements: this.contentGetter(),
     });
 
     if (!res) {
@@ -119,7 +173,7 @@ class LetterEdit extends Component {
   }
 
   async save(background = false) {
-    if (!this.contentGetter || this.state.saveLoading) {
+    if (!this.state.letter?.translatedElements || this.state.saveLoading) {
       return;
     }
 
@@ -132,14 +186,7 @@ class LetterEdit extends Component {
       await this.currentTranslator.refresh();
     }
 
-    const res = await models.letters.update({
-      ...this.state.letter as Letter,
-      lastUpdate: new Date(),
-      status: 'in progress',
-      // Currently editing user is submitting his letter
-      translatorId: this.currentTranslator.data?.translatorId,
-      translatedElements: this.contentGetter(),
-    });
+    const res = await models.letters.update({...this.state.letter as Letter});
 
     if (!res) {
       notyf.error(_('Unable to save letter'));

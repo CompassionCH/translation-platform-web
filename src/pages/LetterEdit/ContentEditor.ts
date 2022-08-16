@@ -1,5 +1,5 @@
-import { Component, onWillStart, onWillUpdateProps, useState, xml } from "@odoo/owl";
-import { Element, Letter, Paragraph } from "../../models/LetterDAO";
+import { Component, useState, xml } from "@odoo/owl";
+import { Letter, Paragraph } from "../../models/LetterDAO";
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import notyf from "../../notifications";
@@ -7,21 +7,24 @@ import Tippy from "../../components/Tippy";
 import _ from "../../i18n";
 
 type State = {
-  elements: Element[];
   hovered?: string | number;
   modalSourceElem?: string;
 };
 
 type Props = {
   letter: Letter;
-  contentRetriever: (callback: (() => Element[])) => void;
-  onChange: () => void;
+  onAddParagraph: () => void;
+  onAddPageBreak: () => void;
+  onRemove: (elemId: string | number) => void;
+  onMove: (elemId: string | number, delta: number) => void;
 };
 
 const props = {
   letter: { type: Object },
-  onChange: { type: Function, optional: true },
-  contentRetriever: { type: Function },
+  onAddParagraph: { type: Function, optional: true },
+  onAddPageBreak: { type: Function, optional: true },
+  onRemove: { type: Function, optional: true },
+  onMove: { type: Function, optional: true },
 };
 
 /**
@@ -33,7 +36,7 @@ class ContentEditor extends Component<Props> {
 
   static template = xml`
     <div id="content-editor">
-      <div t-foreach="state.elements" t-as="element" t-key="element.id" class="mx-4 mb-4 border border-solid transition-all editor-element" t-att-class="{
+      <div t-foreach="this.props.letter.translatedElements" t-as="element" t-key="element.id" class="mx-4 mb-4 border border-solid transition-all editor-element" t-att-class="{
         'border-compassion ring ring-2 ring-compassion ring-opacity-30 ring-offset-0': state.hovered === element.id,
         'border-transparent': state.hovered !== element.id,
       }">
@@ -65,13 +68,13 @@ class ContentEditor extends Component<Props> {
           </div>
           <div class="flex flex-col justify-center gap-2 ml-2 buttons-element-state">
             <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
-              <Button square="true" level="'secondary'" t-if="!element_first and !state.elements[element_index - 1].readonly" icon="'angle-up'" onClick="() => this.move(element.id, -1)" />
+              <Button square="true" level="'secondary'" t-if="!element_first and !this.props.letter.translatedElements[element_index - 1].readonly" icon="'angle-up'" t-on-click="() => this.move(element.id, -1)" />
             </div>
             <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
-              <Button square="true" color="'red'" level="'secondary'" icon="'trash'" onClick="() => this.remove(element.id)" />
+              <Button square="true" color="'red'" level="'secondary'" icon="'trash'" t-on-click="() => this.remove(element.id)" />
             </div>
             <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
-              <Button square="true" level="'secondary'" t-if="!element_last and !state.elements[element_index + 1].readonly" icon="'angle-down'" onClick="() => this.move(element.id, 1)" />
+              <Button square="true" level="'secondary'" t-if="!element_last and !this.props.letter.translatedElements[element_index + 1].readonly" icon="'angle-down'" t-on-click="() => this.move(element.id, 1)" />
             </div>
             <div t-if="element.readonly" class="flex justify-center">
               <Tippy placement="'left'" content="_('This paragraph is locked and cannot be removed, it is part of the original content')">
@@ -80,7 +83,7 @@ class ContentEditor extends Component<Props> {
             </div>
             <t t-if="element.readonly">
               <Tippy placement="'left'" content="_('Open Paragraph source text')" delay="200">
-                <Button title="'Open source text'" square="true" level="'secondary'" icon="'eye'" onClick="() => this.openSource(element.id)" />
+                <Button title="'Open source text'" square="true" level="'secondary'" icon="'eye'" t-on-click="() => this.openSource(element.id)" />
               </Tippy>
             </t>
           </div>
@@ -88,8 +91,8 @@ class ContentEditor extends Component<Props> {
       </div>
       <div class="flex justify-center mt-4">
         <div class="flex gap-2 buttons-add-elements">
-          <Button size="'sm'" icon="'plus'" level="'secondary'" onClick="() => this.addParagraph()">Paragraph</Button>
-          <Button size="'sm'" icon="'plus'" level="'secondary'" onClick="() => this.addPageBreak()">PageBreak</Button>
+          <Button size="'sm'" icon="'plus'" level="'secondary'" t-on-click="addParagraph">Paragraph</Button>
+          <Button size="'sm'" icon="'plus'" level="'secondary'" t-on-click="addPageBreak">PageBreak</Button>
         </div>
       </div>
     </div>
@@ -109,85 +112,32 @@ class ContentEditor extends Component<Props> {
     Modal,
   };
 
-  state = useState<State>({
-    elements: [],
-  });
+  state = useState<State>({});
 
   _ = _;
 
-  setup() {
-    onWillStart(() => {
-      // Deep copy letter translatable elements in editor state
-      // so that we're working with internal state not updating
-      // any remote object directly
-      this.state.elements = JSON.parse(JSON.stringify(this.props.letter.translatedElements));
-
-      // This is a common pattern to offer a way for the parent component
-      // to access the api exposed by the child one. In this case
-      // a function to retrieve the state of the edited translation elements
-      this.props.contentRetriever(() => ([...this.state.elements]));
-    });
-
-    onWillUpdateProps((nextProps) => this.state.elements = JSON.parse(JSON.stringify(nextProps.letter.translatedElements)));
-  }
-
   addParagraph() {
-    this.state.elements.push({
-      id: Date.now(),
-      type: 'paragraph',
-      readonly: false,
-      source: '',
-      content: '',
-    });
-    
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
+    this.props.onAddParagraph();
   }
 
   addPageBreak() {
-    this.state.elements.push({
-      id: Date.now(),
-      type: 'pageBreak',
-      readonly: false,
-    });
+    this.props.onAddPageBreak();
+  }
 
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
+  move(elemId: string | number, delta: number) {
+    this.props.onMove(elemId, delta);
   }
 
   remove(elemId: string | number) {
-    const index = this.state.elements.findIndex(it => it.id === elemId);
-    this.state.elements.splice(index, 1);
-
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
+    this.props.onRemove(elemId);
   }
 
   openSource(elemId: string | number) {
-    const elem = this.state.elements.find(it => it.id === elemId);
+    const elem = this.props.letter.translatedElements.find(it => it.id === elemId);
     if (!elem || elem.type !== 'paragraph') {
       notyf.error(_('Unable to find element'));
     } else {
       this.state.modalSourceElem = (elem as Paragraph).source;
-    }
-  }
-
-  move(elemId: string | number, delta: number) {
-    // Copy array so that we dont trigger useless repatching
-    const items = [...this.state.elements];
-    const i = items.findIndex(it => it.id === elemId);
-    const elem = items[i];
-
-    // Remove elem from array before adding it back
-    items.splice(i, 1);
-    items.splice(i + delta, 0, elem);
-    this.state.elements = items;
-
-    if (this.props.onChange) {
-      this.props.onChange();
     }
   }
 }

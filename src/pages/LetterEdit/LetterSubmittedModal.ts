@@ -13,7 +13,7 @@ class LetterSubmittedModal extends Component {
         <p class="text-center text-slate-600 p-4">
           Thank you for your contribution. Your letter will be reviewed before being sent,
           bringing a smile on the face of both <t t-esc="props.letter.child.firstName" /> and <t t-esc="props.letter.sponsor.firstName" />.<br/>
-          <span class="block font-semibold pt-4">Thank you in the name of Compassion Switzerland, we are glad to havey you in the team!</span>
+          <span class="block font-semibold pt-4">Thank you in the name of Compassion Switzerland, we are glad to have you in the team!</span>
         </p>
         <div class="flex justify-center mt-4 p-4 border-t border-solid border-slate-300 ">
           <RouterLink to="'/'">
