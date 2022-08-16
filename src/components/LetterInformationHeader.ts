@@ -10,12 +10,12 @@ class LetterInformationHeader extends Component {
         <div class="pt-3 pb-5 px-4 mr-10">
           <h4 class="font-semibold text-gray-800 mb-2 text-lg">Child Data</h4>
           <div class="flex text-sm mb-1 text-slate-800">
-            <p class="w-32  font-medium">First Name</p>
-            <p class="" t-esc="props.letter.child.firstName" />
+            <p class="w-32  font-medium">Preferred Name</p>
+            <p class="" t-esc="props.letter.child.preferredName" />
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
-            <p class="w-32  font-medium">Last Name</p>
-            <p class="" t-esc="props.letter.child.lastName" />
+            <p class="w-32  font-medium">Full Name</p>
+            <p class="" t-esc="props.letter.child.fullName" />
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Sex</p>
@@ -29,12 +29,12 @@ class LetterInformationHeader extends Component {
         <div class="py-3 px-4 mr-10">
           <h4 class="font-semibold text-gray-800 mb-2 text-lg">Sponsor Data</h4>
           <div class="flex text-sm mb-1 text-slate-800">
-            <p class="w-32  font-medium">First Name</p>
-            <p class="" t-esc="props.letter.sponsor.firstName" />
+            <p class="w-32  font-medium">Preferred Name</p>
+            <p class="" t-esc="props.letter.sponsor.preferredName" />
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
-            <p class="w-32  font-medium">Last Name</p>
-            <p class="" t-esc="props.letter.sponsor.lastName" />
+            <p class="w-32  font-medium">Full Name</p>
+            <p class="" t-esc="props.letter.sponsor.fullName" />
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Sex</p>
@@ -65,7 +65,7 @@ class LetterInformationHeader extends Component {
           </div>
           <div class="flex text-sm text-slate-800">
             <p class="w-32  font-medium">Translator</p>
-            <TranslatorButton t-if="translatorId" translatorId="props.letter.translatorId" />
+            <TranslatorButton t-if="props.letter.translatorId" translatorId="props.letter.translatorId" />
           </div>
         </div>
       </div>

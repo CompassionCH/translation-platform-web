@@ -54,7 +54,6 @@ const routes: Route[] = [
     component: () => import('./pages/Letters'),
     name: 'Letters',
     path: '/letters',
-    guards: [adminGuard],
   },
   {
     component: () => import('./pages/Login'),

@@ -36,14 +36,14 @@ const baseState = {
     unreadComments: false,
     date: new Date(),
     child: {
-      firstName: 'Demo',
-      lastName: 'Child',
+      preferredName: 'Demo',
+      fullName: 'Child',
       sex: 'M',
       age: 12,
     },
     sponsor: {
-      firstName: 'Demo',
-      lastName: 'Sponsor',
+      preferredName: 'Demo',
+      fullName: 'Sponsor',
       sex: 'F',
       age: 39,
     },

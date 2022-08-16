@@ -136,7 +136,7 @@ export default class Home extends Component {
     if (!this.currentTranslator.data) return;
     this.state.savedLetters = await models.letters.list({
       sortBy: 'priority',
-      sortOrder: 'desc',
+      sortOrder: 'asc',
       pageNumber: 0,
       pageSize: 5,
       search: [
@@ -151,7 +151,7 @@ export default class Home extends Component {
     const skillLetters = await Promise.all(this.currentTranslator.data.skills.map(async (skill) => {
       const skillLetters = await models.letters.list({
         sortBy: 'priority',
-        sortOrder: 'desc',
+        sortOrder: 'asc',
         pageSize: 5,
         pageNumber: 0,
         search: [

@@ -24,10 +24,11 @@ export interface PageBreak extends BaseElement {
 export type Element = Paragraph | PageBreak;
 
 export type Person = {
-  firstName: string;
-  lastName: string;
+  preferredName: string;
+  fullName: string;
   sex: 'M' | 'F';
   age: number;
+  ref: string;
 };
 
 export type Letter = {
@@ -187,7 +188,7 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
       const res = await OdooAPI.execute_kw<boolean>('correspondence', 'save_translation', [
         letter.id,
         letter.translatedElements,
-        letter.translatorId || "None",
+        letter.translatorId,
       ]);
       return res || false;
     } catch (e) {
@@ -201,7 +202,7 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
       await OdooAPI.execute_kw('correspondence', 'submit_translation', [
         letter.id,
         letter.translatedElements,
-        letter.translatorId || "None",
+        letter.translatorId,
       ]);
 
       return true;

@@ -185,6 +185,9 @@ class LetterEdit extends Component {
     if (!this.currentTranslator.data) {
       await this.currentTranslator.refresh();
     }
+    if (!this.state.letter.translatorId) {
+      this.state.letter.translatorId = this.currentTranslator.data?.translatorId
+    }
 
     const res = await models.letters.update({...this.state.letter as Letter});
 

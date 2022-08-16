@@ -42,8 +42,8 @@ class TranslationCard extends Component<Props> {
             </RouterLink>
             <RouterLink t-foreach="props.letters" t-as="text" t-key="text.id" to="'/letters/letter-edit/' + text.id">
               <button class="block text-sm text-slate-700 hover:text-compassion hover:translate-x-0.5 transform transition-all mb-1">
-                <span class="font-semibold" t-esc="text.id" />
-                <span class="pl-2" t-esc="'(' + _(text.source) + ' -> ' + _(text.target) + ')'" />
+                <span class="font-semibold" t-esc="text.child.ref" />
+                <span class="pl-2" t-out="'(' + text.date.toLocaleDateString() + ')'" />
               </button>
             </RouterLink>
           </div>

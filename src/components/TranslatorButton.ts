@@ -55,7 +55,7 @@ class TranslatorButton extends Component {
     <button t-if="state.authorized" class="text-blue-700 hover:text-compassion transition-colors flex gap-2" t-att-class="props.class || ''" t-on-click="() => state.active = true">
       <t t-if="state.translatorName" t-esc="state.translatorName" />
     </button>
-    <span t-else="!state.authorized" class="text-slate-500 text-sm italic">Hidden</span>
+    <span t-if="!state.authorized" class="text-slate-500 text-sm italic">Hidden</span>
     <Loader t-if="state.loading" />
     <TranslatorModal translatorId="state.active ? props.translatorId : undefined" onClose="() => state.active = false" />
   `;

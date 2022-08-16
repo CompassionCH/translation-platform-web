@@ -109,8 +109,8 @@ export default {
   "Send Message":"Envoyer un Message",
   "Your Message":"Votre Message",
   "Child Data":"Données de l'Enfant",
-  "First Name":"Prénom",
-  "Last Name":"Nom",
+  "Preferred Name":"Prénom",
+  "Full Name":"Nom",
   "Sex":"Sexe",
   "Sponsor Data":"Données du Sponsor",
   "Letter Information":"Informations sur la Lettre",
@@ -160,5 +160,6 @@ export default {
   "This bar can be dragged horizontally to expand or reduce the panel displaying the letter if you need more space to read it":"Cette barre peut-être décalée horizontallement pour augmenter ou réduire la taille du panneau affichant la lettre si vous voulez l'agrandir",
   "Sometimes the PDF might not load. As an alternative you can click the \"source\" button which appears when you hover the panel where the letter is supposed to be":"Parfois le PDF peut ne pas s'afficher, comme alternative vous pouvez cliquer sur le bouton \"source\" disponible quand vous passez la souris sur le panneau d'affichage de la lettre, qui affichera le texte source",
   "If you have any question do not hesitate to contact us. Thanks for your help in translating letters and bringing joy to children and sponsors alike":
-  "Si vous avez des questions n'hésitez pas à nous contacter. Merci pour votre aide précieuse dans la traduction de lettres et pour donner de la joie aux enfants et aux sponsors"
+  "Si vous avez des questions n'hésitez pas à nous contacter. Merci pour votre aide précieuse dans la traduction de lettres et pour donner de la joie aux enfants et aux sponsors",
+  "Translate":"Traduire"
 };

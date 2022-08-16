@@ -13,7 +13,7 @@ class LetterRowActions extends Component {
         <span class="text-slate-600">·</span>
       </t>
       <RouterLink to="'/letters/letter-edit/' + props.letter.id">
-        <button class="text-blue-500 hover:text-compassion transition-colors">Edit</button>
+        <button class="text-blue-500 hover:text-compassion transition-colors">Translate</button>
       </RouterLink>
     </div>
   `;
