@@ -95,7 +95,7 @@ class Letters extends Component {
   setup() {
     this.state.loading = true;
     this.translator.loadIfNotInitialized().then(() => {
-      if (this.translator.data?.skills.filter(it => it.verified).length === 0) {
+      if (this.translator.data?.role !== 'admin' && this.translator.data?.skills.filter(it => it.verified).length === 0) {
         this.state.loading = false;
         notyf.error(_('You cannot list letters while having 0 verified translation skill'));
         navigateTo('/');
