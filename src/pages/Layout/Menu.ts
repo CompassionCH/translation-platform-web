@@ -4,12 +4,13 @@ import RouterLink from "../../components/Router/RouterLink";
 import MenuButton from "./MenuButton";
 import Icon from "../../components/Icon";
 import SettingsModal from "../../components/SettingsModal";
+import { getWebPath } from "../../utils";
 
 class Menu extends Component {
   static template = xml`
     <div t-if="props.router.currentRoute and props.router.currentRoute.route.name !== 'Login'" class="h-screen fixed left-0 top-0 w-20 bg-compassion shadow-2xl z-50 flex flex-col items-center">
       <div class="flex w-20 h-20 items-center justify-center">
-        <img src="/logo_white.png" class="w-12" />
+        <img t-att-src="webPath('/logo_white.png')" class="w-12" />
       </div>
       <RouterLink to="'/'" t-slot-scope="scope">
         <MenuButton tooltip="'Home'" active="scope.active">
@@ -36,6 +37,8 @@ class Menu extends Component {
   `;
 
   static props = ['router'];
+
+  webPath = getWebPath;
 
   static components = {
     RouterLink,

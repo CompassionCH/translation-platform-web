@@ -8,16 +8,7 @@ import { Component, onMounted, onWillDestroy, useState, xml } from "@odoo/owl";
 import { ComponentConstructor } from "@odoo/owl/dist/types/component/component";
 import RouterView from "./RouterView";
 import pathMatch from "./pathMatch";
-
-// Dummy string trim
-function trimEndSlash(string: string) {
-  const charToRemove = '/';
-  while(string.charAt(string.length-1)==charToRemove) {
-      string = string.substring(0,string.length-1);
-  }
-
-  return string;
-}
+import { trimEndSlash } from "../../utils";
 
 /**
  * Small utility function to move to another URL without reloading the page
@@ -131,7 +122,6 @@ export default class Router extends Component<Props> {
     const currentPath = pathname.replace(basePath, '');
 
     for (const route of this.props.routes) {
-      console.log(basePath, pathname, currentPath, route.path);
       const routeProps = pathMatch(currentPath, route.path);
       if (routeProps) {
 

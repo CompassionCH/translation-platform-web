@@ -9,6 +9,7 @@ import useCurrentTranslator from "../hooks/useCurrentTranslator";
 import SettingsModal from "../components/SettingsModal";
 import { navigateTo } from "../components/Router/Router";
 import _ from "../i18n";
+import { getWebPath } from "../utils";
 
 class Login extends Component {
 
@@ -17,7 +18,7 @@ class Login extends Component {
     <div class="w-full h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
       <div class="flex shadow-xl relative rounded-sm overflow-hidden">
         <div class="h-full bg-white py-20 w-80 px-10">
-          <img src="/logo_simple.png" class="block mx-auto w-16 mb-3" />
+          <img t-att-src="webPath('/logo_simple.png')" class="block mx-auto w-16 mb-3" />
           <h3 class="text-center text-slate-600 h-6">Compassion</h3>
           <h1 class="text-center text-slate-800 font-light text-2xl mb-5">Translation Platform</h1>
           <form t-on-submit.prevent="login">
@@ -30,7 +31,7 @@ class Login extends Component {
             </div>
           </form>
         </div>
-        <img src="/splash.jpg" class="object-cover w-128 shadow-inner" />
+        <img t-att-src="webPath('/splash.jpg')" class="object-cover w-128 shadow-inner" />
         <Transition active="state.loading" t-slot-scope="scope">
           <div class="absolute top-0 left-0 bg-white-20 w-full h-full flex items-center justify-center" t-att-class="scope.itemClass">
             <div class="bg-white p-10 shadow-2xl rounded-sm">
@@ -43,6 +44,9 @@ class Login extends Component {
   `;
 
   user = useCurrentTranslator();
+
+  webPath = getWebPath;
+
   state = useState({
     username: '',
     password: '',
