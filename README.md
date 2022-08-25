@@ -6,13 +6,21 @@ built with [Owl](https://github.com/odoo/owl) and [Vite](https://vitejs.dev/). I
 ## Developing
 1. Clone this repository and install dependencies with `npm install`
 2. Create a `.env.local` environment file based on the `.env` example one
-2. Launch the Vite development server with `npm run dev`
-3. Access it on `http://localhost:3000`
+3. Launch the Vite development server with `npm run dev`
+4. Access it on `http://localhost:3000`
 
 ## Building for production
-1. Create a `.env.local` environment file based on the `.env` example one if not already done
+1. Create a `.env.production.local` environment file based on the `.env.local` example one and fill it
 2. Run `npm run build`, it will build static files in the `/dist` directory
 3. Copy those files wherever you want
+
+## Environment files
+Please read the [vite documentation](https://vitejs.dev/guide/env-and-mode.html#modes). Mainly, environment files are loaded based
+on their name given the running mode:
+- running `npm run dev` will load the `.env.local` file
+- running `npm run build` will first load `.env.local` and then the `.env.production.local` file overriding any values
+
+The `.local` part of the filename indicates that it must not be commited.
 
 ## Technical Information
 The application in itself is built with Owl as reactive framework. Owl offers various useful primitives such as a component structure, data bindings and a template engine, but no ready-to-use components. Thus multiple components have been developed to address that, including but not limited to:

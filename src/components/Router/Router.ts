@@ -9,12 +9,23 @@ import { ComponentConstructor } from "@odoo/owl/dist/types/component/component";
 import RouterView from "./RouterView";
 import pathMatch from "./pathMatch";
 
+// Dummy string trim
+function trimEndSlash(string: string) {
+  const charToRemove = '/';
+  while(string.charAt(string.length-1)==charToRemove) {
+      string = string.substring(0,string.length-1);
+  }
+
+  return string;
+}
+
 /**
  * Small utility function to move to another URL without reloading the page
  * @param path the target path
  */
 export function navigateTo(path: string) {
-  window.history.pushState({}, "", path);
+  const finalPath = `${trimEndSlash(import.meta.env.BASE_URL || '')}${path}`;
+  window.history.pushState({}, "", finalPath);
 }
 
 /**
@@ -115,17 +126,19 @@ export default class Router extends Component<Props> {
   }
 
   async loadRoute() {
+    const basePath = trimEndSlash(import.meta.env.BASE_URL) + trimEndSlash(this.props.basePath || '');
     const { pathname } = new URL(window.location.href);
-    const currentPath = pathname.replace(this.props.basePath || '', '');
+    const currentPath = pathname.replace(basePath, '');
 
     for (const route of this.props.routes) {
+      console.log(basePath, pathname, currentPath, route.path);
       const routeProps = pathMatch(currentPath, route.path);
       if (routeProps) {
 
         const guardInterrupt = await this.runGuards(this.state.route?.route.name, route.name);
         if (guardInterrupt) {
           // Route change, stop current flow
-          window.history.pushState({}, "", guardInterrupt);
+          navigateTo(guardInterrupt);
           return;
         }
 

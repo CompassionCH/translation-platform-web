@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 
 /**
  * We define a small home made Vite plugin to be able to load xml file
@@ -9,34 +9,38 @@ import { defineConfig } from 'vite';
  *  static template = template;
  * }
  */
-export default defineConfig({
-  resolve: {
-    alias: {
-      stream: 'stream-browserify',
-      events: 'events',
-    },
-  },
-  optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: 'globalThis',
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  return {
+    base: env.SERVE_URL,
+    resolve: {
+      alias: {
+        stream: 'stream-browserify',
+        events: 'events',
       },
     },
-  },
-  plugins: [
-    {
-      name: 'vite-template-plugin',
-      transform(src, id) {
-        if (id.endsWith('.xml')) {
-          return {
-            map: null,
-            code: `
-            import { xml } from "@odoo/owl";
-            export default ${"xml`" + src + "`"};
-            `,
+    optimizeDeps: {
+      esbuildOptions: {
+        define: {
+          global: 'globalThis',
+        },
+      },
+    },
+    plugins: [
+      {
+        name: 'vite-template-plugin',
+        transform(src, id) {
+          if (id.endsWith('.xml')) {
+            return {
+              map: null,
+              code: `
+              import { xml } from "@odoo/owl";
+              export default ${"xml`" + src + "`"};
+              `,
+            }
           }
         }
       }
-    }
-  ]
+    ]
+  };
 });
