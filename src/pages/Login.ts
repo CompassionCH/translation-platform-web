@@ -7,7 +7,6 @@ import Transition from "../components/Transition";
 import Loader from "../components/Loader";
 import useCurrentTranslator from "../hooks/useCurrentTranslator";
 import SettingsModal from "../components/SettingsModal";
-import { navigateTo } from "../components/Router/Router";
 import _ from "../i18n";
 import { getWebPath } from "../utils";
 
@@ -74,7 +73,7 @@ class Login extends Component {
 
       // Set username in store
       store.username = username;
-      navigateTo("/");
+      location.reload();
     }
   }
 }

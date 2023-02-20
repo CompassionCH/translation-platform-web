@@ -1,6 +1,6 @@
 import { reactive, useState } from "@odoo/owl";
 
-const usePersistedState = <T extends object>(state: T, key?: string, storage: Storage = window.sessionStorage) => {
+const usePersistedState = <T extends object>(state: T, key?: string, storage: Storage = window.localStorage) => {
 
   if (!key) {
     return useState(state);

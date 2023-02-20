@@ -10,7 +10,6 @@ export type TranslationSkill = {
 
 export type Translator = {
   translatorId: number;
-  api_key?: string;
   email?: string;
   role: 'user' | 'admin';
   name?: string;
@@ -114,7 +113,6 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
     if (!data) return undefined;
     return {
       ...data,
-      api_key: OdooAPI.ifNoneElse(data.api_key || undefined),
       email: OdooAPI.ifNoneElse(data.email),
       name: OdooAPI.ifNoneElse(data.name),
       age: OdooAPI.ifNoneElse(data.age),

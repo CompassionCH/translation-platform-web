@@ -2,13 +2,14 @@ import { Component, xml } from "@odoo/owl";
 import Modal from "../../components/Modal";
 import Button from "../../components/Button";
 import RouterLink from "../../components/Router/RouterLink";
+import { getWebPath } from "../../utils";
 
 class LetterSubmittedModal extends Component {
 
   static template = xml`
     <Modal active="props.active" title="'Thank You'" empty="true">
       <div class="w-128">
-        <img src="/logo_simple.png" class="w-16 mx-auto block mt-8" />
+        <img t-att-src="webPath('/logo_simple.png')" class="w-16 mx-auto block mt-8" />
         <h1 class="text-center text-3xl font-light text-slate-700 mt-4">Thank You!</h1>
         <p class="text-center text-slate-600 p-4">
           Thank you for your contribution. Your letter will be reviewed before being sent,
@@ -23,6 +24,8 @@ class LetterSubmittedModal extends Component {
       </div>
     </Modal>
   `;
+
+  webPath = getWebPath;
 
   static props = ['active', 'letter'];
   static components = {
