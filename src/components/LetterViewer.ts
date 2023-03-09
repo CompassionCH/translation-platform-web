@@ -33,12 +33,10 @@ class LetterViewer extends Component {
                 <h3 class="font-semibold text-slate-100 text-2xl">Source Text to translate</h3>
                 <h4 class="text-slate-200 max-w-xl mt-3 mb-5 text-sm">Text might not be available, in this case, and if the letter is unavailable too, please contact Compassion by signaling a problem.</h4>
                 <div t-foreach="props.letter.translatedElements" t-as="element" t-key="element.id">
-                  <t t-if="element.readonly">
-                    <div t-if="element.type === 'paragraph'" class="bg-slate-300 p-4 mb-2 rounded-sm shadow">
-                      <p t-esc="element.source" class="text-slate-900 text-sm" />
-                    </div>
-                    <div t-if="element.type === 'pageBreak'" class="bg-slate-400 mb-2 rounded-sm text-slate-100 text-xs flex justify-center py-3">Page Break</div>
-                  </t>
+                  <div t-if="element.type === 'paragraph'" class="bg-slate-300 p-4 mb-2 rounded-sm shadow">
+                    <p t-esc="element.source" class="text-slate-900 text-sm" />
+                  </div>
+                  <div t-if="element.type === 'pageBreak'" class="bg-slate-400 mb-2 rounded-sm text-slate-100 text-xs flex justify-center py-3">Page Break</div>
                 </div>
               </div>
               <div class="flex justify-center w-full absolute top-0">

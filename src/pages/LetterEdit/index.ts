@@ -80,69 +80,6 @@ class LetterEdit extends Component {
     });
   }
 
-  addParagraph() {
-    if (!this.state.letter?.translatedElements) {
-      return;
-    }
-    this.state.letter.translatedElements.push({
-      id: Date.now(),
-      type: 'paragraph',
-      readonly: false,
-      source: '',
-      content: '',
-    });
-    
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
-  }
-
-  addPageBreak() {
-    if (!this.state.letter?.translatedElements) {
-      return;
-    }
-    this.state.letter.translatedElements.push({
-      id: Date.now(),
-      type: 'pageBreak',
-      readonly: false,
-    });
-
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
-  }
-
-  remove(elemId: string | number) {
-    if (!this.state.letter?.translatedElements) {
-      return;
-    }
-    const index = this.state.letter.translatedElements.findIndex(it => it.id === elemId);
-    this.state.letter.translatedElements.splice(index, 1);
-
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
-  }
-
-  move(elemId: string | number, delta: number) {
-    if (!this.state.letter?.translatedElements) {
-      return;
-    }
-    // Copy array so that we dont trigger useless repatching
-    const items = [...this.state.letter.translatedElements];
-    const i = items.findIndex(it => it.id === elemId);
-    const elem = items[i];
-
-    // Remove elem from array before adding it back
-    items.splice(i, 1);
-    items.splice(i + delta, 0, elem);
-    this.state.letter.translatedElements = items;
-
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
-  }
-
   async submit() {
     if (!this.state.letter?.translatedElements) {
       return;

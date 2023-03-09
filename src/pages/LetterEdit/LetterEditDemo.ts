@@ -51,14 +51,12 @@ const baseState = {
       {
         id: 1,
         type: 'paragraph',
-        readonly: true,
         content: '',
         source: 'Dear, how do you do on this lovely day ?',
       },
       {
         id: 2,
         type: 'pageBreak',
-        readonly: true,
       },
     ],
   },
@@ -101,7 +99,7 @@ class LetterEditDemo extends Component {
     onMounted(() => {
       const tutorial = buildTutorial([
         {
-          text: _('Welcome to the translation editor. This small tutorial will walk you through the various tools at your disposal'),
+          text: _('Welcome to the translation editor. This small tutorial will walk you through the various tools at your disposal.'),
         },
         {
           text: _('This panel displays the letter which you must translate, showing the text in paragraphs over one or multiple pages'),
@@ -136,52 +134,6 @@ class LetterEditDemo extends Component {
           attachTo: {
             element: '#letter-viewer-content .editor-paragraph-comment',
             on: 'bottom',
-          }
-        },
-        {
-          text: _('Some elements are locked, which means they cannot be moved or deleted. Those are mandatory paragraphs and page breaks which you can write translated content in, assumed to represent the layout of the letter'),
-          attachTo: {
-            element: '#letter-viewer-content .editor-paragraph-locked',
-            on: 'left',
-          }
-        },
-        {
-          text: _('If you think the letter has more paragraphs or page break (such as writing outside of the boxes), you can add elements by clicking those buttons'),
-          attachTo: {
-            element: '#letter-viewer-content .buttons-add-elements',
-            on: 'bottom',
-          }
-        },
-        {
-          beforeShowPromise: async () => this.state.letter.translatedElements = [
-            ...this.state.letter.translatedElements,
-            {
-              id: 3,
-              type: 'paragraph',
-              readonly: false,
-              content: '',
-              source: '',
-            },
-            {
-              id: 4,
-              type: 'paragraph',
-              readonly: false,
-              content: '',
-              source: '',
-            },
-            {
-              id: 5,
-              type: 'pageBreak',
-              readonly: false,
-            },
-          ],
-          text: _('We added a few elements for you, same as if you had clicked on the two buttons displayed earlier.'),
-        },
-        {
-          text: _('Note that those elements are not locked, which means you can move and remove them as you want'),
-          attachTo: {
-            element: '#letter-viewer-content .editor-element:nth-child(4) .buttons-element-state',
-            on: 'left'
           }
         },
         {
@@ -282,69 +234,6 @@ class LetterEditDemo extends Component {
     setTimeout(() => {
       this.state.internalLoading = false;
     }, 1000);
-  }
-
-  addParagraph() {
-    if (!this.state.letter?.translatedElements) {
-      return;
-    }
-    this.state.letter.translatedElements.push({
-      id: Date.now(),
-      type: 'paragraph',
-      readonly: false,
-      source: '',
-      content: '',
-    });
-    
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
-  }
-
-  addPageBreak() {
-    if (!this.state.letter?.translatedElements) {
-      return;
-    }
-    this.state.letter.translatedElements.push({
-      id: Date.now(),
-      type: 'pageBreak',
-      readonly: false,
-    });
-
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
-  }
-
-  remove(elemId: string | number) {
-    if (!this.state.letter?.translatedElements) {
-      return;
-    }
-    const index = this.state.letter.translatedElements.findIndex(it => it.id === elemId);
-    this.state.letter.translatedElements.splice(index, 1);
-
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
-  }
-
-  move(elemId: string | number, delta: number) {
-    if (!this.state.letter?.translatedElements) {
-      return;
-    }
-    // Copy array so that we dont trigger useless repatching
-    const items = [...this.state.letter.translatedElements];
-    const i = items.findIndex(it => it.id === elemId);
-    const elem = items[i];
-
-    // Remove elem from array before adding it back
-    items.splice(i, 1);
-    items.splice(i + delta, 0, elem);
-    this.state.letter.translatedElements = items;
-
-    if (this.props.onChange) {
-      this.props.onChange();
-    }
   }
 
 }

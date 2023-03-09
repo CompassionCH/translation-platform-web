@@ -13,18 +13,10 @@ type State = {
 
 type Props = {
   letter: Letter;
-  onAddParagraph: () => void;
-  onAddPageBreak: () => void;
-  onRemove: (elemId: string | number) => void;
-  onMove: (elemId: string | number, delta: number) => void;
 };
 
 const props = {
   letter: { type: Object },
-  onAddParagraph: { type: Function, optional: true },
-  onAddPageBreak: { type: Function, optional: true },
-  onRemove: { type: Function, optional: true },
-  onMove: { type: Function, optional: true },
 };
 
 /**
@@ -41,19 +33,9 @@ class ContentEditor extends Component<Props> {
         'border-transparent': state.hovered !== element.id,
       }">
         <div t-if="element.type == 'pageBreak'" class="flex">
-            <div class="relative bg-slash flex-1 flex justify-center items-center" t-att-class="{'py-2': element.readonly}">
+            <div class="relative bg-slash flex-1 flex justify-center items-center py-2">
               <span class="text-slate-500 font-medium text-xs">Page Break</span>
             </div>
-          <div class="flex flex-col justify-center gap-2 ml-2">
-            <t t-if="element.readonly" >
-              <Tippy placement="'left'" content="_('This page break is locked and cannot be removed, it is part of the original content')">
-                <Button square="true" disabled="true" level="'secondary'" icon="'lock'" class="'editor-paragraph-locked'" />
-              </Tippy>
-            </t>
-            <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
-              <Button square="true" color="'red'" level="'secondary'" icon="'trash'" onClick="() => this.remove(element.id)" />
-            </div>
-          </div>
         </div>
         <div t-if="element.type == 'paragraph'" class="flex editor-paragraph">
           <div class="bg-white shadow-xl relative z-10 grid grid-cols-6 flex-1">
@@ -67,32 +49,10 @@ class ContentEditor extends Component<Props> {
             </div>
           </div>
           <div class="flex flex-col justify-center gap-2 ml-2 buttons-element-state">
-            <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
-              <Button square="true" level="'secondary'" t-if="!element_first and !this.props.letter.translatedElements[element_index - 1].readonly" icon="'angle-up'" t-on-click="() => this.move(element.id, -1)" />
-            </div>
-            <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
-              <Button square="true" color="'red'" level="'secondary'" icon="'trash'" t-on-click="() => this.remove(element.id)" />
-            </div>
-            <div t-if="!element.readonly" t-on-mouseenter="() => state.hovered = element.id" t-on-mouseleave="() => state.hovered = undefined">
-              <Button square="true" level="'secondary'" t-if="!element_last and !this.props.letter.translatedElements[element_index + 1].readonly" icon="'angle-down'" t-on-click="() => this.move(element.id, 1)" />
-            </div>
-            <div t-if="element.readonly" class="flex justify-center">
-              <Tippy placement="'left'" content="_('This paragraph is locked and cannot be removed, it is part of the original content')">
-                <Button disabled="true" level="'secondary'" icon="'lock'" square="true" />
-              </Tippy>
-            </div>
-            <t t-if="element.readonly">
-              <Tippy placement="'left'" content="_('Open Paragraph source text')" delay="200">
-                <Button title="'Open source text'" square="true" level="'secondary'" icon="'eye'" t-on-click="() => this.openSource(element.id)" />
-              </Tippy>
-            </t>
+            <Tippy placement="'left'" content="_('Open Paragraph source text')" delay="200">
+              <Button title="'Open source text'" square="true" level="'secondary'" icon="'eye'" t-on-click="() => this.openSource(element.id)" />
+            </Tippy>
           </div>
-        </div>
-      </div>
-      <div class="flex justify-center mt-4">
-        <div class="flex gap-2 buttons-add-elements">
-          <Button size="'sm'" icon="'plus'" level="'secondary'" t-on-click="addParagraph">Paragraph</Button>
-          <Button size="'sm'" icon="'plus'" level="'secondary'" t-on-click="addPageBreak">PageBreak</Button>
         </div>
       </div>
     </div>
@@ -115,22 +75,6 @@ class ContentEditor extends Component<Props> {
   state = useState<State>({});
 
   _ = _;
-
-  addParagraph() {
-    this.props.onAddParagraph();
-  }
-
-  addPageBreak() {
-    this.props.onAddPageBreak();
-  }
-
-  move(elemId: string | number, delta: number) {
-    this.props.onMove(elemId, delta);
-  }
-
-  remove(elemId: string | number) {
-    this.props.onRemove(elemId);
-  }
 
   openSource(elemId: string | number) {
     const elem = this.props.letter.translatedElements.find(it => it.id === elemId);

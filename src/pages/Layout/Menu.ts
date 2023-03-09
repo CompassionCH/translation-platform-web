@@ -4,6 +4,7 @@ import RouterLink from "../../components/Router/RouterLink";
 import MenuButton from "./MenuButton";
 import Icon from "../../components/Icon";
 import SettingsModal from "../../components/SettingsModal";
+import HelpModal from "../../components/HelpModal";
 import { getWebPath } from "../../utils";
 
 class Menu extends Component {
@@ -27,13 +28,17 @@ class Menu extends Component {
           <Icon prefix="'fas'" icon="'envelope'" class="'text-xl'" />
         </MenuButton>
       </RouterLink>
-      <div class="mt-auto" t-on-click="() => this.state.settingsModal = true">
-        <MenuButton tooltip="'Settings'" class="'cursor-pointer'">
+      <div class="mt-auto">
+      <MenuButton tooltip="'Help'" class="'cursor-pointer'" t-on-click="() => this.state.helpModal = true">
+          <Icon prefix="'fas'" icon="'info'" class="'text-xl'" />
+        </MenuButton>
+        <MenuButton tooltip="'Settings'" class="'cursor-pointer'" t-on-click="() => this.state.settingsModal = true">
           <Icon prefix="'fas'" icon="'cog'" class="'text-xl'" />
         </MenuButton>
       </div>
     </div>
     <SettingsModal onClose="() => this.state.settingsModal = false" active="state.settingsModal" />
+    <HelpModal onClose="() => this.state.helpModal = false" active="state.helpModal"/>
   `;
 
   static props = ['router'];
@@ -43,12 +48,14 @@ class Menu extends Component {
   static components = {
     RouterLink,
     SettingsModal,
+    HelpModal,
     MenuButton,
     Icon,
   };
 
   state = useState({
     settingsModal: false,
+    helpModal: false
   });
 
   currentTranslator = useCurrentTranslator();

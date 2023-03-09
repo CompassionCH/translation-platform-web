@@ -62,6 +62,7 @@ class SignalProblem extends Component {
     } else {
       notyf.success(_('Issue successfully sent, it will be quickly reviewed'));
       this.props.onClose();
+      location.reload();
     }
   }
 }

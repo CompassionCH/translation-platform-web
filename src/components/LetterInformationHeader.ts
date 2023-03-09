@@ -72,7 +72,10 @@ class LetterInformationHeader extends Component {
     </div>
     <div class="bg-slate-100 px-4 py-3 border-b border-solid border-slate-300 flex justify-between shadow-sm items-center z-20 relative">
       <div t-if="props.letter" class="flex items-center gap-2">
-        <span class="rounded-sm py-0.5 px-1 text-xs font-medium text-white bg-slate-500" t-esc="props.letter.status" />
+        <span class="rounded-sm py-0.5 px-1 text-xs font-medium text-white" t-att-class="{
+          'bg-red-500': props.letter.translationIssue,
+          'bg-slate-500': !props.letter.translationIssue
+        }" t-esc="props.letter.status" />
         <p class="text-sm text-slate-600">
           <t t-if="props.letter.lastUpdate">
             Last updated the <span t-esc="props.letter.lastUpdate.toLocaleString()" />

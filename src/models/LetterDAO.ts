@@ -7,7 +7,6 @@ type Priority = 0 | 1 | 2 | 3 | 4;
 interface BaseElement {
   type: 'paragraph' | 'pageBreak';
   id: number | string;
-  readonly: boolean;
 };
 
 export interface Paragraph extends BaseElement {
@@ -46,6 +45,7 @@ export type Letter = {
   translatedElements: Element[];
   child: Person,
   sponsor: Person,
+  translationIssue: string;
 };
 
 export const letterFieldsMapping: FieldsMapping<Letter> = {
@@ -57,6 +57,7 @@ export const letterFieldsMapping: FieldsMapping<Letter> = {
   source: { field: 'src_translation_lang_id.name' },
   target: { field: 'translation_language_id.name' },
   translatorId: { field: 'new_translator_id', format: 'number' },
+  translationIssue: {field: 'translation_issue'}
 };
 
 const int = (val: string | number) => typeof val === 'string' ? parseInt(val, 10) : val;

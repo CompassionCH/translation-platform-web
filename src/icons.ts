@@ -33,6 +33,7 @@ import {
   faReply,
   faOtter,
   faCheck,
+  faInfo
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -63,4 +64,5 @@ library.add(
   faCaretDown,
   faOtter,
   faCheck,
+  faInfo
 );
