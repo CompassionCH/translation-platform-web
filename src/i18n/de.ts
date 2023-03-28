@@ -140,7 +140,7 @@ export default {
   "Watch the video": "Video anschauen",
   "Welcome": "Herzlich Willkommen",
   "Welcome to the Compassion Translation Platform. This small tutorial will guide you through its features and how it works. You can close it whenever you want to by clicking the \"Exit\" button.": "Willkommen auf der Übersetzungsplattform von Compassion. Diese kurze Anleitung wird dich durch die Funktionen der Plattform führen. Du kannst sie schliessen, indem du auf \"Beenden\" klickst.",
-  "Welcome to the translation editor. This small tutorial will walk you through the various tools at your disposal": "Das ist die Bearbeitungsfunktion. Diese kurze Anleitung zeigt dir die verschiedenen Bearbeitungsmöglichkeiten.",
+  "Welcome to the translation editor. This small tutorial will walk you through the various tools at your disposal.": "Das ist die Bearbeitungsfunktion. Diese kurze Anleitung zeigt dir die verschiedenen Bearbeitungsmöglichkeiten.",
   "When translating content you will write it in this box": "Deine Übersetzung kommt in dieses Feld. ",
   "Yes": "Ja ",
   "You already have all the translation skills!": "Du hast schon alle Sprachkompetenzen!",
