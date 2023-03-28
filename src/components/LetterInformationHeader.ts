@@ -59,7 +59,7 @@ class LetterInformationHeader extends Component {
             <p class="w-32  font-medium">Language</p>
             <p class="">
               <span t-esc="props.letter.source" />
-              <span class="font-semibold mx-1">-></span>
+              <span class="font-semibold mx-1" t-translation="off">-></span>
               <span t-esc="props.letter.target" />
             </p>
           </div>
