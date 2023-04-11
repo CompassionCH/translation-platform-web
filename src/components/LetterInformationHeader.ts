@@ -1,8 +1,10 @@
 import { Component, xml } from "@odoo/owl";
 import Loader from "./Loader";
 import TranslatorButton from "./TranslatorButton";
+import _ from "../i18n";
 
 class LetterInformationHeader extends Component {
+  _ = _;
 
   static template = xml`
     <div t-if="props.letter" id="letter-viewer-header">
@@ -19,7 +21,7 @@ class LetterInformationHeader extends Component {
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Sex</p>
-            <p class="" t-esc="props.letter.child.sex === 'M' ? 'Man' : 'Woman'" />
+            <p class="" t-esc="props.letter.child.sex === 'M' ? _('Man') : _('Woman')" />
           </div>
           <div class="flex text-sm text-slate-800">
             <p class="w-32  font-medium">Age</p>
@@ -38,11 +40,11 @@ class LetterInformationHeader extends Component {
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Sex</p>
-            <p class="" t-esc="props.letter.sponsor.sex === 'M' ? 'Man' : 'Woman'" />
+            <p class="" t-esc="props.letter.sponsor.sex === 'M' ? _('Man') : _('Woman')" />
           </div>
           <div class="flex text-sm text-slate-800">
             <p class="w-32  font-medium">Age</p>
-            <p class="" t-esc="(props.letter.sponsor.age) + ' Years Old'" />
+            <p class="" t-esc="(props.letter.sponsor.age) + _(' Years Old')" />
           </div>
         </div>
         <div class="py-3 px-4 flex-1">
@@ -58,9 +60,9 @@ class LetterInformationHeader extends Component {
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Language</p>
             <p class="">
-              <span t-esc="props.letter.source" />
+              <span t-esc="_(props.letter.source)" />
               <span class="font-semibold mx-1" t-translation="off">-></span>
-              <span t-esc="props.letter.target" />
+              <span t-esc="_(props.letter.target)" />
             </p>
           </div>
           <div class="flex text-sm text-slate-800">

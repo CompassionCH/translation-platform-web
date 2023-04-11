@@ -1,10 +1,10 @@
-import fr from './fr';
-import de from './de';
+import fr_CH from './fr_CH';
+import de_DE from './de_DE';
 
-const LANG_KEY = 'translation-platform-langage';
+const LANG_KEY = 'translation-platform-langage-new';
 const lang = window.localStorage.getItem(LANG_KEY);
 
-export const selectedLang = lang || 'en';
+export const selectedLang = lang || 'en_US';
 
 /**
  * Keep track of errors we displayed regarding missing
@@ -32,8 +32,8 @@ export function setLanguage(lang: string) {
  * The various dictionnaries we have at our disposal
  */
 const dictionnaries = {
-  fr,
-  de
+  fr_CH,
+  de_DE
 };
 
 /**

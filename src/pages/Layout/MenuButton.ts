@@ -12,7 +12,7 @@ type Props = {
  */
 class MenuButton extends Component<Props> {
   static template = xml`
-    <Tippy placement="'right'" content="props.tooltip">
+    <Tippy placement="'right'" content="_(props.tooltip)">
       <div class="relative w-20 h-20 flex justify-center items-center transition-colors"
         t-att-class="{
           [props.class]: true,

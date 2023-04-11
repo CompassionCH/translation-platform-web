@@ -9,6 +9,7 @@
 
 import store from "../store";
 import { XmlRpcClient } from '@foxglove/xmlrpc';
+import { selectedLang } from "../i18n";
 
 // Declare the two XML-RPC clients
 const authClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/common");
@@ -48,6 +49,7 @@ const OdooAPI = {
 
   async execute_kw<T>(model: string, method: string, ...args: any[]): Promise<T | undefined> {
     try {
+      args.push({context: {lang: selectedLang}});
       const response = await apiClient.methodCall('execute_kw', [
         import.meta.env.VITE_ODOO_DBNAME,
         store.userId,

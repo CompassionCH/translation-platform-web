@@ -1,5 +1,6 @@
 import { Component, onWillUpdateProps, useState, xml } from "@odoo/owl";
 import Icon from "./Icon";
+import _ from "../i18n";
 
 const backgroundClasses = {
   // [primary classes, secondary classes]
@@ -48,8 +49,10 @@ type Props = {
 
 class Button extends Component<Props> {
 
+  _ = _;
+
   static template = xml`
-    <button t-att-class="props.class + ' ' + state.buttonClass" t-on-click="props.onClick || (() => null)" t-att-title="props.title">
+    <button t-att-class="props.class + ' ' + state.buttonClass" t-on-click="props.onClick || (() => null)" t-att-title="_(props.title)">
       <Icon t-if="props.icon" prefix="state.iconPrefix" icon="state.iconName" class="state.iconClass" />
       <t t-slot="default" />
     </button>

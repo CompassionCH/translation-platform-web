@@ -24,9 +24,8 @@ export type IssueType = {
 const SettingsDAO = {
 
   async translationCompetences(): Promise<TranslationCompetence[]> {
-    const competences = await OdooAPI.execute_kw<RawTranslationCompetence[]>('translation.competence', 'search_read', [], {
-      fields: ['source_language_id', 'dest_language_id'],
-    });
+    const competences = await OdooAPI.execute_kw<RawTranslationCompetence[]>('translation.competence', 'search_read', [
+      [], ['source_language_id', 'dest_language_id']]);
 
     if (!competences) {
       console.error('Unable to retrieve translation skills');
