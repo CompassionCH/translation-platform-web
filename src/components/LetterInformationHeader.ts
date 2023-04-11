@@ -25,7 +25,7 @@ class LetterInformationHeader extends Component {
           </div>
           <div class="flex text-sm text-slate-800">
             <p class="w-32  font-medium">Age</p>
-            <p class="" t-esc="(props.letter.child.age) + ' Years Old'" />
+            <p class="" t-esc="(props.letter.child.age) + _(' Years Old')" />
           </div>
         </div>
         <div class="py-3 px-4 mr-10">
