@@ -44,7 +44,7 @@ class ContentEditor extends Component<Props> {
               <textarea class="compassion-input w-full h-32 text-xs flex" t-model="element.content" />
             </div>
             <div class="col-span-2 bg-slate-50 p-4 editor-paragraph-comment">
-              <h4 class="font-medium text-slate-700 mb-2">Comment</h4>
+              <h4 class="font-medium text-slate-700 mb-2">Comment on the translation</h4>
               <textarea class="compassion-input w-full h-32 text-xs flex" t-model="element.comments" />
             </div>
           </div>
