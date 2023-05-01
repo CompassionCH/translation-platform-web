@@ -16,10 +16,6 @@ class LetterInformationHeader extends Component {
             <p class="" t-esc="props.letter.child.preferredName" />
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
-            <p class="w-32  font-medium">Full Name</p>
-            <p class="" t-esc="props.letter.child.fullName" />
-          </div>
-          <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Sex</p>
             <p class="" t-esc="props.letter.child.sex === 'M' ? _('Man') : _('Woman')" />
           </div>
@@ -33,10 +29,6 @@ class LetterInformationHeader extends Component {
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Preferred Name</p>
             <p class="" t-esc="props.letter.sponsor.preferredName" />
-          </div>
-          <div class="flex text-sm mb-1 text-slate-800">
-            <p class="w-32  font-medium">Full Name</p>
-            <p class="" t-esc="props.letter.sponsor.fullName" />
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Sex</p>
