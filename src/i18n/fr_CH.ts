@@ -12,7 +12,7 @@ export default {
   "Are you sure you want to delete this letter ?": "Es-tu sûr de vouloir supprimer cette lettre ?",
   "Are you sure you want to put back this letter to translate ?": "Es-tu sûr de vouloir remettre cette lettre à traduire ?",
   "Authenticating": "Authentification",
-  "Available Letters": "Mes lettres en cours",
+  "Letters in progress": "Mes lettres en cours",
   "Back to Translations": "Retour aux traductions",
   "Bring me back to Home": "Retour à l'accueil",
   "Cancel": "Annuler",
