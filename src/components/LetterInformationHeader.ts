@@ -82,6 +82,12 @@ class LetterInformationHeader extends Component {
         <t t-slot="default" />
       </div>
     </div>
+
+    <div class="bg-slate-100 px-4 py-3 border-b border-solid border-slate-300 flex justify-between shadow-sm items-center z-20 relative">
+      <p class="text-gray-700 text-sm">
+        Please always signal the problem if the name of the child mentioned in the letter isn't the preferred name. Thank you.
+      </p>
+    </div>
   `;
 
   static components = {
