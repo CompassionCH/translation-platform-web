@@ -16,10 +16,6 @@ class LetterInformationHeader extends Component {
             <p class="" t-esc="props.letter.child.preferredName" />
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
-            <p class="w-32  font-medium">Full Name</p>
-            <p class="" t-esc="props.letter.child.fullName" />
-          </div>
-          <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Sex</p>
             <p class="" t-esc="props.letter.child.sex === 'M' ? _('Man') : _('Woman')" />
           </div>
@@ -33,10 +29,6 @@ class LetterInformationHeader extends Component {
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Preferred Name</p>
             <p class="" t-esc="props.letter.sponsor.preferredName" />
-          </div>
-          <div class="flex text-sm mb-1 text-slate-800">
-            <p class="w-32  font-medium">Full Name</p>
-            <p class="" t-esc="props.letter.sponsor.fullName" />
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
             <p class="w-32  font-medium">Sex</p>
@@ -89,6 +81,12 @@ class LetterInformationHeader extends Component {
       <div class="flex gap-3 items-center">
         <t t-slot="default" />
       </div>
+    </div>
+
+    <div class="bg-slate-100 px-4 py-3 border-b border-solid border-slate-300 flex justify-between shadow-sm items-center z-20 relative">
+      <p class="text-gray-700 text-sm">
+        Please always signal the problem if the name of the child mentioned in the letter isn't the preferred name. Thank you.
+      </p>
     </div>
   `;
 

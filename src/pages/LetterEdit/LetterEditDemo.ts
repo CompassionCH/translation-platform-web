@@ -37,13 +37,11 @@ const baseState = {
     date: new Date(),
     child: {
       preferredName: 'Demo',
-      fullName: 'Child',
       sex: 'M',
       age: 12,
     },
     sponsor: {
       preferredName: 'Demo',
-      fullName: 'Sponsor',
       sex: 'F',
       age: 39,
     },
