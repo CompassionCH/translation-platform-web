@@ -4,11 +4,13 @@ import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import notyf from "../../notifications";
 import Tippy from "../../components/Tippy";
+import TipsModal from "../../components/TipsModal";
 import _ from "../../i18n";
 
 type State = {
   hovered?: string | number;
   modalSourceElem?: string;
+  modalOpenTips?: boolean;
 };
 
 type Props = {
@@ -52,10 +54,16 @@ class ContentEditor extends Component<Props> {
             <Tippy placement="'left'" content="_('Open Paragraph source text')" delay="200">
               <Button title="'Open source text'" square="true" level="'secondary'" icon="'eye'" t-on-click="() => this.openSource(element.id)" />
             </Tippy>
+            <Tippy placement="'left'" content="_('Tips for a successful translation')" delay="200">
+              <Button title="'Tips for a successful translation'" square="true" level="'secondary'" icon="'info'" t-on-click="() => this.openTips()" />
+            </Tippy>
           </div>
         </div>
       </div>
     </div>
+
+    <TipsModal onClose="() => this.state.modalOpenTips = undefined" active="state.modalOpenTips !== undefined"/>
+
     <Modal active="state.modalSourceElem !== undefined" title="'Source Text'" onClose="() => this.state.modalSourceElem = undefined">
       <div class="p-4 w-128">
         <p class="text-sm text-slate-800" t-if="state.modalSourceElem and state.modalSourceElem.trim() !== ''" t-esc="state.modalSourceElem" />
@@ -70,6 +78,7 @@ class ContentEditor extends Component<Props> {
     Button,
     Tippy,
     Modal,
+    TipsModal
   };
 
   state = useState<State>({});
@@ -83,6 +92,10 @@ class ContentEditor extends Component<Props> {
     } else {
       this.state.modalSourceElem = (elem as Paragraph).source;
     }
+  }
+
+  openTips() {
+    this.state.modalOpenTips = true;
   }
 }
 
