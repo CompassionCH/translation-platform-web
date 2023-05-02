@@ -1,11 +1,16 @@
-import { Component, xml, markup } from "@odoo/owl";
+import { Component, xml, markup, useState } from "@odoo/owl";
 import Modal from "./Modal";
+import TipsModal from "./TipsModal";
 import { FR, DE, GB, IT } from 'country-flag-icons/string/3x2';
 import { selectedLang, setLanguage } from "../i18n";
 import Button from "./Button";
 import { useStore } from "../store";
 import { navigateTo } from "./Router/Router";
 import t_ from "../i18n";
+
+type State = {
+  modalOpenTips?: boolean;
+};
 
 /**
  * You'll see that the template for this component would have been so much
@@ -24,8 +29,7 @@ class HelpModal extends Component {
               <li class="mb-2">I commit myself, through my translation, to respect the original message of the text as much as possible.</li>
             </ul>
             <div class="flex flex-col place-content-center">
-              <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="tips">Help for writing a good translation</Button>  
-              <p class="text-center">(Password: volunteer)</p>
+              <Button size="'sm'" level="'secondary'" icon="'info'" t-on-click="() => this.openTips()">Tips for a successful translation</Button>
             </div>
           </div>
         </div>
@@ -38,6 +42,8 @@ class HelpModal extends Component {
         </div>
       </div>
     </Modal>
+
+    <TipsModal onClose="() => this.state.modalOpenTips = undefined" active="state.modalOpenTips !== undefined"/>
   `;
 
   static props = ['onClose', 'active'];
@@ -45,7 +51,10 @@ class HelpModal extends Component {
   static components = {
     Modal,
     Button,
+    TipsModal,
   };
+
+  state = useState<State>({});
 
   store = useStore();
   setLanguage = setLanguage;
@@ -70,11 +79,8 @@ class HelpModal extends Component {
     );
   };
 
-  tips() {
-    window.open(
-      t_("https://porte-parole.compassion.ch/domaines/traducteurs/#cons"),
-      "_blank"
-    );
+  openTips() {
+    this.state.modalOpenTips = true;
   }
 }
 
