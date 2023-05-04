@@ -22,12 +22,6 @@ class HelpModal extends Component {
       <div class="w-96">
         <div class="p-4">
           <div>
-            <p class="text-center text-sm font-semibold text-slate-700 mb-2">Translation charter</p>
-            <ul class="list-disc text-center ml-4 mb-4">
-              <li class="mb-2">I agree not to disclose the information contained in the letter to be translated.</li>
-              <li class="mb-2">I agree to submit a translation as soon as possible.</li>
-              <li class="mb-2">I commit myself, through my translation, to respect the original message of the text as much as possible.</li>
-            </ul>
             <div class="flex flex-col place-content-center">
               <Button size="'sm'" level="'secondary'" icon="'info'" t-on-click="() => this.openTips()">Tips for a successful translation</Button>
             </div>
@@ -37,7 +31,6 @@ class HelpModal extends Component {
           <p class="text-sm font-semibold text-slate-700 mb-2">Tutorial</p>
           <div class="flex flex-row space-x-4">
             <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="startTutorial">Restart the walkthrough</Button>
-            <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="watchVideo">Watch the video</Button>
           </div>
         </div>
       </div>
