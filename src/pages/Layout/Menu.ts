@@ -4,6 +4,7 @@ import RouterLink from "../../components/Router/RouterLink";
 import MenuButton from "./MenuButton";
 import Icon from "../../components/Icon";
 import SettingsModal from "../../components/SettingsModal";
+import ChildModal from "../../components/ChildModal";
 import HelpModal from "../../components/HelpModal";
 import { getWebPath } from "../../utils";
 
@@ -29,7 +30,10 @@ class Menu extends Component {
         </MenuButton>
       </RouterLink>
       <div class="mt-auto">
-      <MenuButton tooltip="'Help'" class="'cursor-pointer'" t-on-click="() => this.state.helpModal = true">
+        <MenuButton tooltip="'Child Protection'" class="'cursor-pointer'" t-on-click="() => this.state.childModal = true">
+          <Icon prefix="'fas'" icon="'child'" class="'text-xl'" />
+        </MenuButton>
+        <MenuButton tooltip="'Help'" class="'cursor-pointer'" t-on-click="() => this.state.helpModal = true">
           <Icon prefix="'fas'" icon="'info'" class="'text-xl'" />
         </MenuButton>
         <MenuButton tooltip="'Settings'" class="'cursor-pointer'" t-on-click="() => this.state.settingsModal = true">
@@ -37,8 +41,9 @@ class Menu extends Component {
         </MenuButton>
       </div>
     </div>
-    <SettingsModal onClose="() => this.state.settingsModal = false" active="state.settingsModal" />
+    <ChildModal onClose="() => this.state.childModal = false" active="state.childModal"/>
     <HelpModal onClose="() => this.state.helpModal = false" active="state.helpModal"/>
+    <SettingsModal onClose="() => this.state.settingsModal = false" active="state.settingsModal" />
   `;
 
   static props = ['router'];
@@ -48,6 +53,7 @@ class Menu extends Component {
   static components = {
     RouterLink,
     SettingsModal,
+    ChildModal,
     HelpModal,
     MenuButton,
     Icon,
@@ -55,6 +61,7 @@ class Menu extends Component {
 
   state = useState({
     settingsModal: false,
+    childModal: false,
     helpModal: false
   });
 
