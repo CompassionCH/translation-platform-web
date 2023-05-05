@@ -178,11 +178,35 @@ class LetterEditDemo extends Component {
           }
         },
         {
-          beforeShowPromise: async () => this.state.letter.pdfUrl = 'http://yoyo.emma',
-          text: _('Sometimes the PDF might not load. As an alternative you can click the "source" button which appears when you hover the panel where the letter is supposed to be'),
+          beforeShowPromise: async () => {
+            // Load invalid letter to show error on letter viewer
+            this.state.letter.pdfUrl = 'http://yoyo.emma';
+            
+            // Showing 'Letter' and 'Source' buttons in letter viewer
+            const letterViewerActions = document.querySelector('.letter-viewer-actions');
+            letterViewerActions?.classList.remove("-mt-12");
+          },
+          text: _('Sometimes the PDF might not load. As an alternative you can click the "Source" button which appears when you hover the panel where the letter is supposed to be'),
           attachTo: {
             element: '#letter-viewer',
             on: 'right',
+          },
+        },
+        {
+          beforeShowPromise: async () => {
+            
+            // Showing letter viewer in 'source' mode
+            const letterViewerActions = document.querySelector('.letter-viewer-actions');
+            const childSourceButton = letterViewerActions?.childNodes[2];
+
+            childSourceButton?.click();
+            letterViewerActions?.classList.add("-mt-12");
+
+          },
+          text: _('As you can see, after clicking on the \'Source\' button, the raw text is now visible here'),
+          attachTo: {
+            element: '#letter-viewer',
+            on: 'right'
           },
         },
         {
