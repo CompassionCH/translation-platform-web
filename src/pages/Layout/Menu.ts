@@ -30,7 +30,7 @@ class Menu extends Component {
         </MenuButton>
       </RouterLink>
       <div class="mt-auto">
-        <MenuButton tooltip="'Child Protection'" class="'cursor-pointer'" t-on-click="() => this.state.childModal = true">
+        <MenuButton tooltip="'Child Protection'" class="'cursor-pointer child-menu-icon'" t-on-click="() => this.state.childModal = true">
           <Icon prefix="'fas'" icon="'child'" class="'text-xl'" />
         </MenuButton>
         <MenuButton tooltip="'Help'" class="'cursor-pointer'" t-on-click="() => this.state.helpModal = true">

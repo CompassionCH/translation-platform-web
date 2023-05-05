@@ -12,10 +12,10 @@ import t_ from "../i18n";
  */
 class ChildModal extends Component {
   static template = xml`
-    <Modal active="props.active" title="'Child Protection'" onClose="props.onClose">
+    <Modal active="props.active" onClose="props.onClose" title="'Child Protection'">
       <div class="w-256">
         <div class="p-4">
-          <div class="flex flex-col mb-3">
+          <div class="flex flex-col mb-3 child-protection-text">
             <p class="text-sm font-semibold text-slate-700 mb-2">Here will be some text about the Child Protection part</p>
             <p class="text-sm text-slate-700 mb-2">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ornare egestas eros in ultricies. 
@@ -36,7 +36,7 @@ class ChildModal extends Component {
         </div>
         <div t-if="store.userId" class="p-4 bg-slate-100 border-t border-solid border-slate-200 flex flex-col items-center">
           <p class="text-sm font-semibold text-slate-700 mb-2">Videos</p>
-          <div class="flex flex-row space-x-4">
+          <div class="flex flex-row space-x-4 child-protection-video">
             <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="watchVideo">Watch the child protection video</Button>
           </div>
         </div>
