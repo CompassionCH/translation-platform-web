@@ -9,6 +9,7 @@
   <!-- signal problem modal in unsafe slot (no letter) -->
   <t t-set-slot="unsafe">
     <SignalProblem active="state.signalProblemModal" letterId="props.letterId" onClose="() => state.signalProblemModal = false" />
+    <ChildModal active="state.childModal" onClose="() => state.childModal = false" />
   </t>
 
   <!-- loader for letter loading -->

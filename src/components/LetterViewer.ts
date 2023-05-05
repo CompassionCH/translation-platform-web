@@ -40,7 +40,7 @@ class LetterViewer extends Component {
                 </div>
               </div>
               <div class="flex justify-center w-full absolute top-0">
-                <div class="flex gap-2 p-2 bg-white shadow-xl -mt-12 group-hover:mt-0 transition-all">
+                <div class="flex gap-2 p-2 bg-white shadow-xl -mt-12 group-hover:mt-0 transition-all letter-viewer-actions">
                   <Button size="'sm'" level="'secondary'" onClick="() => this.state.mode = 'letter'" disabled="state.mode === 'letter'">Letter</Button>
                   <Button size="'sm'" level="'secondary'" onClick="() => this.state.mode = 'source'" disabled="state.mode === 'source'">Source</Button>
                 </div>

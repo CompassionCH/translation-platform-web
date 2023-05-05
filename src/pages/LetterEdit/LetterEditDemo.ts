@@ -14,6 +14,7 @@ import LetterViewer from "../../components/LetterViewer";
 import { BlurLoader } from "../../components/Loader";
 import { navigateTo } from "../../components/Router/Router";
 import SignalProblem from "../../components/SignalProblem";
+import ChildModal from "../../components/ChildModal";
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 import _ from "../../i18n";
 import { buildTutorial } from "../../tutorial";
@@ -59,6 +60,7 @@ const baseState = {
     ],
   },
 
+  childModal: false,
   signalProblemModal: false,
   letterSubmitted: false,
   loading: true,
@@ -81,6 +83,7 @@ class LetterEditDemo extends Component {
   currentTranslator = useCurrentTranslator();
 
   static components = {
+    ChildModal,
     SignalProblem,
     LetterViewer,
     LetterSubmittedModal,
@@ -98,6 +101,38 @@ class LetterEditDemo extends Component {
       const tutorial = buildTutorial([
         {
           text: _('Welcome to the translation editor. This small tutorial will walk you through the various tools at your disposal.'),
+        },
+        {
+          text: _('First, let\'s have a look at the Child Protection'),
+          attachTo: {
+            element: '.child-menu-icon',
+            on: 'right',
+          }
+        },
+        {
+          beforeShowPromise: () => new Promise((resolve) => {
+            this.state.childModal = true;
+            setTimeout(resolve, 300);
+          }),
+          text: _('Please make sure to carefully read the guidelines. Click on \'Next\' only when you have read and understood the guidelines.'),
+          attachTo: {
+            element: '.child-protection-text',
+            on: 'left',
+          }
+        },
+        {
+          text: _('Don\'t forget to watch our Child Protection video, come back here only after watching it'),
+          attachTo: {
+            element: '.child-protection-video',
+            on: 'left',
+          }
+        },
+        {
+          beforeShowPromise: () => new Promise((resolve) => {
+            this.state.childModal = false;
+            setTimeout(resolve, 300);
+          }),
+          text: _('As you now know everything about the Child Protection guidelines, let\'s dive into the translations functionnalities'),
         },
         {
           text: _('This panel displays the letter which you must translate, showing the text in paragraphs over one or multiple pages'),
@@ -178,11 +213,35 @@ class LetterEditDemo extends Component {
           }
         },
         {
-          beforeShowPromise: async () => this.state.letter.pdfUrl = 'http://yoyo.emma',
-          text: _('Sometimes the PDF might not load. As an alternative you can click the "source" button which appears when you hover the panel where the letter is supposed to be'),
+          beforeShowPromise: async () => {
+            // Load invalid letter to show error on letter viewer
+            this.state.letter.pdfUrl = 'http://yoyo.emma';
+            
+            // Showing 'Letter' and 'Source' buttons in letter viewer
+            const letterViewerActions = document.querySelector('.letter-viewer-actions');
+            letterViewerActions?.classList.remove("-mt-12");
+          },
+          text: _('Sometimes the PDF might not load. As an alternative you can click the "Source" button which appears when you hover the panel where the letter is supposed to be'),
           attachTo: {
             element: '#letter-viewer',
             on: 'right',
+          },
+        },
+        {
+          beforeShowPromise: async () => {
+            
+            // Showing letter viewer in 'source' mode
+            const letterViewerActions = document.querySelector('.letter-viewer-actions');
+            const childSourceButton = letterViewerActions?.childNodes[2];
+
+            childSourceButton?.click();
+            letterViewerActions?.classList.add("-mt-12");
+
+          },
+          text: _('As you can see, after clicking on the \'Source\' button, the raw text is now visible here'),
+          attachTo: {
+            element: '#letter-viewer',
+            on: 'right'
           },
         },
         {

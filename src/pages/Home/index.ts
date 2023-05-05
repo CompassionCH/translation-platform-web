@@ -82,7 +82,6 @@ export default class Home extends Component {
         text: _('Next'),
         action: () => {
           this.tutorial.complete();
-          console.log('SWAG');
           navigateTo('/letters/demo-edit-letter');
         },
       }],

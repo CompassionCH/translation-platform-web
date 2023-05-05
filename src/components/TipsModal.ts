@@ -53,7 +53,10 @@ class TipsModal extends Component {
     </Modal>
   `;
 
-  static props = ['onClose', 'active'];
+  static props = {
+    active: { type: Boolean },
+    onClose: { type: Function },
+  };
 
   static components = {
     Modal,
