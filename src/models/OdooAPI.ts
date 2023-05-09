@@ -7,9 +7,12 @@
  * stored in the store to perform such API calls
  */
 
-import store from "../store";
+import store, { clearStoreCache } from "../store";
 import { XmlRpcClient } from '@foxglove/xmlrpc';
 import { selectedLang } from "../i18n";
+import notyf from "../notifications";
+import _ from "../i18n";
+
 
 // Declare the two XML-RPC clients
 const authClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/common");
@@ -31,7 +34,6 @@ const OdooAPI = {
       password,
       [],
     ]) as number | false;
-
     if (userId === false) {
       return false;
     } else {
@@ -61,8 +63,21 @@ const OdooAPI = {
 
       return response as any as T;
     } catch (e) {
-      throw e;
-      // clearStoreCache();
+
+      const errorMessage = e.message;
+
+      if (errorMessage.includes("Sorry, you are not allowed to access this document") | errorMessage.includes("ValueError: Expected singleton: translation.user()")){
+        notyf.error(_('Oops! There is an issue with your account. Please contact Compassion for further assistance.'));
+
+        // Reset cache when the error is related to a user login issue
+        clearStoreCache();
+
+      } else {
+
+        notyf.error(_('Oops! An error occured. Please contact Compassion for further assistance.'));
+
+      }
+      
       // window.location.reload();
     }
   }
