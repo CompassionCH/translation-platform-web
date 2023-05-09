@@ -34,7 +34,6 @@ const OdooAPI = {
       password,
       [],
     ]) as number | false;
-    console.log("userID: " + userId);
     if (userId === false) {
       return false;
     } else {
