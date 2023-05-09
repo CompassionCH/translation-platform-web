@@ -7,9 +7,11 @@
  * stored in the store to perform such API calls
  */
 
-import store from "../store";
 import { XmlRpcClient } from '@foxglove/xmlrpc';
 import { selectedLang } from "../i18n";
+import notyf from "../notifications";
+import _ from "../i18n";
+
 
 // Declare the two XML-RPC clients
 const authClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/common");
@@ -31,7 +33,7 @@ const OdooAPI = {
       password,
       [],
     ]) as number | false;
-
+    
     if (userId === false) {
       return false;
     } else {
@@ -61,6 +63,7 @@ const OdooAPI = {
 
       return response as any as T;
     } catch (e) {
+      notyf.error(_('Oops! Something went wrong. Please contact Compassion for further assistance.'));
       throw e;
       // clearStoreCache();
       // window.location.reload();
