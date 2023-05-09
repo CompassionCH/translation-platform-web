@@ -7,6 +7,7 @@
  * stored in the store to perform such API calls
  */
 
+import store, { clearStoreCache } from "../store";
 import { XmlRpcClient } from '@foxglove/xmlrpc';
 import { selectedLang } from "../i18n";
 import notyf from "../notifications";
@@ -33,7 +34,7 @@ const OdooAPI = {
       password,
       [],
     ]) as number | false;
-    
+    console.log("userID: " + userId);
     if (userId === false) {
       return false;
     } else {
@@ -63,9 +64,21 @@ const OdooAPI = {
 
       return response as any as T;
     } catch (e) {
-      notyf.error(_('Oops! Something went wrong. Please contact Compassion for further assistance.'));
-      throw e;
-      // clearStoreCache();
+
+      const errorMessage = e.message;
+
+      if (errorMessage.includes("Sorry, you are not allowed to access this document") | errorMessage.includes("ValueError: Expected singleton: translation.user()")){
+        notyf.error(_('Oops! There is an issue with your account. Please contact Compassion for further assistance.'));
+
+        // Reset cache when the error is related to a user login issue
+        clearStoreCache();
+
+      } else {
+
+        notyf.error(_('Oops! An error occured. Please contact Compassion for further assistance.'));
+
+      }
+      
       // window.location.reload();
     }
   }
