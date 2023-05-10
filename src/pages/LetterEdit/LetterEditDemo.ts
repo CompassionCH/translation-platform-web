@@ -232,9 +232,9 @@ class LetterEditDemo extends Component {
             
             // Showing letter viewer in 'source' mode
             const letterViewerActions = document.querySelector('.letter-viewer-actions');
-            const childSourceButton = letterViewerActions?.childNodes[2];
-
-            childSourceButton?.click();
+            const sourceButton: HTMLElement | null = document.querySelector('.source-button');
+            
+            sourceButton?.click();
             letterViewerActions?.classList.add("-mt-12");
 
           },
