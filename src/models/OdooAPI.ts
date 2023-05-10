@@ -62,11 +62,11 @@ const OdooAPI = {
       ]);
 
       return response as any as T;
-    } catch (e) {
+    } catch (e: any) {
 
-      const errorMessage = e.message;
+      const errorMessage: string = e.message;
 
-      if (errorMessage.includes("Sorry, you are not allowed to access this document") | errorMessage.includes("ValueError: Expected singleton: translation.user()")){
+      if (errorMessage.includes("Sorry, you are not allowed to access this document") || errorMessage.includes("ValueError: Expected singleton: translation.user()")){
         notyf.error(_('Oops! There is an issue with your account. Please contact Compassion for further assistance.'));
 
         // Reset cache when the error is related to a user login issue
@@ -77,6 +77,8 @@ const OdooAPI = {
         notyf.error(_('Oops! An error occured. Please contact Compassion for further assistance.'));
 
       }
+
+      throw e;
       
       // window.location.reload();
     }
