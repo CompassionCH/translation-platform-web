@@ -5,6 +5,7 @@ import notyf from "../../notifications";
 import LetterViewer from "../../components/LetterViewer";
 import Button from '../../components/Button';
 import SignalProblem from "../../components/SignalProblem";
+import ChildModal from "../../components/ChildModal";
 import ContentEditor from './ContentEditor';
 import { BlurLoader } from '../../components/Loader';
 import LetterSubmittedModal from "./LetterSubmittedModal";
@@ -18,6 +19,7 @@ type State = {
   saveLoading: boolean;
   letter?: Letter;
   signalProblemModal: boolean;
+  childModal: boolean;
   letterSubmitted: boolean;
   saveTimeout?: NodeJS.Timeout;
 };
@@ -31,6 +33,7 @@ class LetterEdit extends Component {
 
   static components = {
     SignalProblem,
+    ChildModal,
     LetterViewer,
     LetterSubmittedModal,
     ContentEditor,
@@ -45,6 +48,7 @@ class LetterEdit extends Component {
     internalLoading: false,
     letter: undefined,
     signalProblemModal: false,
+    childModal: false,
     letterSubmitted: false,
     saveTimeout: undefined,
   });
