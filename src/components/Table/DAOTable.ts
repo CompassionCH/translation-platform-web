@@ -155,7 +155,6 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
     const domain = this.props.baseDomain ? await this.props.baseDomain() : [];
     filters.search = [...domain, ...filters.search];
 
-    console.log(domain, filters);
     const data = await this.props.dao.list(filters);
     this.state.pageData = data.data;
     this.state.total = data.total;
