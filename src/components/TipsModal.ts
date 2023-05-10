@@ -31,7 +31,7 @@ class TipsModal extends Component {
             <ul class="list-disc px-5 mb-2">
                 <li>For Bible verses, simply write the Bible reference.</li>
                 <li>For the salutation, simply write "Dear Sponsor", or the sponsor/s' name.</li>
-                <li>You can use the informal "tu" pronoun when addressing the sponsors in the letter.</li>
+                <li>You can use informal communication when addressing the sponsors in the letter.</li>
                 <li>For the word "project" in English, the translation is "child development center".</li>
                 <li>For the date, please write it as such and do not write the date on which you are doing the translation.</li>
             </ul>
