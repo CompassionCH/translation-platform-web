@@ -122,6 +122,7 @@ class LetterEditDemo extends Component {
         },
         {
           text: _('Don\'t forget to watch our Child Protection video, come back here only after watching it'),
+          scrollTo: true,
           attachTo: {
             element: '.child-protection-video',
             on: 'left',
