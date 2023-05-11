@@ -66,7 +66,14 @@ const OdooAPI = {
 
       const errorMessage: string = e.message;
 
-      if (errorMessage.includes("Sorry, you are not allowed to access this document") || errorMessage.includes("ValueError: Expected singleton: translation.user()")){
+      // I'm so sorry for this, TODO: Find a way to make this in a cleaner way
+      if (
+          errorMessage.includes("Sorry, you are not allowed to access this document") 
+          || errorMessage.includes("ValueError: Expected singleton: translation.user()") 
+          || errorMessage.includes("Désolé, vous n'êtes pas autorisé à accéder à ce document")
+          || errorMessage.includes("Entschuldigen Sie, Sie sind nicht berechtigt auf dieses Dokument zuzugreifen")
+        )
+      {
         notyf.error(_('Oops! There is an issue with your account. Please contact Compassion for further assistance.'));
 
         // Reset cache when the error is related to a user login issue
