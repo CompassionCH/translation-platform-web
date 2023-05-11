@@ -26,8 +26,7 @@ class ChildModal extends Component {
               they are tired but we could expect a teenager to manage their emotions even when they are very
               tired.)</li>
               <li class="mb-2">I will engage in age-appropriate communication with beneficiaries.</li>
-              <li class="mb-2">I will submit to the appropriate background or police checks as permissible by law prior to face-
-              to-face contact with beneficiaries (at minimum – an employee may be requested to comply with background/police checks at hire).</li>
+              <li class="mb-2">I will submit to the appropriate background or police checks as permissible by law prior to face-to-face contact with beneficiaries (at minimum – an employee may be requested to comply with background/police checks at hire).</li>
               <li class="mb-2">I will engage in activities with beneficiaries only in open or visible places, and in the event that an
               activity needs to take place in an enclosed space, I will ensure that at least one other approved adult
               is present.</li>
