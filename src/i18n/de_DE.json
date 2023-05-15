@@ -1,4 +1,4 @@
-export default {
+{
     "(Password: volunteer)": "(Passwort: volunteer)",
     ". Here is the list of texts waiting to be translated,": "Hier findest du die Texte zum Übersetzen.",
     ". It seems that you don't have any skill currently defined. Start by picking the languages you are confident in.": "Es sieht so aus, als hättest du deine Sprachkompetenz noch nicht eingetragen. Wähle die Sprache aus, die du gut beherrschst.",
@@ -247,4 +247,4 @@ export default {
     "Thank you in advance for translating as closely as possible to the original text.": "Bitte übersetze möglichst nah am Originaltext.",
     "Keep the information you handle confidential.": "Behandle die Informationen vertraulich.",
     "Complete the translation of a letter as quickly as possible.": "Beende die Übersetzung eines Briefes so schnell wie möglich."
-};
+}
