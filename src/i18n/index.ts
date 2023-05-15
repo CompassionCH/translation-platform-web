@@ -1,5 +1,5 @@
-import fr_CH from './fr_CH';
-import de_DE from './de_DE';
+import fr_CH from './fr_CH.json';
+import de_DE from './de_DE.json';
 
 const LANG_KEY = 'translation-platform-langage-new';
 const lang = window.localStorage.getItem(LANG_KEY);
