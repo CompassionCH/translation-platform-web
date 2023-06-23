@@ -150,7 +150,7 @@ export default class Home extends Component {
     const skillLetters = await Promise.all(this.currentTranslator.data.skills.map(async (skill) => {
       const skillLetters = await models.letters.list({
         sortBy: 'priority',
-        sortOrder: 'asc',
+        sortOrder: 'desc',
         pageSize: 5,
         pageNumber: 0,
         search: [
