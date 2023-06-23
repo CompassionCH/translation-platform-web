@@ -21,11 +21,10 @@ class Login extends Component {
           <h3 class="text-center text-slate-600 h-6">Compassion</h3>
           <h1 class="text-center text-slate-800 font-light text-2xl mb-5">Translation Platform</h1>
           <form t-on-submit.prevent="login">
-            <input class="compassion-input text-sm mb-3" type="text" placeholder="Username" t-model="state.username" />
+            <input class="compassion-input text-sm mb-3" type="text" placeholder="E-mail" t-model="state.username" />
             <input class="compassion-input text-sm mb-3" type="password" placeholder="Password" t-model="state.password" />
             <Button color="'compassion'" class="'w-full mb-2'" size="'sm'">Login</Button>
             <div class="flex justify-between">
-              <a href="#" class="text-xs text-slate-500 hover:text-slate-800 transition-colors">Forgot my password</a>
               <a href="#" class="text-xs text-slate-500 hover:text-slate-800 transition-colors" t-on-click="() => state.settingsModal = true">Language</a>
             </div>
           </form>
