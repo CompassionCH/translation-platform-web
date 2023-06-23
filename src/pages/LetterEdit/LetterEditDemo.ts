@@ -236,7 +236,7 @@ class LetterEditDemo extends Component {
             const sourceButton: HTMLElement | null = document.querySelector('.source-button');
             
             sourceButton?.click();
-            letterViewerActions?.classList.add("-mt-12");
+            letterViewerActions?.classList.add("-mb-0");
 
           },
           text: _('As you can see, after clicking on the \'Source\' button, the raw text is now visible here'),
