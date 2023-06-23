@@ -114,7 +114,7 @@ class ChildModal extends Component {
 
   watchVideo() {
     window.open(
-      t_("#"),
+      t_("Child Protection Video Link"),
       "_blank"
     );
   };
