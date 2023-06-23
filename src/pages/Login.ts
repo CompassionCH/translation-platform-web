@@ -25,7 +25,6 @@ class Login extends Component {
             <input class="compassion-input text-sm mb-3" type="password" placeholder="Password" t-model="state.password" />
             <Button color="'compassion'" class="'w-full mb-2'" size="'sm'">Login</Button>
             <div class="flex justify-between">
-              <a href="#" class="text-xs text-slate-500 hover:text-slate-800 transition-colors">Forgot my password</a>
               <a href="#" class="text-xs text-slate-500 hover:text-slate-800 transition-colors" t-on-click="() => state.settingsModal = true">Language</a>
             </div>
           </form>
