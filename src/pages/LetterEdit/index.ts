@@ -62,22 +62,25 @@ class LetterEdit extends Component {
     // This effect registers the auto-save functionnalities
     useEffect(() => {
       const listener = (event: KeyboardEvent) => {
-
+        
+        /* TODO Implement a better way to auto save the content
+           We are currently disabling it as it's causing user experience issues
+        */  
         // On key press, enqueue a save if necessary
-        this.queueSave();
-
+          // this.queueSave();
+        
         // If CTRL-S
-        if (event.ctrlKey && event.key === 's') {
-          event.preventDefault();
-
-          // Remove timer if any as we manually save
-          if (this.state.saveTimeout) {
-            clearTimeout(this.state.saveTimeout);
-            this.state.saveTimeout = undefined;
+          if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+  
+            // Remove timer if any as we manually save
+            if (this.state.saveTimeout) {
+              clearTimeout(this.state.saveTimeout);
+              this.state.saveTimeout = undefined;
+            }
+            this.save(true);
           }
-          this.save(true);
         }
-      }
 
       document.addEventListener('keydown', listener);
       return () => document.removeEventListener('keydown', listener);
