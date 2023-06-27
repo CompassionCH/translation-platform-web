@@ -31,8 +31,8 @@ class LetterInformationHeader extends Component {
             <p class="" t-esc="props.letter.sponsor.preferredName" />
           </div>
           <div class="flex text-sm mb-1 text-slate-800">
-            <p class="w-32  font-medium">Sex</p>
-            <p class="" t-esc="props.letter.sponsor.sex === 'M' ? _('Man') : _('Woman')" />
+            <p class="w-32  font-medium">Title</p>
+            <p class="" t-esc="props.letter.sponsor.sex === 'M' ? _('Man') : (props.letter.sponsor.sex === 'F' ? _('Woman') : props.letter.sponsor.sex)" />
           </div>
           <div class="flex text-sm text-slate-800">
             <p class="w-32  font-medium">Age</p>
