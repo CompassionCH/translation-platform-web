@@ -51,7 +51,6 @@ class SettingsModal extends Component {
     fr_CH: { name: 'French', flag: markup(FR) },
     en_US: { name: 'English', flag: markup(GB) },
     de_DE: { name: 'German', flag: markup(DE) },
-    it_IT: { name: 'Italiano', flag: markup(IT) },
   };
 
   logout() {
