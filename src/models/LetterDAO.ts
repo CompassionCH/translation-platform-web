@@ -24,7 +24,7 @@ export type Element = Paragraph | PageBreak;
 
 export type Person = {
   preferredName: string;
-  sex: 'M' | 'F';
+  sex: string;
   age: number;
   ref: string;
 };
