@@ -29,8 +29,11 @@ class HelpModal extends Component {
         </div>
         <div t-if="store.userId" class="p-4 bg-slate-100 border-t border-solid border-slate-200 flex flex-col items-center">
           <p class="text-sm font-semibold text-slate-700 mb-2">Tutorial</p>
-          <div class="flex flex-row space-x-4">
+          <div class="flex flex-row space-x-4 mb-2">
             <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="startTutorial">Restart the walkthrough</Button>
+          </div>
+          <div class="flex flex-row space-x-4">
+            <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="watchVideo">Video tutorial</Button>
           </div>
         </div>
       </div>
@@ -67,7 +70,7 @@ class HelpModal extends Component {
 
   watchVideo() {
     window.open(
-      t_("https://vimeo.com/800516053/3d42ed291e"),
+      t_("https://drive.google.com/file/d/13YqzVyTmkhBpsvVZX0v7L6rg0TRik5Fa/view"),
       "_blank"
     );
   };
