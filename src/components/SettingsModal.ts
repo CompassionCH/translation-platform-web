@@ -1,6 +1,6 @@
 import { Component, xml, markup } from "@odoo/owl";
 import Modal from "./Modal";
-import { FR, DE, GB, IT } from 'country-flag-icons/string/3x2';
+import { FR, DE, GB } from 'country-flag-icons/string/3x2';
 import { selectedLang, setLanguage } from "../i18n";
 import Button from "./Button";
 import { clearStoreCache, useStore } from "../store";
