@@ -103,7 +103,7 @@
     "Sex": "Geschlecht",
     "Showing": "Anzeigen",
     "Signal a Problem": "Ein Problem melden",
-    "Sometimes the PDF might not load. As an alternative you can click the \"source\" button which appears when you hover the panel where the letter is supposed to be": "Manchmal wird das PDF nicht richtig angezeigt. In diesem Fall kannst du auf \"Ausgangstext\" klicken (wenn du mit der Maus über den Brief fährst), dann wird der Text angezeigt.",
+    "Sometimes the PDF might not load. As an alternative you can click the \"Source\" button which appears when you hover the panel where the letter is supposed to be": "Manchmal wird das PDF nicht richtig angezeigt. In diesem Fall kannst du auf \"Ausgangstext\" klicken (wenn du mit der Maus über den Brief fährst), dann wird der Text angezeigt.",
     "source": "Ausgangstext",
     "Source": "Ausgangstext",
     "Source Text to translate": "Ausgangstext zum Übersetzen",
@@ -251,7 +251,8 @@
     "Video tutorial": "Video-Anleitung",
     "https://drive.google.com/file/d/13YqzVyTmkhBpsvVZX0v7L6rg0TRik5Fa/view": "https://drive.google.com/file/d/1oblA-oWWBP8rlkvXSZCzbK4IxS3NcTTt/view",
     "First, let's have a look at the Child Protection": "Erstens, werfen wir einen Blick auf den Kinderschutz",
-    "Please make sure to carefully read the guidelines. Click on 'Next' only when you have read and understood the guidelines.": "Bitte stellen Sie sicher, dass Sie die Richtlinien sorgfältig lesen. Klicken Sie nur auf \"Weiter\", wenn Sie die Richtlinien gelesen und verstanden haben.",
-    "Don't forget to watch our Child Protection video, come back here only after watching it": "Vergessen Sie nicht, unser Video zum Kinderschutz anzusehen. Kommen Sie erst nach dem Anschauen hierher zurück.",
-    "As you now know everything about the Child Protection guidelines, let's dive into the translations functionnalities": "Nun, da Sie mit den Richtlinien zum Kinderschutz vertraut sind, wollen wir uns die Übersetzungsfunktionen genauer anschauen"
+    "Please make sure to carefully read the guidelines. Click on 'Next' only when you have read and understood the guidelines.": "Bitte stelle sicher, dass du die Richtlinien sorgfältig liest. Klicke nur auf \"Weiter\", wenn du die Richtlinien gelesen und verstanden hast.",
+    "Don't forget to watch our Child Protection video, come back here only after watching it": "Vergiss nicht, unser Video zum Kinderschutz anzusehen. Komm erst nach dem Anschauen hierher zurück.",
+    "As you now know everything about the Child Protection guidelines, let's dive into the translations functionnalities": "Nun, da du mit den Richtlinien zum Kinderschutz vertraut bist, wollen wir uns die Übersetzungsfunktionen genauer anschauen",
+    "As you can see, after clicking on the 'Source' button, the raw text is now visible here": "Wie du sehen kannst, ist nach dem Klicken auf die Schaltfläche \"Ausgangstext\" der Rohtext nun hier sichtbar"
 }

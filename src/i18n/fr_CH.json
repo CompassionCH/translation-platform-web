@@ -103,7 +103,7 @@
     "Sex": "Sexe",
     "Showing": "Affichage de",
     "Signal a Problem": "Signaler un problème",
-    "Sometimes the PDF might not load. As an alternative you can click the \"source\" button which appears when you hover the panel where the letter is supposed to be": "Parfois le PDF peut ne pas s'afficher. Comme alternative tu peux cliquer sur le bouton \"texte source\" (disponible quand tu passes la souris sur le panneau d'affichage de la lettre), le texte brut s'affichera.",
+    "Sometimes the PDF might not load. As an alternative you can click the \"Source\" button which appears when you hover the panel where the letter is supposed to be": "Parfois le PDF peut ne pas s'afficher. Comme alternative tu peux cliquer sur le bouton \"Texte source\" (disponible quand tu passes la souris sur le panneau d'affichage de la lettre), le texte brut s'affichera.",
     "source": "Texte source",
     "Source": "Texte source",
     "Source Text to translate": "Texte source à traduire",
@@ -151,7 +151,7 @@
     "Watch the video": "Regarder la vidéo",
     "Welcome": "Bienvenue",
     "Welcome to the Compassion Translation Platform. This small tutorial will guide you through its features and how it works. You can close it whenever you want to by clicking the \"Exit\" button.": "Bienvenue sur la plateforme de traduction de Compassion. Ce petit tutoriel t'expliquera ses fonctionnalités importantes et comment elle fonctionne. Tu peux le fermer en cliquant sur le bouton \"Quitter\".",
-    "Welcome to the translation editor. This small tutorial will walk you through the various tools at your disposal.": "Bienvenue sur l'editeur de traduction. Ce petit tutoriel va te présenter les différents outils à ta disposition.",
+    "Welcome to the translation editor. This small tutorial will walk you through the various tools at your disposal.": "Bienvenue sur l'éditeur de traduction. Ce petit tutoriel va te présenter les différents outils à ta disposition.",
     "When translating content you will write it in this box": "C'est dans cette zone que tu écris le texte traduit",
     "Yes": "Oui",
     "You already have all the translation skills!": "Tu possèdes déjà toutes les compétences de langues possibles!",
@@ -251,7 +251,8 @@
     "Video tutorial": "Tutoriel vidéo",
     "https://drive.google.com/file/d/13YqzVyTmkhBpsvVZX0v7L6rg0TRik5Fa/view": "https://drive.google.com/file/d/117QCySOm_87Np-H3-JH_EfzCzFTwmKUl/view",
     "First, let's have a look at the Child Protection": "Tout d'abord, regardons les directives sur la protection de l'enfance",
-    "Please make sure to carefully read the guidelines. Click on 'Next' only when you have read and understood the guidelines.": "Veuillez vous assurer de lire attentivement les directives. Cliquez sur \"Suivant\" uniquement lorsque vous avez lu et compris les directives.",
-    "Don't forget to watch our Child Protection video, come back here only after watching it": "N'oubliez pas de regarder notre vidéo sur la protection de l'enfance. Revenez ici seulement après l'avoir visionnée.",
-    "As you now know everything about the Child Protection guidelines, let's dive into the translations functionnalities": "Maintenant que vous avez pris connaissance des directives sur la protection de l'enfance, explorons les fonctionnalités de la plateforme de traduction"
+    "Please make sure to carefully read the guidelines. Click on 'Next' only when you have read and understood the guidelines.": "Assure-toi de lire attentivement les directives. Clique sur \"Suivant\" uniquement lorsque tu auras lu et compris les directives.",
+    "Don't forget to watch our Child Protection video, come back here only after watching it": "N'oublie pas de regarder notre vidéo sur la protection de l'enfance. Reviens ici seulement après l'avoir visionnée",
+    "As you now know everything about the Child Protection guidelines, let's dive into the translations functionnalities": "Maintenant que tu as pris connaissance des directives sur la protection de l'enfance, explorons les fonctionnalités de la plateforme de traduction",
+    "As you can see, after clicking on the 'Source' button, the raw text is now visible here": "Comme tu peux le constater, après avoir cliqué sur le bouton \"Texte source\", le texte brut est maintenant visible ici"
 }
