@@ -1,6 +1,7 @@
 import { Component, xml, markup } from "@odoo/owl";
 import Modal from "./Modal";
 import { FR, DE, GB } from 'country-flag-icons/string/3x2';
+import _ from "../i18n";
 import { selectedLang, setLanguage } from "../i18n";
 import Button from "./Button";
 import { clearStoreCache, useStore } from "../store";
@@ -10,6 +11,8 @@ import { clearStoreCache, useStore } from "../store";
  * better with
  */
 class SettingsModal extends Component {
+  _ = _;
+  
   static template = xml`
     <Modal active="props.active" title="'Settings'" onClose="props.onClose">
       <div class="w-96">
@@ -22,7 +25,7 @@ class SettingsModal extends Component {
                   'ring-slate-100': selectedLang !== lang,
                   'ring-compassion ring-opacity-50': selectedLang === lang,
                 }" t-out="languages[lang].flag" />
-                <p class="text-slate-800 font-medium mt-2" t-esc="languages[lang].name" />
+                <p class="text-slate-800 font-medium mt-2" t-esc="_(languages[lang].name)" />
               </div>
             </div>
           </div>
