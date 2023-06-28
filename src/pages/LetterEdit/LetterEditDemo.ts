@@ -25,12 +25,16 @@ import LetterSubmittedModal from "./LetterSubmittedModal";
 /**
  * A demonstration state with a demonstration letter
  */
+
+// Getting navigator current base url
+const baseUrl = window.location.protocol + '//' + window.location.host;
+
 const baseState = {
   letter: {
     id: 1,
     status: 'to do',
     priority: 3,
-    pdfUrl: '/text.pdf',
+    pdfUrl: baseUrl + '/b2s_image?id=64a3a73c-2974-437b-9aa6-41a140bfc781&disposition=inline',
     title: 'Demo Letter',
     source: 'English',
     target: 'French',
@@ -216,7 +220,7 @@ class LetterEditDemo extends Component {
         {
           beforeShowPromise: async () => {
             // Load invalid letter to show error on letter viewer
-            this.state.letter.pdfUrl = 'http://yoyo.emma';
+            this.state.letter.pdfUrl = 'https://yoyo.emma';
             
             // Showing 'Letter' and 'Source' buttons in letter viewer
             const letterViewerActions = document.querySelector('.letter-viewer-actions');
