@@ -43,11 +43,11 @@ class ContentEditor extends Component<Props> {
           <div class="bg-white shadow-xl relative z-10 grid grid-cols-6 flex-1">
             <div class="col-span-4 py-4 px-4 editor-paragraph-content">
               <h4 class="font-medium text-slate-700 mb-2">Translated Content</h4>
-              <textarea class="compassion-input w-full h-32 text-xs flex" t-model="element.content" />
+              <textarea class="compassion-input w-full h-32 text-base flex" t-model="element.content" />
             </div>
             <div class="col-span-2 bg-slate-50 p-4 editor-paragraph-comment">
               <h4 class="font-medium text-slate-700 mb-2">Comment on the translation</h4>
-              <textarea class="compassion-input w-full h-32 text-xs flex" t-model="element.comments" />
+              <textarea class="compassion-input w-full h-32 text-base flex" t-model="element.comments" />
             </div>
           </div>
           <div class="flex flex-col justify-center gap-2 ml-2 buttons-element-state">
