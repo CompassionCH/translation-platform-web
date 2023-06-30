@@ -257,5 +257,6 @@
     "As you can see, after clicking on the 'Source' button, the raw text is now visible here": "Comme tu peux le constater, après avoir cliqué sur le bouton \"Texte source\", le texte brut est maintenant visible ici",
     "Unable to save and submit letter, please save it first and retry.": "Impossible d'enregistrer et soumettre la lettre, veuillez d'abord l'enregistrer et réessayer.",
     "Unable to save letter": "Impossible d'enregistrer la lettre.",
-    "An error occured while trying to retrieve updated state": "Une erreur s'est produite lors de la tentative de récupération de l'état mis à jour"
+    "An error occured while trying to retrieve updated state": "Une erreur s'est produite lors de la tentative de récupération de l'état mis à jour",
+    "Switch language": "Changer de langue"
 }

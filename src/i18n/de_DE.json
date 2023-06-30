@@ -257,5 +257,6 @@
     "As you can see, after clicking on the 'Source' button, the raw text is now visible here": "Wie du sehen kannst, ist nach dem Klicken auf die Schaltfläche \"Ausgangstext\" der Rohtext nun hier sichtbar",
     "Unable to save and submit letter, please save it first and retry.": "Es ist nicht möglich, den Brief zu speichern und einzureichen. Bitte speichern Sie ihn zuerst und versuchen Sie es erneut.",
     "Unable to save letter": "Brief kann nicht gespeichert werden.",
-    "An error occured while trying to retrieve updated state": "Es ist ein Fehler aufgetreten beim Versuch, den aktualisierten Zustand abzurufen"
+    "An error occured while trying to retrieve updated state": "Es ist ein Fehler aufgetreten beim Versuch, den aktualisierten Zustand abzurufen",
+    "Switch language": "Sprache wechseln"
 }
