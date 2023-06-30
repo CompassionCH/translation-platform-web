@@ -254,5 +254,8 @@
     "Please make sure to carefully read the guidelines. Click on 'Next' only when you have read and understood the guidelines.": "Assure-toi de lire attentivement les directives. Clique sur \"Suivant\" uniquement lorsque tu auras lu et compris les directives.",
     "Don't forget to watch our Child Protection video, come back here only after watching it": "N'oublie pas de regarder notre vidéo sur la protection de l'enfance. Reviens ici seulement après l'avoir visionnée",
     "As you now know everything about the Child Protection guidelines, let's dive into the translations functionnalities": "Maintenant que tu as pris connaissance des directives sur la protection de l'enfance, explorons les fonctionnalités de la plateforme de traduction",
-    "As you can see, after clicking on the 'Source' button, the raw text is now visible here": "Comme tu peux le constater, après avoir cliqué sur le bouton \"Texte source\", le texte brut est maintenant visible ici"
+    "As you can see, after clicking on the 'Source' button, the raw text is now visible here": "Comme tu peux le constater, après avoir cliqué sur le bouton \"Texte source\", le texte brut est maintenant visible ici",
+    "Unable to save and submit letter, please save it first and retry.": "Impossible d'enregistrer et soumettre la lettre, veuillez d'abord l'enregistrer et réessayer.",
+    "Unable to save letter": "Impossible d'enregistrer la lettre.",
+    "An error occured while trying to retrieve updated state": "Une erreur s'est produite lors de la tentative de récupération de l'état mis à jour"
 }
