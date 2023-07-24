@@ -23,7 +23,7 @@ class TranslationCard extends Component<Props> {
       <div class="bg-slate-100 px-4 py-3 flex justify-between">
         <div>
           <h4 class="font-light text-lg text-slate-700" t-esc="props.title" />
-          <p t-if="props.status !== 'unverified'" class="text-slate-600 text-xs"><t t-esc="props.remaining" /> Texts remaining</p>
+          <p t-if="props.status !== 'unverified'" class="text-slate-600 text-xs"><t t-esc="props.remaining" /> Letters</p>
           <p t-else="" class="text-slate-600 text-xs">Waiting for validation</p>
         </div>
         <div>
