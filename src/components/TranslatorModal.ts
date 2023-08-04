@@ -55,7 +55,7 @@ class TranslatorModal extends Component {
         </div>
         <div class="p-4 flex flex-col items-center">
           <h3 class="font-semibold text-sm text-slate-700 mb-2">Translation Skills</h3>
-          <TranslationSkills skills="state.translator.skills" />
+          <TranslationSkills skills="state.translator.skills" translatorId="state.translator.translatorId" />
         </div>
       </div>
     </Modal>
