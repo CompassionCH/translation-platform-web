@@ -48,6 +48,12 @@ type TranslatorDAOApi = {
    */
   registerSkills(translatorId: number, skills: number[]): Promise<boolean>;
 
+  /**
+   * Delete a translation skill on the currently authenticated user
+   */
+  deleteSkill(translatorId: number, skill: number): Promise<boolean>;
+
+
    /**
     * Returns the Translator object related to the currently
     * authenticated user
@@ -95,6 +101,12 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
       // Add skills sequentially to avoid overloading the server with parallel API calls
       await OdooAPI.execute_kw('translation.user', 'add_skill', [translatorId, skillId]);
     }
+
+    return true;
+  },
+
+  async deleteSkill(translatorId, skill) {
+    await OdooAPI.execute_kw('translation.user', 'unlink_skill', [translatorId, skill]);
 
     return true;
   },

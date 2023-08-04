@@ -19,7 +19,7 @@ class LanguagePickModal extends Component {
       }">
         <div class="p-4 flex flex-col items-center" t-if="state.translator.skills.length gt 0">
           <h4 class="font-medium text-slate-700 mb-2">Your current translation skills</h4>
-          <TranslationSkills skills="state.translator.skills" />
+          <TranslationSkills skills="state.translator.skills" translatorId="state.translator.translatorId"/>
         </div>
         <div class="p-4 bg-slate-100 flex flex-col items-center">
           <h4 class="font-medium text-slate-700 mb-2">Register a new translation skill</h4>
