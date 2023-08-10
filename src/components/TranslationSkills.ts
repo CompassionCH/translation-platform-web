@@ -20,7 +20,7 @@ class TranslationSkills extends Component {
     </div>
   `;
 
-  async deleteTranslatorSkill(skill) {
+  async deleteTranslatorSkill(skill: number) {
     var res = false;
     var translatorId = this.props.translatorId;
     models.translators.find(translatorId);
