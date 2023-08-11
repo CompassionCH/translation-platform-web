@@ -21,6 +21,9 @@ class TranslationSkills extends Component {
   `;
 
   async deleteTranslatorSkill(skill) {
+    if (confirm("Do you really want to delete your skill ?") == false) {
+        return null;
+    }
     var res = false;
     var translatorId = this.props.translatorId;
     models.translators.find(translatorId);
