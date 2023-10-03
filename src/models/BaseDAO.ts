@@ -6,8 +6,7 @@ export interface FilterParams<T> {
 }
 
 export interface ListQueryParams<T> extends FilterParams<T> {
-  sortBy?: keyof T;
-  sortOrder: 'asc' | 'desc';
+  sortBy: string[];
   pageSize: number;
   pageNumber: number;
 };
@@ -53,18 +52,20 @@ function fieldMappingItems<T>(column: keyof T, mapping: FieldsMapping<T>): [stri
 /**
  * Generates a search string for the given sort elements
  * @param sortBy 
- * @param sortOrder 
  * @param fieldsMapping 
  * @returns 
  */
-export function generateSortString<T>(sortBy: keyof T, sortOrder: 'asc' | 'desc', fieldsMapping: FieldsMapping<T>) {
-  if (sortBy in fieldsMapping) {
-    const [field] = fieldMappingItems(sortBy, fieldsMapping);
-    return `${field} ${sortOrder}`;
-  } else {
-    console.error(`Unknown field ${sortBy as string}, you must define it in the fields mapping table`);
-    return null;
-  }
+export function generateSortString<T>(sortBy: string[], fieldsMapping: FieldsMapping<T>) {
+  let result: string[] = [];
+  sortBy.forEach(sortField => {
+    const [fieldName, sortOrder = "asc"] = sortField.split(' ');
+    if (fieldName in fieldsMapping) {
+      const key: keyof T = fieldName as keyof T;
+      const sortField = fieldMappingItems(key, fieldsMapping)[0];
+      result.push(`${sortField} ${sortOrder}`);
+    }
+  });
+  return result.join(",");
 };
 
 export function fieldSearchDomain<T>(item: SearchDomain<T>, fieldsMapping: FieldsMapping<T>) {
@@ -85,7 +86,7 @@ export function fieldSearchDomain<T>(item: SearchDomain<T>, fieldsMapping: Field
 
     // Using find, will match first operator, so start with 2chars operators
     const [field, formatter] = fieldMappingItems(item.column, fieldsMapping);
-    const op = Object.keys(operators).find(op => item.term.startsWith(op)) || 'ilike';
+    const op = Object.keys(operators).find(op => item.operator === op) || 'ilike';
 
     // Remove operator from actual term search
     const term = item.term.replace(op, '').trim();
@@ -124,7 +125,7 @@ export function generateSearchQuery<T>(params: Partial<ListQueryParams<T>>, fiel
     generateSearchDomain<T>(params.search || [], fieldsMapping),
     page * amount,
     amount,
-    params.sortBy && params.sortOrder ? generateSortString<T>(params.sortBy, params.sortOrder, fieldsMapping) : undefined,
+    params.sortBy ? generateSortString<T>(params.sortBy, fieldsMapping) : undefined,
   ];
 }
 
