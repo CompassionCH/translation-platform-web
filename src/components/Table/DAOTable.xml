@@ -16,7 +16,7 @@
           >
             <div class="flex">
               <span t-esc="_(col.header || col.name)" class="font-medium text-slate-800" />
-              <SortOrderViewer t-if="col.sortable !== false" order="filters.sortBy === col.name ? filters.sortOrder : undefined" />
+              <SortOrderViewer t-if="col.sortable !== false" order="(filters.sortBy.find(orderClause => orderClause.startsWith(col.name)) || 'd undefined').split(' ')[1]" />
             </div>
           </td>
         </tr>
@@ -25,7 +25,7 @@
         <tr>
           <td t-if="props.onSelect !== undefined" class="bg-slate-200 border-b border-solid border-slate-300" />
           <td t-foreach="state.columns" t-as="col" t-key="col.name" class="bg-slate-200 border-b border-solid border-slate-300">
-            <t t-set="searchFilter" t-value="this.filters.search.find(it => it.column === col.name)" />
+            <t t-set="searchFilter" t-value="this.filters.search.find(it => it.column.startsWith(col.name))" />
             <input type="text" t-att-placeholder="_('Search ') + _(col.header || col.name)" t-if="col.searchable !== false" t-on-input="(e) => this.searchColumn(col.name, e)" t-att-value="searchFilter ? searchFilter.term : ''"
               class="outline-none w-full py-1 px-3 text-xs text-slate-800 border border-transparent focus:border-compassion focus:bg-white focus:shadow-lg border-none" t-att-class="{
                 'bg-slate-200': !searchFilter or searchFilter.term.trim() === '',

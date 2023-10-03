@@ -86,8 +86,7 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
     pageNumber: 0,
     pageSize: 10,
     search: [],
-    sortBy: undefined,
-    sortOrder: 'desc',
+    sortBy: [],
   }, this.props.key);
 
   setup(): void {
@@ -129,8 +128,7 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
   clearFilters() {
     this.filters.search = [];
     this.filters.pageNumber = 0;
-    this.filters.sortBy = undefined;
-    this.filters.sortOrder = 'desc';
+    this.filters.sortBy = [];
     this.updateData();
   }
 
@@ -205,15 +203,22 @@ export default class DAOTable<T extends Record<string, any>> extends Component<P
   }
 
   updateSortOrder(colName: string) {
-    const column = this.state.columns.find(it => it.name === colName);
+    const column = this.state.columns.find(it => it.name.startsWith(colName));
     if (!column || column.sortable === false) return;
 
-    if (this.filters.sortOrder === 'asc') {
-      this.filters.sortOrder = 'desc';
+    // Find the sorting criteria that corresponds to fieldName
+    const index = this.filters.sortBy.findIndex((sortClause) => sortClause.startsWith(colName));
+    if (index !== -1) {
+      // Modify the sorting order
+      const criteria = this.filters.sortBy[index];
+      let [field, order = "desc"] = criteria.split(' ');
+      // Toggle the sorting order (asc <-> desc)
+      order = order === 'asc' ? 'desc' : 'asc';
+      // Replace the original sorting criteria with the modified criteria
+      this.filters.sortBy[index] = [field, order].join(' ');
     } else {
-      this.filters.sortOrder = 'asc';
+      this.filters.sortBy.push(colName + " asc");
     }
-    this.filters.sortBy = colName;
     this.updateData();
   }
 

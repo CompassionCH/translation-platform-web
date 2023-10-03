@@ -37,13 +37,23 @@ export function simulateList<T>(allItems: T[], params: Partial<ListQueryParams<T
 
   // Then apply sort
   const sorted = filtered.sort((a, b) => {
-    const sortBy = params.sortBy;
-    if (!sortBy) return 1;
-    if (params.sortOrder === 'asc') {
-      return a[sortBy] > b[sortBy] ? 1 : -1;
-    } else {
-      return a[sortBy] < b[sortBy] ? 1 : -1;
+    if (Array.isArray(params.sortBy)) {
+      for (const sortString of params.sortBy) {
+        const [sortBy, sortOrder = "asc"] = sortString.split(" ");
+        const key: keyof T = sortBy as keyof T;
+        if (!sortBy) return 1;
+        if (sortOrder === 'asc') {
+          if (a[key] !== b[key]) {
+            return a[key] > b[key] ? 1 : -1;
+          }
+        } else {
+          if (a[key] !== b[key]) {
+            return a[key] < b[key] ? 1 : -1;
+          }
+        }     
+      }
     }
+    return 1;
   });
 
   // Then slice
