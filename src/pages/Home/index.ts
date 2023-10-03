@@ -134,12 +134,12 @@ export default class Home extends Component {
   async fetchSaved() {
     if (!this.currentTranslator.data) return;
     this.state.savedLetters = await models.letters.list({
-      sortBy: 'priority',
-      sortOrder: 'asc',
+      sortBy: 'priority,date',
+      sortOrder: 'desc',
       pageNumber: 0,
       pageSize: 5,
       search: [
-        { column: 'translatorId', term: `${this.currentTranslator.data.translatorId}` },
+        { column: 'translatorId', term: `${this.currentTranslator.data.translatorId}`, operator: '=' },
         { column: 'status', term: 'in progress' },
       ]
     });
@@ -149,7 +149,7 @@ export default class Home extends Component {
     if (!this.currentTranslator.data) return;
     const skillLetters = await Promise.all(this.currentTranslator.data.skills.map(async (skill) => {
       const skillLetters = await models.letters.list({
-        sortBy: 'priority',
+        sortBy: 'priority,date',
         sortOrder: 'desc',
         pageSize: 5,
         pageNumber: 0,

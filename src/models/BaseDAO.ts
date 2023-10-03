@@ -1,5 +1,5 @@
 
-type SearchDomain<T> = { column: keyof T, term: string };
+type SearchDomain<T> = { column: keyof T, term: string, operator?: string };
 
 export interface FilterParams<T> {
   search: SearchDomain<T>[];
