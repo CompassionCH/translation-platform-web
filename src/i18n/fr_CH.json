@@ -4,7 +4,7 @@
     ". It seems that you don't have any skill currently defined. Start by picking the languages you are confident in.": ". Il semblerait que tu n'as pas encore de compétences de traductions définie. Commence par choisir les langues que tu maitrises.",
     "undefined": "-",
     "actions": "actions",
-    "Manage your translation skills": "Gère tes compétences de langues",
+    "Manage your translation skills": "Gères tes compétences de langues",
     "Add Skill": "Ajoute une compétence",
     "Age": "Âge",
     "All Time": "Toujours",
@@ -114,6 +114,7 @@
     "Take the first": "Choisis la première de la liste",
     "target": "destination",
     "Text might not be available, in this case, and if the letter is unavailable too, please contact Compassion by signaling a problem.": "Si le texte et le PDF sont indisponibles, signale le problème à Compassion.",
+    "Texts remaining": "Textes restants",
     "Thank you for your contribution. Your letter will be reviewed before being sent, bringing a smile on the face of both": "Merci pour ta contribution. Ta lettre sera contrôlée avant d'être envoyée.",
     "Thank you in the name of Compassion Switzerland, we are glad to have you in the team!": "Merci au nom de Compassion Suisse, nous sommes heureux de pouvoir te compter dans l'équipe!",
     "Thank You!": "Merci!",
@@ -257,5 +258,7 @@
     "Unable to save and submit letter, please save it first and retry.": "Impossible d'enregistrer et soumettre la lettre, veuillez d'abord l'enregistrer et réessayer.",
     "Unable to save letter": "Impossible d'enregistrer la lettre.",
     "An error occured while trying to retrieve updated state": "Une erreur s'est produite lors de la tentative de récupération de l'état mis à jour",
-    "Switch language": "Changer de langue"
+    "Switch language": "Changer de langue",
+    "Your skill couldn't be successfully deleted": "Votre compétence n'a pas pu être supprimée avec succès",
+    "Your skill has been successfully deleted": "Votre compétence a été supprimée avec succès"
 }

@@ -114,6 +114,7 @@
     "Take the first": "Wähle den ersten der Liste",
     "target": "Ziel",
     "Text might not be available, in this case, and if the letter is unavailable too, please contact Compassion by signaling a problem.": "Falls der Text und das PDF nicht verfügbar sind, melde es uns.",
+    "Texts remaining": "Texte in der Warteschleife",
     "Thank you for your contribution. Your letter will be reviewed before being sent, bringing a smile on the face of both": "Vielen Dank für deinen Beitrag. Dein Brief wird validiert, bevor er abgeschickt wird.",
     "Thank you in the name of Compassion Switzerland, we are glad to have you in the team!": "Vielen Dank! Wir freuen uns, dass du Teil unseres Teams bist.",
     "Thank You!": "Danke!",
@@ -257,5 +258,7 @@
     "Unable to save and submit letter, please save it first and retry.": "Es ist nicht möglich, den Brief zu speichern und einzureichen. Bitte speichern Sie ihn zuerst und versuchen Sie es erneut.",
     "Unable to save letter": "Brief kann nicht gespeichert werden.",
     "An error occured while trying to retrieve updated state": "Es ist ein Fehler aufgetreten beim Versuch, den aktualisierten Zustand abzurufen",
-    "Switch language": "Sprache wechseln"
+    "Switch language": "Sprache wechseln",
+    "Your skill couldn't be successfully deleted": "Ihre Fähigkeit konnte nicht erfolgreich gelöscht werden",
+    "Your skill has been successfully deleted": "Ihre Fähigkeit wurde erfolgreich gelöscht"
 }

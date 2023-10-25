@@ -1,4 +1,4 @@
-import { Component, xml } from "@odoo/owl";
+import { Component, useState, xml } from "@odoo/owl";
 import Button from "./Button";
 import { models } from "../models";
 import notyf from "../notifications";
@@ -20,34 +20,37 @@ class TranslationSkills extends Component {
     </div>
   `;
 
-  async deleteTranslatorSkill(skill: number) {
-    var res = false;
-    var translatorId = this.props.translatorId;
-    models.translators.find(translatorId);
-    try {
-        res = await models.translators.deleteSkill(translatorId, skill);
-    } catch (error) {
-        console.error(error);
-        res = false;
-    }
-    if (!res) {
-      notyf.error(_("Your skill couldn't be successfully deleted"));
-    } else {
-      notyf.success(_('Your skill have been successfully deleted'));
-      location.reload();
-    }
-  };
-
-  _ = _;
-  static props = {
-      translatorId : {type: Number},
-      ['skills']: {  },
-  };
-
   static components = {
     Button
   };
 
+  _ = _;
+
+  state = useState({
+    loading: false,
+  });
+
+  static props = {
+      translatorId : {type: Number},
+      ['skills']: {  },
+      onChange: { type: Function },
+  };
+
+  async deleteTranslatorSkill(skill: number) {
+
+    this.state.loading = true;
+
+    const isSkillDeleted = await models.translators.deleteSkill(this.props.translatorId, skill);
+    
+    this.state.loading = false;
+
+    if (isSkillDeleted) {
+      notyf.success(_('Your skill has been successfully deleted'));
+      this.props.onChange();
+    } else {
+      notyf.error(_("Your skill couldn't be successfully deleted"));
+    }
+  };
 }
 
 export default TranslationSkills;
