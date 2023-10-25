@@ -44,11 +44,11 @@ class TranslationSkills extends Component {
     
     this.state.loading = false;
 
-    if (!isSkillDeleted) {
-      notyf.error(_("Your skill couldn't be successfully deleted"));
-    } else {
-      notyf.success(_('Your skill have been successfully deleted'));
+    if (isSkillDeleted) {
+      notyf.success(_('Your skill has been successfully deleted'));
       this.props.onChange();
+    } else {
+      notyf.error(_("Your skill couldn't be successfully deleted"));
     }
   };
 }
