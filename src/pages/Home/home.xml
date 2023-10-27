@@ -11,6 +11,11 @@
         Welcome <t t-esc="currentTranslator.data.preferredName" />. Here is the list of texts waiting to be translated, <br/>
         please pick one according to your translation skills. You can also register new ones.
       </p>
+      <t t-if="currentTranslator.data.total > 1">
+        <p class="text-slate-700 text-blue text-center mb-5">
+          You have translated a total of <span class="text-lg text-compassion" t-esc="currentTranslator.data.total" /> letters, thank you so much!
+        </p>
+      </t>
       <div class="flex justify-center mb-10">
         <Button size="'sm'" level="'secondary'" onClick="() => this.state.manageSkillsModal = true">Manage your translation skills</Button>
       </div>

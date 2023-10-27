@@ -260,5 +260,7 @@
     "An error occured while trying to retrieve updated state": "Une erreur s'est produite lors de la tentative de récupération de l'état mis à jour",
     "Switch language": "Changer de langue",
     "Your skill couldn't be successfully deleted": "Votre compétence n'a pas pu être supprimée avec succès",
-    "Your skill has been successfully deleted": "Votre compétence a été supprimée avec succès"
+    "Your skill has been successfully deleted": "Votre compétence a été supprimée avec succès",
+    "You have translated a total of": "Tu as traduit un total de",
+    "letters, thank you so much!": "lettres, merci beaucoup !"
 }
