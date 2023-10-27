@@ -155,6 +155,7 @@ export default class Home extends Component {
           { column: 'status', term: 'to do' },
           { column: 'source', term: skill.source },
           { column: 'target', term: skill.target },
+          { column: 'translationIssue', term: false, operator: '=' },
         ],
       });
 
