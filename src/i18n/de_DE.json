@@ -260,5 +260,7 @@
     "An error occured while trying to retrieve updated state": "Es ist ein Fehler aufgetreten beim Versuch, den aktualisierten Zustand abzurufen",
     "Switch language": "Sprache wechseln",
     "Your skill couldn't be successfully deleted": "Ihre Fähigkeit konnte nicht erfolgreich gelöscht werden",
-    "Your skill has been successfully deleted": "Ihre Fähigkeit wurde erfolgreich gelöscht"
+    "Your skill has been successfully deleted": "Ihre Fähigkeit wurde erfolgreich gelöscht",
+    "You have translated a total of": "Du hast insgesamt",
+    "letters, thank you so much!": "Briefe übersetzt, vielen Dank!"
 }
