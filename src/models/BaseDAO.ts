@@ -1,5 +1,5 @@
-
-type SearchDomain<T> = { column: keyof T, term: string, operator?: string };
+// When using another type than string, make sure to define an operator 
+type SearchDomain<T> = { column: keyof T, term: any, operator?: string };
 
 export interface FilterParams<T> {
   search: SearchDomain<T>[];
@@ -87,9 +87,10 @@ export function fieldSearchDomain<T>(item: SearchDomain<T>, fieldsMapping: Field
     // Using find, will match first operator, so start with 2chars operators
     const [field, formatter] = fieldMappingItems(item.column, fieldsMapping);
     const op = Object.keys(operators).find(op => item.operator === op) || 'ilike';
+    
+    // Remove operator from actual term search if term is a string type
+    const term = typeof item.term === 'string' ? item.term.replace(op, '').trim() : item.term;
 
-    // Remove operator from actual term search
-    const term = item.term.replace(op, '').trim();
     return [field, op, formatter(term)];
   }
 }

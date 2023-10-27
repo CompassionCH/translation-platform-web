@@ -140,6 +140,7 @@ export default class Home extends Component {
       search: [
         { column: 'translatorId', term: `${this.currentTranslator.data.translatorId}`, operator: '=' },
         { column: 'status', term: 'in progress' },
+        { column: 'translationIssue', term: false, 'operator': '=' },
       ]
     });
   }
@@ -155,6 +156,7 @@ export default class Home extends Component {
           { column: 'status', term: 'to do' },
           { column: 'source', term: skill.source },
           { column: 'target', term: skill.target },
+          { column: 'translationIssue', term: false, operator: '=' },
         ],
       });
 
