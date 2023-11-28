@@ -115,7 +115,7 @@
     "target": "destination",
     "Text might not be available, in this case, and if the letter is unavailable too, please contact Compassion by signaling a problem.": "Si le texte et le PDF sont indisponibles, signale le problème à Compassion.",
     "Texts remaining": "Textes restants",
-    "Thank you for your contribution. Your letter will be reviewed before being sent, bringing a smile on the face of both": "Merci pour ta contribution. Ta lettre sera contrôlée avant d'être envoyée.",
+    "Thank you for your contribution. Your letter will be sent, bringing a smile on the face of both": "Merci pour ta contribution. Ta lettre sera envoyée, faisant sourire le visage de",
     "Thank you in the name of Compassion Switzerland, we are glad to have you in the team!": "Merci au nom de Compassion Suisse, nous sommes heureux de pouvoir te compter dans l'équipe!",
     "Thank You!": "Merci!",
     "Thank you.": "Merci.",
@@ -262,5 +262,9 @@
     "Your skill couldn't be successfully deleted": "Votre compétence n'a pas pu être supprimée avec succès",
     "Your skill has been successfully deleted": "Votre compétence a été supprimée avec succès",
     "You have translated a total of": "Tu as traduit un total de",
-    "letters, thank you so much!": "lettres, merci beaucoup !"
+    "letters, thank you so much!": "lettres, merci beaucoup !",
+    "The number may vary depending on letter checks. Don't worry, we record each of your interactions with the translations": "Le chiffre peut varier en fonction des vérifications de lettres. Ne t'inquiéte pas nous enregistrons chacune de tes interactions avec les traductions",
+    "Your verification letter is awaiting approval. Once approved by our staff, you will be able to start translating in this skill": "Ta lettre de vérification est en attente de validation. Une fois approuvée par notre équipe, tu pourras commencer à traduire dans cette langue",
+    "Awaiting approval": "En attente de validation",
+    "Waiting for your verification letter": "En attente de ta lettre de vérification"
 }
