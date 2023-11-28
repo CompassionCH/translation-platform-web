@@ -12,9 +12,16 @@
         please pick one according to your translation skills. You can also register new ones.
       </p>
       <t t-if="currentTranslator.data.total > 1">
-        <p class="text-slate-700 text-blue text-center mb-5">
-          You have translated a total of <span class="text-lg text-compassion" t-esc="currentTranslator.data.total" /> letters, thank you so much!
-        </p>
+        <div class="flex justify-center items-center">
+          <p class="text-slate-700 text-blue text-center mb-5 items-center">
+            You have translated a total of
+            <span class="text-lg text-compassion mx-1" t-esc="currentTranslator.data.total" />
+            letters, thank you so much!
+          </p>
+          <div class="mb-8">
+            <Helper content="_('The number may vary depending on letter checks. Don\'t worry, we record each of your interactions with the translations')" class="'ml-1 text-slate-400'"/>
+          </div>
+        </div>
       </t>
       <div class="flex justify-center mb-10">
         <Button size="'sm'" level="'secondary'" onClick="() => this.state.manageSkillsModal = true">Manage your translation skills</Button>
@@ -27,7 +34,7 @@
         <TranslationCard t-foreach="state.skillLetters"
           t-as="item" t-key="item_index"
           title="_(item.skill.source) + ' -> ' + _(item.skill.target)"
-          status="item.skill.verified ? undefined : 'unverified'"
+          status="item.skill.verified ? undefined : (typeof state.lettersAwaitingValidation.find(waiting => waiting.skill === item.skill) === 'object' ? 'waiting' : 'unverified')"
           remaining="item.total"
           letters="item.letters" />
       </div>
