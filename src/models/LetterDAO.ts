@@ -155,7 +155,6 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
   async replyToComments(letter, html) {
     try {
       await OdooAPI.execute_kw('correspondence', 'reply_to_comments', [letter.id, html]);
-      console.log('OK');
       return true;
     } catch (e) {
       console.error(e);

@@ -12,7 +12,7 @@ class LetterSubmittedModal extends Component {
         <img t-att-src="webPath('/logo_simple.png')" class="w-16 mx-auto block mt-8" />
         <h1 class="text-center text-3xl font-light text-slate-700 mt-4">Thank You!</h1>
         <p class="text-center text-slate-600 p-4">
-          Thank you for your contribution. Your letter will be reviewed before being sent,
+          Thank you for your contribution. Your letter will be sent,
           bringing a smile on the face of both <t t-esc="props.letter.child.preferredName" /> and <t t-esc="props.letter.sponsor.preferredName" />.<br/>
           <span class="block font-semibold pt-4">Thank you in the name of Compassion Switzerland, we are glad to have you in the team!</span>
         </p>

@@ -115,7 +115,7 @@
     "target": "Ziel",
     "Text might not be available, in this case, and if the letter is unavailable too, please contact Compassion by signaling a problem.": "Falls der Text und das PDF nicht verfügbar sind, melde es uns.",
     "Texts remaining": "Texte in der Warteschleife",
-    "Thank you for your contribution. Your letter will be reviewed before being sent, bringing a smile on the face of both": "Vielen Dank für deinen Beitrag. Dein Brief wird validiert, bevor er abgeschickt wird.",
+    "Thank you for your contribution. Your letter will be sent, bringing a smile on the face of both": "Vielen Dank für deinen Beitrag. Dein Brief wird abgeschickt und zaubert ein Lächeln auf das Gesicht von",
     "Thank you in the name of Compassion Switzerland, we are glad to have you in the team!": "Vielen Dank! Wir freuen uns, dass du Teil unseres Teams bist.",
     "Thank You!": "Danke!",
     "Thank you.": "Danke.",
@@ -262,5 +262,9 @@
     "Your skill couldn't be successfully deleted": "Ihre Fähigkeit konnte nicht erfolgreich gelöscht werden",
     "Your skill has been successfully deleted": "Ihre Fähigkeit wurde erfolgreich gelöscht",
     "You have translated a total of": "Du hast insgesamt",
-    "letters, thank you so much!": "Briefe übersetzt, vielen Dank!"
+    "letters, thank you so much!": "Briefe übersetzt, vielen Dank!",
+    "The number may vary depending on letter checks. Don't worry, we record each of your interactions with the translations": "Die Zahl kann je nach Überprüfung der Buchstaben variieren. Keine Sorge, wir erfassen jede deiner Interaktionen mit den Übersetzungen",
+    "Your verification letter is awaiting approval. Once approved by our staff, you will be able to start translating in this skill": "Dein Bestätigungsbrief wartet auf Genehmigung. Sobald er von unserem Team genehmigt wurde, kannst du mit der Übersetzung in dieser Sprache beginnen",
+    "Awaiting approval": "Wartet auf Validierung",
+    "Waiting for your verification letter": "Warten auf deinen Bestätigungsbrief"
 }

@@ -7,6 +7,7 @@ import { ListResponse } from '../../models/BaseDAO';
 import { Letter, models, Translator } from "../../models";
 import { BlurLoader } from '../../components/Loader';
 import LanguagesPickModal from './LanguagesPickModal';
+import Helper from "../../components/Helper";
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 import _ from "../../i18n";
 import { buildTutorial, startTutorial, showTutorial } from "../../tutorial";
@@ -21,6 +22,11 @@ type SkillLetter = {
   letters: Letter[],
 }
 
+type LettersAwaitingValidation = {
+  skill: ArrayElement<Translator['skills']>,
+  letters: Letter[],
+}
+
 /**
  * The Home page is the first page the user sees when he's logged in.
  * It displays the various
@@ -32,6 +38,7 @@ export default class Home extends Component {
     TranslationCard,
     LanguagesPickModal,
     BlurLoader,
+    Helper,
   };
 
   currentTranslator = useCurrentTranslator();
@@ -42,6 +49,7 @@ export default class Home extends Component {
   state = useState({
     skillLetters: [] as SkillLetter[],
     savedLetters: undefined as ListResponse<Letter> | undefined,
+    lettersAwaitingValidation: [] as LettersAwaitingValidation[],
     manageSkillsModal: false,
     loading: false,
   });
@@ -105,6 +113,7 @@ export default class Home extends Component {
     await Promise.all([
       this.fetchLetters(),
       this.fetchSaved(),
+      this.retrieveValidationLetters(),
     ]);
 
     this.state.loading = false;
@@ -144,6 +153,33 @@ export default class Home extends Component {
       ]
     });
   }
+
+  async retrieveValidationLetters() {
+
+    if (!this.currentTranslator.data) return;
+
+    // Retrieve letters to validate for each skill of the current translator
+    const lettersToValidate = await Promise.all(this.currentTranslator.data.skills.map(async (skill) => {
+      const lettersToValidate = await models.letters.list({
+        search: [
+          { column: 'status', term: 'to validate' },
+          { column: 'source', term: skill.source },
+          { column: 'target', term: skill.target },
+        ],
+      });
+
+      return {
+        skill,
+        letters: lettersToValidate.data,
+      }
+    }));
+
+    // Sort the letters to have only the one that have a skill as unverified and a letter already waiting to be validated
+    this.state.lettersAwaitingValidation = lettersToValidate.filter((item) => {
+      return (!item.skill.verified);
+    }).filter(item => item.letters.length > 0);
+
+  };
 
   async fetchLetters() {
     if (!this.currentTranslator.data) return;
