@@ -14,6 +14,7 @@ const adminGuard = async () => {
     return;
   }
 };
+
 /**
  * The first route matching by path is taken, so more generic routes
  * such as /letters must come after /letters/letter-edit/:letterId for example.
@@ -59,6 +60,11 @@ const routes: Route[] = [
     component: () => import('./pages/Login'),
     name: 'Login',
     path: '/login',
+  },
+  {
+    component: () => import('./components/Logout'),
+    name: 'Logout',
+    path: '/logout',
   }
 ];
 
