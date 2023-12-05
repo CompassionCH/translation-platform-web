@@ -4,7 +4,9 @@ import { FR, DE, GB } from 'country-flag-icons/string/3x2';
 import _ from "../i18n";
 import { selectedLang, setLanguage } from "../i18n";
 import Button from "./Button";
-import { clearStoreCache, useStore } from "../store";
+import { useStore } from "../store";
+import { navigateTo } from "./Router/Router";
+
 
 /**
  * You'll see that the template for this component would have been so much
@@ -33,7 +35,7 @@ class SettingsModal extends Component {
         <div t-if="store.userId" class="p-4 bg-slate-100 border-t border-solid border-slate-200 flex flex-col items-center">
           <p class="text-sm font-semibold text-slate-700 mb-2">Log Out</p>
           <p class="text-sm text-center text-slate-700 mb-2">If you wish to log out you can do so by clicking the button below</p>
-          <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" onClick="() => logout()">Log Out</Button>
+          <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" onClick="userLogout">Log Out</Button>
         </div>
       </div>
     </Modal>
@@ -47,6 +49,11 @@ class SettingsModal extends Component {
   };
 
   store = useStore();
+  
+  userLogout() {
+    navigateTo('/logout');
+  }
+
   setLanguage = setLanguage;
   selectedLang = selectedLang;
 
@@ -56,11 +63,6 @@ class SettingsModal extends Component {
     de_DE: { name: 'German', flag: markup(DE) },
   };
 
-  logout() {
-    // Clear session storage and reload page, efficient, clean, simple, bim bim
-    clearStoreCache();
-    window.location.reload();
-  }
 }
 
 export default SettingsModal;
