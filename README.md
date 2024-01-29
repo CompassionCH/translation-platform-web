@@ -135,4 +135,4 @@ Then you also have to update the `/odoo/addons/base/controllers/rpc.py`, update 
 ```
 By adding the `cors="*"` parameter.
 
-Note that this only tested with Odoo 12 and responds accordingly to the preflight Option request.
+Note that this only tested with Odoo 12 and 14 and responds accordingly to the preflight Option request.
