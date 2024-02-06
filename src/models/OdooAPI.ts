@@ -3,7 +3,7 @@
  * on top of querying Odoo with API/JSON-RPC calls.
  * It should be then used inside the DAOs to fetch resources.
  * 
- * You can use the various authentication informations
+ * You can use the various authentication information
  * stored in the store to perform such API calls
  */
 
@@ -31,7 +31,7 @@ const OdooAPI = {
    * password
    * @param username the username
    * @param password the password
-   * @returns the authenticated user's informations or null if failed authenticating
+   * @returns the authenticated user's information or null if failed authenticating
    */
   async authenticate(username: string, password: string): Promise<boolean> {
     const userId = await authClient.methodCall('authenticate', [
@@ -84,7 +84,7 @@ const OdooAPI = {
 
       } else {
 
-        notyf.error(_('Oops! An error occured. Please contact Compassion for further assistance.'));
+        notyf.error(_('Oops! An error occurred. Please contact Compassion for further assistance.'));
 
       }
 
