@@ -1,4 +1,5 @@
 import { reactive, useState } from '@odoo/owl';
+import {STORAGE_KEY} from "./constants";
 
 type Store = {
   username?: string;
@@ -7,11 +8,6 @@ type Store = {
   userId?: number;
   password?: string;
 };
-
-// Retrieve data from session storage
-// WARNING: This is a security issue, we should NOT store a plain text password in session storage
-// But well, anyway :)
-const STORAGE_KEY = 'translation-platform-store';
 
 const baseStore = {
   username: undefined,
