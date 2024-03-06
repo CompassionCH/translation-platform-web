@@ -84,7 +84,13 @@ class ChildModal extends Component {
         <div t-if="store.userId" class="p-4 bg-slate-100 border-t border-solid border-slate-200 flex flex-col items-center">
           <p class="text-sm font-semibold text-slate-700 mb-2">Videos</p>
           <div class="flex flex-row space-x-4 child-protection-video">
-            <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="watchVideo">Watch the child protection video</Button>
+            <div t-if="selectedLang !== 'fr_CH' and selectedLang !== 'de_DE'">
+                <Button size="'sm'" class="'mr-5'" icon="'right-from-bracket'" level="'secondary'" t-on-click="() => watchVideo('fr_CH')">Watch the child protection video in French</Button>
+                <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="() => watchVideo('de_DE')">Watch the child protection video in German</Button>
+            </div>
+            <div t-else="">
+                <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="() => watchVideo()">Watch the child protection video</Button>
+            </div>
           </div>
         </div>
       </div>
@@ -112,9 +118,9 @@ class ChildModal extends Component {
     it_IT: { name: 'Italiano', flag: markup(IT) },
   };
 
-  watchVideo() {
+  watchVideo(targetLang?: string) {
     window.open(
-      t_("Child Protection Video Link"),
+      t_("Child Protection Video Link", targetLang),
       "_blank"
     );
   };
