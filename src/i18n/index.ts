@@ -52,24 +52,27 @@ window.dumpMissingTranslations = () => JSON.stringify(missingTranslations.reduce
  * string cannot be found, it triggers an error in the console and fallbacks
  * to the given string, which should be in english.
  * @param str text to translate
+ * @param targetLang Target language code (optional). The translation will be attempted in the target language.
  * @returns the translated string
  */
-const _ = (str: string): string => {
-  
+const _ = (str: string, targetLang?: string): string => {
+
+  const effectiveLang = targetLang ? targetLang : lang;
+
   // No language set, default to english
-  if (!lang) {
+  if (!effectiveLang) {
     return str;
   }
 
-  if (!(lang in dictionnaries)) {
-    if (errorDictShown[lang] !== true) {
-      console.error(`No dictionnary found for lang ${lang}`);
-      errorDictShown[lang] = true;
+  if (!(effectiveLang in dictionnaries)) {
+    if (errorDictShown[effectiveLang] !== true) {
+      console.error(`No dictionnary found for language ${effectiveLang}`);
+      errorDictShown[effectiveLang] = true;
     }
     return str;
   }
 
-  const dict = dictionnaries[lang as keyof typeof dictionnaries];
+  const dict = dictionnaries[effectiveLang as keyof typeof dictionnaries];
 
   if (!(str in dict)) {
     console.warn(`No translation found for [${str}]`);
