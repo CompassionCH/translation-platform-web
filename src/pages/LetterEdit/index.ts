@@ -62,12 +62,9 @@ class LetterEdit extends Component {
     // This effect registers the auto-save functionnalities
     useEffect(() => {
       const listener = (event: KeyboardEvent) => {
-        
-        /* TODO Implement a better way to auto save the content
-           We are currently disabling it as it's causing user experience issues
-        */  
+
         // On key press, enqueue a save if necessary
-          // this.queueSave();
+          this.queueSave();
         
         // If CTRL-S
           if (event.ctrlKey && event.key === 's') {
@@ -148,9 +145,8 @@ class LetterEdit extends Component {
       console.error('Saved letter cannot be found!');
       notyf.error(_('An error occured while trying to retrieve updated state'));
     } else {
-      this.state.letter = updatedLetterState;
+      this.state.letter.lastUpdate = updatedLetterState.lastUpdate;
     }
-
 
     if (!background) {
       this.state.internalLoading = false;
