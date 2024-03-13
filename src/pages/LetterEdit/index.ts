@@ -145,7 +145,7 @@ class LetterEdit extends Component {
       console.error('Saved letter cannot be found!');
       notyf.error(_('An error occured while trying to retrieve updated state'));
     } else {
-      this.state.letter.lastUpdate = updatedLetterState.lastUpdate;  // INFO: do NOT update translatedElements (related to T0319)
+      this.state.letter.lastUpdate = updatedLetterState.lastUpdate;
     }
 
     if (!background) {
