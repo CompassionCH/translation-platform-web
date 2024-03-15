@@ -3,7 +3,7 @@
  * on top of querying Odoo with API/JSON-RPC calls.
  * It should be then used inside the DAOs to fetch resources.
  * 
- * You can use the various authentication informations
+ * You can use the various authentication information
  * stored in the store to perform such API calls
  */
 
@@ -12,6 +12,12 @@ import { XmlRpcClient } from '@foxglove/xmlrpc';
 import { selectedLang } from "../i18n";
 import notyf from "../notifications";
 import _ from "../i18n";
+import {
+  RPC_FAULT_CODE_ACCESS_DENIED,
+  RPC_FAULT_CODE_ACCESS_ERROR,
+  RPC_FAULT_CODE_APPLICATION_ERROR,
+  STORAGE_KEY
+} from "../constants";
 
 
 // Declare the two XML-RPC clients
@@ -25,7 +31,7 @@ const OdooAPI = {
    * password
    * @param username the username
    * @param password the password
-   * @returns the authenticated user's informations or null if failed authenticating
+   * @returns the authenticated user's information or null if failed authenticating
    */
   async authenticate(username: string, password: string): Promise<boolean> {
     const userId = await authClient.methodCall('authenticate', [
@@ -40,6 +46,8 @@ const OdooAPI = {
       store.userId = userId as number;
       store.username = username;
       store.password = password;
+      // INFO: next line needed because the store callback is not called every time we update the values
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
       return true;
     }
   },
@@ -64,16 +72,11 @@ const OdooAPI = {
       return response as any as T;
     } catch (e: any) {
 
-      const errorMessage: string = e.message;
-
-      // I'm so sorry for this, TODO: Find a way to make this in a cleaner way
       if (
-          errorMessage.includes("Sorry, you are not allowed to access this document") 
-          || errorMessage.includes("ValueError: Expected singleton: translation.user()") 
-          || errorMessage.includes("Désolé, vous n'êtes pas autorisé à accéder à ce document")
-          || errorMessage.includes("Entschuldigen Sie, Sie sind nicht berechtigt auf dieses Dokument zuzugreifen")
-        )
-      {
+          e.code === RPC_FAULT_CODE_ACCESS_ERROR ||
+          e.code === RPC_FAULT_CODE_ACCESS_DENIED ||
+          e.code === RPC_FAULT_CODE_APPLICATION_ERROR
+      ) {
         notyf.error(_('Oops! There is an issue with your account. Please contact Compassion for further assistance.'));
 
         // Reset cache when the error is related to a user login issue
@@ -81,13 +84,11 @@ const OdooAPI = {
 
       } else {
 
-        notyf.error(_('Oops! An error occured. Please contact Compassion for further assistance.'));
+        notyf.error(_('Oops! An error occurred. Please contact Compassion for further assistance.'));
 
       }
 
       throw e;
-      
-      // window.location.reload();
     }
   }
 }

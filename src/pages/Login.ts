@@ -68,11 +68,16 @@ class Login extends Component {
       this.state.loading = false;
     } else {
       // Provide user to all next components, better UI, minimize number of loaders
-      await this.user.refresh();
 
-      // Set username in store
-      store.username = username;
-      location.reload();
+      try {  // INFO: finally needed to set loading = false, otherwise the user has to refresh the page to try logging in again
+        await this.user.refresh();
+
+        // Set username in store
+        store.username = username;
+        location.reload();
+      } finally {
+        this.state.loading = false;
+      }
     }
   }
 }
