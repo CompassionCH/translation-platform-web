@@ -13,7 +13,7 @@ import t_ from "../i18n";
 class ChildModal extends Component {
   static template = xml`
     <Modal active="props.active" onClose="props.onClose" title="'Child Protection'">
-      <div class="w-256">
+      <div class="max-w-4xl">
         <div class="p-4 child-protection-text">
           <div class="flex flex-col mb-3">
             <p class="text-sm font-semibold text-slate-700 mb-2">Expected/acceptable behaviors:</p>
@@ -83,14 +83,15 @@ class ChildModal extends Component {
         </div>
         <div t-if="store.userId" class="p-4 bg-slate-100 border-t border-solid border-slate-200 flex flex-col items-center">
           <p class="text-sm font-semibold text-slate-700 mb-2">Videos</p>
-          <div class="flex flex-row space-x-4 child-protection-video">
-            <div t-if="selectedLang !== 'fr_CH' and selectedLang !== 'de_DE'">
-                <Button size="'sm'" class="'mr-5'" icon="'right-from-bracket'" level="'secondary'" t-on-click="() => watchVideo('fr_CH')">Watch the child protection video in French</Button>
-                <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="() => watchVideo('de_DE')">Watch the child protection video in German</Button>
-            </div>
-            <div t-else="">
+          <div class="flex flex-row flex-wrap justify-center space-x-4 child-protection-video">
+            <t t-if="selectedLang !== 'fr_CH' and selectedLang !== 'de_DE' and selectedLang !== 'en_US'">
+                <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="() => watchVideo('fr_CH')" class="'my-2'">Watch the child protection video in French</Button>
+                <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="() => watchVideo('de_DE')" class="'my-2'">Watch the child protection video in German</Button>
+                <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="() => watchVideo('en_US')" class="'my-2'">Watch the child protection video in English</Button>
+            </t>
+            <t t-else="">
                 <Button size="'sm'" icon="'right-from-bracket'" level="'secondary'" t-on-click="() => watchVideo()">Watch the child protection video</Button>
-            </div>
+            </t>
           </div>
         </div>
       </div>
@@ -112,7 +113,7 @@ class ChildModal extends Component {
   selectedLang = selectedLang;
 
   languages = {
-    fr_CH: { name: 'French', flag: markup(FR) },
+    fr_CH: { name: 'French', flag: markup(FR) }, 
     en_US: { name: 'English', flag: markup(GB) },
     de_DE: { name: 'German', flag: markup(DE) },
     it_IT: { name: 'Italiano', flag: markup(IT) },
