@@ -1,6 +1,5 @@
 import fr_CH from './fr_CH.json';
 import de_DE from './de_DE.json';
-import en_US from './en_US.json';
 
 const LANG_KEY = 'translation-platform-langage-new';
 const lang = window.localStorage.getItem(LANG_KEY);
@@ -35,7 +34,6 @@ export function setLanguage(lang: string) {
 const dictionnaries = {
   fr_CH,
   de_DE,
-  en_US,
 };
 
 /**

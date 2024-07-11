@@ -121,7 +121,7 @@ class ChildModal extends Component {
 
   watchVideo(targetLang?: string) {
     window.open(
-      t_("Child Protection Video Link", targetLang),
+      t_("https://drive.google.com/file/d/1p9_o89wYkbSt3F4Y71Gy3XXdbsJLp9oT/view?usp=sharing", targetLang),
       "_blank"
     );
   };
