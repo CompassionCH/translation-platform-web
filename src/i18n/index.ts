@@ -33,7 +33,7 @@ export function setLanguage(lang: string) {
  */
 const dictionnaries = {
   fr_CH,
-  de_DE
+  de_DE,
 };
 
 /**
