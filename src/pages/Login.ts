@@ -22,9 +22,6 @@ class Login extends Component {
           <h1 class="text-center text-slate-800 font-light text-2xl mb-5">Translation Platform</h1>
           <form t-on-submit.prevent="login">
             <input class="compassion-input text-sm mb-3" type="text" placeholder="E-mail" t-model="state.username" />
-<<<<<<< Updated upstream
-            <input class="compassion-input text-sm mb-3" type="password" placeholder="Password" t-model="state.password" />
-=======
             <span class="relative">
               <input t-ref="password" class="compassion-input text-sm mb-3 !pr-[30px]" t-att-type="state.showPassword ? 'text' : 'password'" placeholder="Password" t-model="state.password" />
               <button t-on-click="togglePassword" type="button" tabindex="-1">
@@ -43,7 +40,6 @@ class Login extends Component {
               </button>
             </span>
             <input t-if="state.use2FA" class="compassion-input text-sm mb-3" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="6-digits 2FA code" t-model="state.totp" />
->>>>>>> Stashed changes
             <Button color="'compassion'" class="'w-full mb-2'" size="'sm'">Login</Button>
             <div class="flex justify-between mt-2">
               <div class="flex justify-left items-center">
