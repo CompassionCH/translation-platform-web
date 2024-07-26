@@ -24,6 +24,11 @@ import {
 const authClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/common");
 const apiClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/object");
 
+const setHeader = (header: string, value: any) => {
+  (authClient.headers as Record<string, string>)[header] = value;
+  (apiClient.headers as Record<string, string>)[header] = value;
+};
+
 const OdooAPI = {
 
   /**
@@ -33,7 +38,11 @@ const OdooAPI = {
    * @param password the password
    * @returns the authenticated user's information or null if failed authenticating
    */
-  async authenticate(username: string, password: string): Promise<boolean> {
+  async authenticate(username: string, password: string, totp?: string): Promise<boolean> {
+    if (totp) {
+      setHeader('Authorization', 'Basic totp=' + totp);
+    }
+
     const userId = await authClient.methodCall('authenticate', [
       import.meta.env.VITE_ODOO_DBNAME,
       username,
@@ -45,7 +54,18 @@ const OdooAPI = {
     } else {
       store.userId = userId as number;
       store.username = username;
-      store.password = password;
+      store.password = password;      
+      try {
+        store.token = await this.execute_kw('res.users', 'generate_external_auth_token', [userId]);
+      }
+      catch (e) {
+        return false;
+      }
+      
+      if (store.token) {
+        store.password = store.token;
+      }
+
       // INFO: next line needed because the store callback is not called every time we update the values
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
       return true;
@@ -58,6 +78,10 @@ const OdooAPI = {
   },
 
   async execute_kw<T>(model: string, method: string, ...args: any[]): Promise<T | undefined> {
+    if (store.token) {
+      setHeader('Authorization', 'Bearer ' + store.token);
+    }
+
     try {
       args.push({context: {lang: selectedLang}});
       const response = await apiClient.methodCall('execute_kw', [

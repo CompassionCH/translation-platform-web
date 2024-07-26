@@ -7,12 +7,14 @@ type Store = {
   // Set only on the currently authenticated user
   userId?: number;
   password?: string;
+  token?: string;
 };
 
 const baseStore = {
   username: undefined,
   userId: undefined,
   password: undefined,
+  token: undefined,
 }
 
 const sessionStore = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '{}');
