@@ -19,12 +19,21 @@ import {
   STORAGE_KEY
 } from "../constants";
 
+type AuthTokens = {
+  access_token: string;
+  refresh_token: string;
+  expires_at: string;
+}
+
+type ExecuteKwOptions = {
+  password?: string;
+}
 
 // Declare the two XML-RPC clients
 const authClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/common");
 const apiClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/object");
 
-const setHeader = (header: string, value: any) => {
+const setClientHeader = (header: string, value: string) => {
   (authClient.headers as Record<string, string>)[header] = value;
   (apiClient.headers as Record<string, string>)[header] = value;
 };
@@ -39,9 +48,7 @@ const OdooAPI = {
    * @returns the authenticated user's information or null if failed authenticating
    */
   async authenticate(username: string, password: string, totp?: string): Promise<boolean> {
-    if (totp) {
-      setHeader('Authorization', 'Basic totp=' + totp);
-    }
+    setClientHeader('Authorization', totp ? 'Basic totp=' + totp : 'Basic ');
 
     const userId = await authClient.methodCall('authenticate', [
       import.meta.env.VITE_ODOO_DBNAME,
@@ -54,16 +61,16 @@ const OdooAPI = {
     } else {
       store.userId = userId as number;
       store.username = username;
-      store.password = password;      
+
       try {
-        store.token = await this.execute_kw('res.users', 'generate_external_auth_token', [userId]);
+        const result = await this.executeWithOptions_kw<AuthTokens>('res.users', 'generate_external_auth_token', {
+          password,
+        }, [userId]);
+        store.accessToken = result?.access_token;
+        store.refreshToken = result?.refresh_token;
       }
       catch (e) {
         return false;
-      }
-      
-      if (store.token) {
-        store.password = store.token;
       }
 
       // INFO: next line needed because the store callback is not called every time we update the values
@@ -77,17 +84,19 @@ const OdooAPI = {
     return val;
   },
 
-  async execute_kw<T>(model: string, method: string, ...args: any[]): Promise<T | undefined> {
-    if (store.token) {
-      setHeader('Authorization', 'Bearer ' + store.token);
+  async executeWithOptions_kw<T>(model: string, method: string, options: ExecuteKwOptions, ...args: any[]): Promise<T | undefined> {
+    if (store.accessToken && !options.password) {
+      setClientHeader('Authorization', 'Bearer ' + store.accessToken);
     }
 
+    console.log(model, method, args)
+    
     try {
-      args.push({context: {lang: selectedLang}});
+      args.push({ context: { lang: selectedLang } });
       const response = await apiClient.methodCall('execute_kw', [
         import.meta.env.VITE_ODOO_DBNAME,
         store.userId,
-        store.password,
+        options.password ?? 'None',
         model,
         method,
         ...args,
@@ -97,9 +106,9 @@ const OdooAPI = {
     } catch (e: any) {
 
       if (
-          e.code === RPC_FAULT_CODE_ACCESS_ERROR ||
-          e.code === RPC_FAULT_CODE_ACCESS_DENIED ||
-          e.code === RPC_FAULT_CODE_APPLICATION_ERROR
+        e.code === RPC_FAULT_CODE_ACCESS_ERROR ||
+        e.code === RPC_FAULT_CODE_ACCESS_DENIED ||
+        e.code === RPC_FAULT_CODE_APPLICATION_ERROR
       ) {
         notyf.error(_('Oops! There is an issue with your account. Please contact Compassion for further assistance.'));
 
@@ -114,6 +123,10 @@ const OdooAPI = {
 
       throw e;
     }
+  },
+
+  async execute_kw<T>(model: string, method: string, ...args: any[]): Promise<T | undefined> {
+    return await this.executeWithOptions_kw(model, method, {}, ...args);
   }
 }
 

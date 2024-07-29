@@ -2,7 +2,7 @@ import { Component, useState, xml } from "@odoo/owl";
 import Button from "../components/Button";
 import OdooAPI from "../models/OdooAPI";
 import notyf from "../notifications";
-import store, { useStore } from "../store";
+import store from "../store";
 import Transition from "../components/Transition";
 import Loader from "../components/Loader";
 import useCurrentTranslator from "../hooks/useCurrentTranslator";
@@ -43,7 +43,7 @@ class Login extends Component {
             <Button color="'compassion'" class="'w-full mb-2'" size="'sm'">Login</Button>
             <div class="flex justify-between mt-2">
               <div class="flex justify-left items-center">
-                <input id="2fa-checkbox" t-model="state.use2FA" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"/>
+                <input id="2fa-checkbox" t-model="state.use2FA" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"/>
                 <label for="2fa-checkbox" class="ms-2 ml-2 text-sm select-none font-medium text-compassion">Use 2FA</label>
               </div>
               <a href="#" class="text-sm font-medium text-compassion hover:text-slate-900 transition-colors" t-on-click="() => state.settingsModal = true">Switch language</a>
@@ -63,8 +63,6 @@ class Login extends Component {
   `;
 
   user = useCurrentTranslator();
-
-  store = useStore();
 
   webPath = getWebPath;
 

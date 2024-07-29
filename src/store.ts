@@ -6,8 +6,8 @@ type Store = {
   // AuthData
   // Set only on the currently authenticated user
   userId?: number;
-  password?: string;
-  token?: string;
+  accessToken?: string;
+  refreshToken?: string;
 };
 
 const baseStore = {

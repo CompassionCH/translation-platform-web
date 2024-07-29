@@ -64,6 +64,7 @@ type TranslatorDAOApi = {
 const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async find(id) {
+    console.log(await OdooAPI.execute_kw<Translator>('translation.user', 'get_user_info', [id]));
     return this.cleanTranslator(
       await OdooAPI.execute_kw<Translator>('translation.user', 'get_user_info', [id])
     );
