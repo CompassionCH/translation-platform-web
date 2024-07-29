@@ -14,7 +14,8 @@ const baseStore = {
   username: undefined,
   userId: undefined,
   password: undefined,
-  token: undefined,
+  accessToken: undefined,
+  refreshToken: undefined,
 }
 
 const sessionStore = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '{}');
