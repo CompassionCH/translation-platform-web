@@ -45,7 +45,7 @@ export default class Layout extends Component {
   }
 
   checkStore() {
-    if (!store.username || !store.userId || !store.password) {
+    if (!store.username || !store.userId || !store.accessToken) {
       navigateTo("/login");
     } else if (!this.currentTranslator.data) {
       this.refreshCurrentTranslator();

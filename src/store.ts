@@ -8,6 +8,7 @@ type Store = {
   userId?: number;
   accessToken?: string;
   refreshToken?: string;
+  accessTokenExpiresAt?: string;
 };
 
 const baseStore = {
@@ -16,6 +17,7 @@ const baseStore = {
   password: undefined,
   accessToken: undefined,
   refreshToken: undefined,
+  accessTokenExpiresAt: undefined,
 }
 
 const sessionStore = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '{}');

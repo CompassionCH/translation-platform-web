@@ -11,6 +11,7 @@ import store, { clearStoreCache } from "../store";
 import { XmlRpcClient } from '@foxglove/xmlrpc';
 import { selectedLang } from "../i18n";
 import notyf from "../notifications";
+import fetch from "@foxglove/just-fetch";
 import _ from "../i18n";
 import {
   RPC_FAULT_CODE_ACCESS_DENIED,
@@ -19,63 +20,120 @@ import {
   STORAGE_KEY
 } from "../constants";
 
+type AuthResponse = {
+  user_id: number;
+  auth_tokens: AuthTokens;
+}
+
 type AuthTokens = {
   access_token: string;
   refresh_token: string;
   expires_at: string;
-}
+};
 
 type ExecuteKwOptions = {
   password?: string;
+  refreshIfExpired?: boolean;
 }
 
-// Declare the two XML-RPC clients
-const authClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/common");
+// Declare the two XML-RPC client
 const apiClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/object");
 
 const setClientHeader = (header: string, value: string) => {
-  (authClient.headers as Record<string, string>)[header] = value;
   (apiClient.headers as Record<string, string>)[header] = value;
 };
+
+
+async function fetchJson(uri: string, body: any, verb = 'POST'): Promise<any> {
+  const res = await fetch(import.meta.env.VITE_ODOO_URL + uri, {
+    method: verb,
+    body: JSON.stringify(body),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to refresh. Returned ${res.status}: "${res.statusText}"`)
+  }
+
+  const payload = JSON.parse(await res.text());
+  if (payload.error) {
+    throw payload.error.data;
+  }
+
+  return payload.result;
+}
+
+// Buffered token refresh.
+const refreshListeners: ((tokens?: AuthTokens, err?: any) => void)[] = [];
+function refreshAccessToken(): Promise<AuthTokens> {
+  const operationCompleted =
+    (tokens?: AuthTokens, err?: any) => {
+      refreshListeners.forEach(l => l(tokens, err));
+      refreshListeners.length = 0;
+    };
+
+  return new Promise(async (res, rej) => {
+    refreshListeners.push((tokens, err) => tokens ? res(tokens) : rej(err));
+
+    // A refresh request is pending, wait for it and do nothing.
+    if (refreshListeners.length !== 1) {
+      return;
+    }
+
+    let authTokens: AuthTokens | null = null;
+    try {
+      authTokens = await fetchJson('/auth/refresh', {
+        refresh_token: store.refreshToken,
+      });
+    }
+    catch (e) {
+      operationCompleted(undefined, e);
+      return;
+    }
+
+    store.accessToken = authTokens?.access_token;
+    store.accessTokenExpiresAt = authTokens?.expires_at;
+    store.refreshToken = authTokens?.refresh_token;
+
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+
+    operationCompleted(authTokens!);
+  })
+}
+
 
 const OdooAPI = {
 
   /**
-   * Attempts to authenticate the user given a username and a
-   * password
+   * Attempts to authenticate the user given a username, a password, and optionally
+   * a totp.
    * @param username the username
    * @param password the password
-   * @returns the authenticated user's information or null if failed authenticating
+   * @returns True if the credentials are valid or the FQN of the server error.
    */
-  async authenticate(username: string, password: string, totp?: string): Promise<boolean> {
-    setClientHeader('Authorization', totp ? 'Basic totp=' + totp : 'Basic ');
+  async authenticate(username: string, password: string, totp?: string): Promise<true | string> {
+    try {
+      const { user_id, auth_tokens }: AuthResponse = await fetchJson('/auth/login', {
+        username,
+        password,
+        totp,
+      });
 
-    const userId = await authClient.methodCall('authenticate', [
-      import.meta.env.VITE_ODOO_DBNAME,
-      username,
-      password,
-      [],
-    ]) as number | false;
-    if (userId === false) {
-      return false;
-    } else {
-      store.userId = userId as number;
+      store.userId = user_id;
       store.username = username;
+      store.accessToken = auth_tokens.access_token;
+      store.refreshToken = auth_tokens.refresh_token;
+      store.accessTokenExpiresAt = auth_tokens.expires_at;
 
-      try {
-        const result = await this.executeWithOptions_kw<AuthTokens>('res.users', 'generate_external_auth_token', {
-          password,
-        }, [userId]);
-        store.accessToken = result?.access_token;
-        store.refreshToken = result?.refresh_token;
-      }
-      catch (e) {
-        return false;
-      }
-
-      // INFO: next line needed because the store callback is not called every time we update the values
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+
       return true;
+    }
+    catch (e: any) {
+      return e.name ?? 'UnknownError';
     }
   },
 
@@ -86,11 +144,20 @@ const OdooAPI = {
 
   async executeWithOptions_kw<T>(model: string, method: string, options: ExecuteKwOptions, ...args: any[]): Promise<T | undefined> {
     if (store.accessToken && !options.password) {
+      const refreshWindowMs = 5 * 60 * 1000;
+      if (options.refreshIfExpired !== false && (new Date(store.accessTokenExpiresAt ?? '').getTime()) < Date.now() + refreshWindowMs) {
+        try {
+          await refreshAccessToken();
+        }
+        catch (e) {
+          clearStoreCache()
+          throw e;
+        }
+      }
+
       setClientHeader('Authorization', 'Bearer ' + store.accessToken);
     }
 
-    console.log(model, method, args)
-    
     try {
       args.push({ context: { lang: selectedLang } });
       const response = await apiClient.methodCall('execute_kw', [
@@ -116,9 +183,7 @@ const OdooAPI = {
         clearStoreCache();
 
       } else {
-
         notyf.error(_('Oops! An error occurred. Please contact Compassion for further assistance.'));
-
       }
 
       throw e;
@@ -127,7 +192,7 @@ const OdooAPI = {
 
   async execute_kw<T>(model: string, method: string, ...args: any[]): Promise<T | undefined> {
     return await this.executeWithOptions_kw(model, method, {}, ...args);
-  }
+  },
 }
 
 export default OdooAPI;

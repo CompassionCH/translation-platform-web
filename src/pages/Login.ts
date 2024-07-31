@@ -72,6 +72,7 @@ class Login extends Component {
     totp: '',
     loading: false,
     settingsModal: false,
+    use2FA: false,
   });
 
   static components = {
@@ -85,8 +86,14 @@ class Login extends Component {
     this.state.loading = true;
     const { username, password, totp } = this.state;
     const res = await OdooAPI.authenticate(username, password, totp)
-    if (!res) {
-      notyf.error(_('Failed to log in, incorrect credentials'));
+    if (res !== true) {
+      if (res.endsWith('InvalidTotp') && this.state.use2FA === false) {
+        this.state.use2FA = true;
+        notyf.error(_('This account requires 2FA'));
+      }
+      else {
+        notyf.error(_('Failed to log in, incorrect credentials'));
+      }
       this.state.loading = false;
     } else {
       // Provide user to all next components, better UI, minimize number of loaders
