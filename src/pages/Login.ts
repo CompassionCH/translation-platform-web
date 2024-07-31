@@ -1,4 +1,4 @@
-import { Component, useState, xml } from "@odoo/owl";
+import { Component, useEffect, useRef, useState, xml } from "@odoo/owl";
 import Button from "../components/Button";
 import OdooAPI from "../models/OdooAPI";
 import notyf from "../notifications";
@@ -22,24 +22,8 @@ class Login extends Component {
           <h1 class="text-center text-slate-800 font-light text-2xl mb-5">Translation Platform</h1>
           <form t-on-submit.prevent="login">
             <input class="compassion-input text-sm mb-3" type="text" placeholder="E-mail" t-model="state.username" />
-            <span class="relative">
-              <input t-ref="password" class="compassion-input text-sm mb-3 !pr-[30px]" t-att-type="state.showPassword ? 'text' : 'password'" placeholder="Password" t-model="state.password" />
-              <button t-on-click="togglePassword" type="button" tabindex="-1">
-                <svg class="shrink-0 size-3.5 absolute right-2 top-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#778" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <g t-if="state.showPassword">
-                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </g>
-                  <g t-else="">
-                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
-                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
-                    <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
-                    <line x1="2" x2="22" y1="2" y2="22" />
-                  </g>
-                </svg>
-              </button>
-            </span>
-            <input t-if="state.use2FA" class="compassion-input text-sm mb-3" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="6-digits 2FA code" t-model="state.totp" />
+            <input t-ref="password" class="compassion-input text-sm mb-3 !pr-[30px]" t-att-type="state.showPassword ? 'text' : 'password'" placeholder="Password" t-model="state.password" />
+            <input t-if="state.use2FA" t-ref="input-2fa" class="compassion-input text-sm mb-3" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="6-digits 2FA code" t-model="state.totp" />
             <Button color="'compassion'" class="'w-full mb-2'" size="'sm'">Login</Button>
             <div class="flex justify-between mt-2">
               <div class="flex justify-left items-center">
@@ -82,14 +66,25 @@ class Login extends Component {
     SettingsModal,
   };
 
+  inputField2FA = useRef('input-2fa');
+
+  setup(): void {
+    // Autofocus 2FA field when it appears.
+    useEffect(el => el?.focus(),
+      () => [this.inputField2FA.el])
+  }
+
   async login() {
     this.state.loading = true;
     const { username, password, totp } = this.state;
     const res = await OdooAPI.authenticate(username, password, totp)
     if (res !== true) {
-      if (res.endsWith('InvalidTotp') && this.state.use2FA === false) {
+      if (res?.name?.endsWith?.('InvalidTotp') && this.state.use2FA === false) {
         this.state.use2FA = true;
         notyf.error(_('This account requires 2FA'));
+      }
+      else if (res?.message?.startsWith('Too many login failures')) {
+        notyf.error(_('Too many login attempts. Please, retry later'));
       }
       else {
         notyf.error(_('Failed to log in, incorrect credentials'));

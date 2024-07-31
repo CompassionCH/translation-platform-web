@@ -100,6 +100,8 @@ export default class Home extends Component {
     // Fetch letters to display to the user for each of his translation skill
     this.refresh().then(() => {
       startTutorial(this.tutorial);
+    }).catch(() => {
+      navigateTo('/login')
     });
   }
 

@@ -268,5 +268,6 @@
     "Awaiting approval": "En attente de validation",
     "Waiting for your verification letter": "En attente de ta lettre de vérification",
     "Use 2FA": "Utiliser 2FA",
-    "6-digits 2FA code": "Code 2FA à 6 chiffres"
+    "6-digits 2FA code": "Code 2FA à 6 chiffres",
+    "This account requires 2FA": "Ce compte nécessite l'authentication à deux facteurs"
 }

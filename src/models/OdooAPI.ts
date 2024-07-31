@@ -36,7 +36,7 @@ type ExecuteKwOptions = {
   refreshIfExpired?: boolean;
 }
 
-// Declare the two XML-RPC client
+// Declare the XML-RPC client
 const apiClient = new XmlRpcClient(import.meta.env.VITE_ODOO_URL + "/xmlrpc/2/object");
 
 const setClientHeader = (header: string, value: string) => {
@@ -51,6 +51,8 @@ async function fetchJson(uri: string, body: any, verb = 'POST'): Promise<any> {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      // TODO: pass language to get localized error.
+      // "Accept-Language": selectedLang,
     }
   });
 
@@ -112,9 +114,9 @@ const OdooAPI = {
    * a totp.
    * @param username the username
    * @param password the password
-   * @returns True if the credentials are valid or the FQN of the server error.
+   * @returns True if the credentials are valid or the server error.
    */
-  async authenticate(username: string, password: string, totp?: string): Promise<true | string> {
+  async authenticate(username: string, password: string, totp?: string): Promise<true | any> {
     try {
       const { user_id, auth_tokens }: AuthResponse = await fetchJson('/auth/login', {
         username,
@@ -133,7 +135,8 @@ const OdooAPI = {
       return true;
     }
     catch (e: any) {
-      return e.name ?? 'UnknownError';
+      console.warn("Failed to authenticate: ", e);
+      return e;
     }
   },
 
@@ -150,12 +153,17 @@ const OdooAPI = {
           await refreshAccessToken();
         }
         catch (e) {
-          clearStoreCache()
+          clearStoreCache();
           throw e;
         }
       }
 
       setClientHeader('Authorization', 'Bearer ' + store.accessToken);
+    }
+    else if (!options.password) {
+      // No token or password. Request will fail.
+      console.warn("Tried to execute a request without credentials.")
+      return;
     }
 
     try {
@@ -182,11 +190,12 @@ const OdooAPI = {
         // Reset cache when the error is related to a user login issue
         clearStoreCache();
 
+
       } else {
         notyf.error(_('Oops! An error occurred. Please contact Compassion for further assistance.'));
       }
 
-      throw e;
+      console.error(e);
     }
   },
 

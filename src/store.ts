@@ -11,10 +11,9 @@ type Store = {
   accessTokenExpiresAt?: string;
 };
 
-const baseStore = {
+const baseStore: Store = {
   username: undefined,
   userId: undefined,
-  password: undefined,
   accessToken: undefined,
   refreshToken: undefined,
   accessTokenExpiresAt: undefined,
@@ -41,7 +40,6 @@ const watchers: Watcher[] = [];
 const store = reactive<Store>(initialStoreValues, () => {
   // Persist in session on change
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
-
   // Call watchers
   for (const watcher of watchers) {
     watcher(store);
@@ -52,7 +50,19 @@ const store = reactive<Store>(initialStoreValues, () => {
  * Used for logging out, erases the session content and reload page, thus the store
  * is empty, forcing the user to log in again
  */
-export const clearStoreCache = () => window.localStorage.clear();
+export const clearStoreCache = () => {
+  window.localStorage.clear();
+
+  // Restores the base store.
+  for (const key in baseStore) {
+    (store as any)[key] = baseStore[key as keyof Store];
+  }
+
+  // Call watchers
+  for (const watcher of watchers) {
+    watcher(store);
+  }
+}
 
 /**
  * A useful hook to include the store in your components, simply do
