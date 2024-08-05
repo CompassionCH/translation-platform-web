@@ -29,7 +29,7 @@
     "buffer": "^6.0.3",
     "country-flag-icons": "^1.5.5",
     "events": "^3.3.0",
-    "fast-xml-parser": "^4.0.8",
+    "fast-xml-parser": "^4.4.1",
     "notyf": "^3.10.0",
     "shepherd.js": "^10.0.0",
     "stream-browserify": "^3.0.0",
