@@ -50,6 +50,11 @@ const store = reactive<Store>(initialStoreValues, () => {
 export const clearStoreCache = () => {
   window.localStorage.removeItem(STORAGE_KEY);
 
+  // Reset initial state
+  for (const key of Object.keys(initialStoreValues)) {
+    store[key as keyof Store] = initialStoreValues[key];
+  }
+
   // Call watchers
   for (const watcher of watchers) {
     watcher(store);

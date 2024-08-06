@@ -59,10 +59,6 @@ export default class Layout extends Component {
     try {
       await this.currentTranslator.refresh();
     }
-    catch (e) {
-      console.warn("Failed to refresh translator. Redirecting to login.");
-      navigateTo("/login");
-    }
     finally {
       this.state.loading = false;
     }

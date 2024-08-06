@@ -31,8 +31,8 @@ const state = reactive<State>({
       this.data = await models.translators.current();
     }
     catch (e) {
-      console.error("Exception thrown while refreshing translator.");
-      navigateTo('/logout');
+      console.error("Exception thrown while refreshing translator. Redirecting to login form.");
+      navigateTo("/logout");
     }
     finally {
       this.loading = false;  
