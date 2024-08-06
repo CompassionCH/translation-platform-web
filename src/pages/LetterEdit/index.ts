@@ -126,7 +126,11 @@ class LetterEdit extends Component {
     if (!this.currentTranslator.data) {
       await this.currentTranslator.refresh();
     }
-    if (!this.state.letter.translatorId) {
+
+    // If this letter hasn't been attributed, we attribute ourselves
+    // and our score will increase.
+    const newAttribution = !this.state.letter.translatorId;
+    if (newAttribution) {
       this.state.letter.translatorId = this.currentTranslator.data?.translatorId
     }
 
@@ -137,6 +141,11 @@ class LetterEdit extends Component {
     } else {
       if (!background) {
         notyf.success(_('Letter saved'));
+      }
+
+      // The score changed so the translator must be refreshed.
+      if (newAttribution) {
+        this.currentTranslator.refresh(true)
       }
     }
 
