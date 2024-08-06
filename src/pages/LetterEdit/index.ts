@@ -64,20 +64,20 @@ class LetterEdit extends Component {
       const listener = (event: KeyboardEvent) => {
 
         // On key press, enqueue a save if necessary
-          this.queueSave();
-        
+        this.queueSave();
+
         // If CTRL-S
-          if (event.ctrlKey && event.key === 's') {
-            event.preventDefault();
-  
-            // Remove timer if any as we manually save
-            if (this.state.saveTimeout) {
-              clearTimeout(this.state.saveTimeout);
-              this.state.saveTimeout = undefined;
-            }
-            this.save(true);
+        if (event.ctrlKey && event.key === 's') {
+          event.preventDefault();
+
+          // Remove timer if any as we manually save
+          if (this.state.saveTimeout) {
+            clearTimeout(this.state.saveTimeout);
+            this.state.saveTimeout = undefined;
           }
+          this.save(true);
         }
+      }
 
       document.addEventListener('keydown', listener);
       return () => document.removeEventListener('keydown', listener);
@@ -134,7 +134,7 @@ class LetterEdit extends Component {
       this.state.letter.translatorId = this.currentTranslator.data?.translatorId
     }
 
-    const res = await models.letters.update({...this.state.letter as Letter});
+    const res = await models.letters.update({ ...this.state.letter as Letter });
 
     if (!res) {
       notyf.error(_('Unable to save letter'));
@@ -144,8 +144,9 @@ class LetterEdit extends Component {
       }
 
       // The score changed so the translator must be refreshed.
+      // NOTE: this is a visual side effect so no await.
       if (newAttribution) {
-        this.currentTranslator.refresh(true)
+        this.currentTranslator.refresh(true);
       }
     }
 
