@@ -1,5 +1,6 @@
 import { reactive, useState } from "@odoo/owl";
 import { models, Translator } from "../models";
+import { navigateTo } from "../components/Router/Router";
 
 type Callback = (s: State) => void;
 const watchers: Callback[] = [];
@@ -26,8 +27,16 @@ const state = reactive<State>({
 
   async refresh(silent = false) {
     this.loading = this.loading || !silent;
-    this.data = await models.translators.current();
-    this.loading = false;  
+    try {
+      this.data = await models.translators.current();
+    }
+    catch (e) {
+      console.error("Exception thrown while refreshing translator. Redirecting to login form.");
+      navigateTo("/logout");
+    }
+    finally {
+      this.loading = false;  
+    }
   },
 
   async loadIfNotInitialized() {

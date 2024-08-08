@@ -1,21 +1,21 @@
 <div class="relative">
   <BlurLoader active="state.loading or currentTranslator.loading" fixed="true" class="'ml-10'" />
   <div class="container mx-auto" t-if="!state.loading and !currentTranslator.loading">
-    <LanguagesPickModal active="state.manageSkillsModal" onClose="() => this.closeSkillsModal()" translatorId="currentTranslator.data.translatorId" onChange="() => this.onSkillsChange()" />
+    <LanguagesPickModal active="state.manageSkillsModal" onClose="() => this.closeSkillsModal()" translatorId="currentTranslator.data?.translatorId" onChange="() => this.onSkillsChange()" />
     <div class="pt-20">
       <h3 class="text-slate-600 font-light text-2xl text-center">Compassion</h3>
       <h1 class="text-slate-700 font-light text-5xl text-center">Translation Platform</h1>
     </div>
     <t t-if="state.skillLetters.length gt 0">
       <p class="text-slate-700 text-center mt-10 mb-5">
-        Welcome <t t-esc="currentTranslator.data.preferredName" />. Here is the list of texts waiting to be translated, <br/>
+        Welcome <t t-esc="currentTranslator.data?.preferredName" />. Here is the list of texts waiting to be translated, <br/>
         please pick one according to your translation skills. You can also register new ones.
       </p>
-      <t t-if="currentTranslator.data.total > 1">
+      <t t-if="currentTranslator.data?.total > 1">
         <div class="flex justify-center items-center">
           <p class="text-slate-700 text-blue text-center mb-5 items-center">
             You have translated a total of
-            <span class="text-lg text-compassion mx-1" t-esc="currentTranslator.data.total" />
+            <span class="text-lg text-compassion mx-1" t-esc="currentTranslator.data?.total" />
             letters, thank you so much!
           </p>
           <div class="mb-8">

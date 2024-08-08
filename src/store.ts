@@ -47,7 +47,19 @@ const store = reactive<Store>(initialStoreValues, () => {
  * Used for logging out, erases the session content and reload page, thus the store
  * is empty, forcing the user to log in again
  */
-export const clearStoreCache = () => window.localStorage.clear();
+export const clearStoreCache = () => {
+  window.localStorage.removeItem(STORAGE_KEY);
+
+  // Reset initial state
+  for (const key of Object.keys(initialStoreValues)) {
+    store[key as keyof Store] = initialStoreValues[key];
+  }
+
+  // Call watchers
+  for (const watcher of watchers) {
+    watcher(store);
+  }
+}
 
 /**
  * A useful hook to include the store in your components, simply do

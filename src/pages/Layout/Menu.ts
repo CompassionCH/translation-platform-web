@@ -19,7 +19,7 @@ class Menu extends Component {
           <Icon prefix="'fas'" icon="'home'" class="'text-xl'" />
         </MenuButton>
       </RouterLink>
-      <RouterLink to="'/translators'" t-slot-scope="scope" t-if="currentTranslator.data.role === 'admin'">
+      <RouterLink to="'/translators'" t-slot-scope="scope" t-if="currentTranslator.data?.role === 'admin'">
         <MenuButton tooltip="'Translators'" active="scope.active">
           <Icon prefix="'fas'" icon="'user-group'" class="'text-xl'" />
         </MenuButton>

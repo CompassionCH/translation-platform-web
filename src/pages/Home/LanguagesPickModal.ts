@@ -64,7 +64,7 @@ class LanguagePickModal extends Component {
     active: { type: Boolean },
     onClose: { type: Function },
     onChange: { type: Function },
-    translatorId: { type: Number },
+    translatorId: { type: Number, optional: true },
   }
 
   translatorHasSkill(competence: TranslationCompetence) {
