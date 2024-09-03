@@ -51,11 +51,11 @@ const store = reactive<Store>(initialStoreValues, () => {
  * is empty, forcing the user to log in again
  */
 export const clearStoreCache = () => {
-  window.localStorage.clear();
+  window.localStorage.removeItem(STORAGE_KEY);
 
-  // Restores the base store.
-  for (const key in baseStore) {
-    (store as any)[key] = baseStore[key as keyof Store];
+  // Reset initial state
+  for (const key of Object.keys(initialStoreValues)) {
+    store[key as keyof Store] = initialStoreValues[key];
   }
 
   // Call watchers

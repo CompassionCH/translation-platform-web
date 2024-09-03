@@ -56,7 +56,11 @@ export default class Layout extends Component {
     // Store loading in separate value so that the whole loader is not
     // displayed whenever a component refresh user instance
     this.state.loading = true;
-    await this.currentTranslator.refresh();
-    this.state.loading = false;
+    try {
+      await this.currentTranslator.refresh();
+    }
+    finally {
+      this.state.loading = false;
+    }
   }
 }

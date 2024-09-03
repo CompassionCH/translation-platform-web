@@ -194,8 +194,6 @@ const OdooAPI = {
       } else {
         notyf.error(_('Oops! An error occurred. Please contact Compassion for further assistance.'));
       }
-
-      console.error(e);
     }
   },
 

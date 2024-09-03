@@ -8,7 +8,7 @@ const watchers: Callback[] = [];
 type State = {
   loading: boolean;
   data?: Translator;
-  refresh: (userId?: number) => Promise<void>;
+  refresh: (silent?: boolean) => Promise<void>;
   loadIfNotInitialized: () => Promise<void>;
   watch: (callback: Callback) => void;
 };
@@ -25,13 +25,14 @@ const state = reactive<State>({
   loading: false,
   data: undefined as Translator | undefined,
 
-  async refresh() {
-    this.loading = true;
+  async refresh(silent = false) {
+    this.loading = this.loading || !silent;
     try {
       this.data = await models.translators.current();
     }
-    catch(_) {
-      navigateTo('/login')
+    catch (e) {
+      console.error("Exception thrown while refreshing translator. Redirecting to login form.");
+      navigateTo("/logout");
     }
     finally {
       this.loading = false;  
