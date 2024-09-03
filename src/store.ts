@@ -6,13 +6,17 @@ type Store = {
   // AuthData
   // Set only on the currently authenticated user
   userId?: number;
-  password?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  accessTokenExpiresAt?: string;
 };
 
-const baseStore = {
+const baseStore: Store = {
   username: undefined,
   userId: undefined,
-  password: undefined,
+  accessToken: undefined,
+  refreshToken: undefined,
+  accessTokenExpiresAt: undefined,
 }
 
 const sessionStore = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '{}');
@@ -36,7 +40,6 @@ const watchers: Watcher[] = [];
 const store = reactive<Store>(initialStoreValues, () => {
   // Persist in session on change
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
-
   // Call watchers
   for (const watcher of watchers) {
     watcher(store);
