@@ -113,7 +113,7 @@ Patch the `application_unproxied` function like so:
         response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
         response.headers['Access-Control-Max-Age'] = 1000
         # note that '*' is not valid for Access-Control-Allow-Headers
-        response.headers['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
+        response.headers['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept, authorization'
         return response(environ, start_response)
 
 
