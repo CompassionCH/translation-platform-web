@@ -11,6 +11,7 @@ import { BlurLoader } from '../../components/Loader';
 import LetterSubmittedModal from "./LetterSubmittedModal";
 import _ from "../../i18n";
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
+import { LETTER_EDIT_AUTOSAVE_DELAY_MS } from "../../constants";
 
 type State = {
   dirty: false;
@@ -109,8 +110,8 @@ class LetterEdit extends Component {
       clearTimeout(this.state.saveTimeout);
     }
 
-    // Set the timer to automatically save in 1,5 secs
-    this.state.saveTimeout = setTimeout(() => this.save(true), 1500);
+    // Set the timer to automatically save in LETTER_EDIT_AUTOSAVE_DELAY_MS milliseconds
+    this.state.saveTimeout = setTimeout(() => this.save(true), LETTER_EDIT_AUTOSAVE_DELAY_MS);
   }
 
   async save(background = false) {
