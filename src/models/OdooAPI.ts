@@ -119,7 +119,7 @@ const OdooAPI = {
   async authenticate(username: string, password: string, totp?: string): Promise<true | any> {
     try {
       const { user_id, auth_tokens }: AuthResponse = await fetchJson('/auth/login', {
-        username,
+        "login": username, // username is called login in res_partner
         password,
         totp,
       });
