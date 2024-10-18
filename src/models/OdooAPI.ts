@@ -74,8 +74,7 @@ const OdooAPI = {
 
       if (
           e.code === RPC_FAULT_CODE_ACCESS_ERROR ||
-          e.code === RPC_FAULT_CODE_ACCESS_DENIED ||
-          e.code === RPC_FAULT_CODE_APPLICATION_ERROR
+          e.code === RPC_FAULT_CODE_ACCESS_DENIED
       ) {
         notyf.error(_('Oops! There is an issue with your account. Please contact Compassion for further assistance.'));
 
