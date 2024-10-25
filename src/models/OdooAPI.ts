@@ -145,10 +145,23 @@ const OdooAPI = {
     return val;
   },
 
+  async logout(): Promise<void> {
+    const route = '/auth/logout';
+    const refresh_token = store.refreshToken;
+    try {
+      const resp = await fetchJson(route, { refresh_token });
+      console.log(`Logout succeeded: ${resp}`);
+    } catch (error) {
+      console.warn(`Request to ${route} failed. This means that the refresh_token was probably not revoked on the backend. This is only a security risk if the refresh_token was intercepted by a malicious actor. In all cases, it will automatically expire when its expiration datetime is reached. Anyway, there's not much we can do at this point except clear to tokens in local storage.`);
+      throw error;
+    }
+  },
+
   async executeWithOptions_kw<T>(model: string, method: string, options: ExecuteKwOptions, ...args: any[]): Promise<T | undefined> {
     if (store.accessToken && !options.password) {
-      const refreshWindowMs = 5 * 60 * 1000;
-      if (options.refreshIfExpired !== false && (new Date(store.accessTokenExpiresAt ?? '').getTime()) < Date.now() + refreshWindowMs) {
+      const refreshMarginMs = 10 * 1000;
+      // refresh the accessToken if it's going to expire in the next refreshMarginMs milliseconds;
+      if (options.refreshIfExpired !== false && (new Date(store.accessTokenExpiresAt ?? '').getTime()) < Date.now() + refreshMarginMs) {
         try {
           await refreshAccessToken();
         }
