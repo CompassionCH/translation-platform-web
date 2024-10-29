@@ -6,7 +6,7 @@ class LetterRowActions extends Component {
 
   static template = xml`
     <div class="flex gap-1 pl-3">
-      <t t-if="currentTranslator.data.role === 'admin'">
+      <t t-if="currentTranslator.data?.role === 'admin'">
         <RouterLink to="'/letters/letter-view/' + props.letter.id">
           <button class="text-blue-500 hover:text-compassion transition-colors">View</button>
         </RouterLink>
