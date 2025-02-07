@@ -11,7 +11,11 @@ class Logout extends Component {
 
     async logout() {
         // First, we attempt to revoke the token on the backend.
-        await OdooAPI.logout();
+        try {
+          await OdooAPI.logout();
+        } catch (error){
+            console.warn("Failed to logout: " + error);
+        }
         // Clear session storage and reload page
         clearStoreCache();
         window.location.reload();
