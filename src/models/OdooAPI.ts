@@ -16,7 +16,8 @@ import _ from "../i18n";
 import {
   RPC_FAULT_CODE_ACCESS_DENIED,
   RPC_FAULT_CODE_ACCESS_ERROR,
-  STORAGE_KEY
+  STORAGE_KEY,
+  STORE_VERSION
 } from "../constants";
 
 type AuthResponse = {
@@ -123,6 +124,7 @@ const OdooAPI = {
         totp,
       });
 
+      store.version = STORE_VERSION;
       store.userId = user_id;
       store.username = username;
       store.accessToken = auth_tokens.access_token;

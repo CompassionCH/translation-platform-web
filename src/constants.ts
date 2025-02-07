@@ -1,8 +1,10 @@
 
 // Retrieve data from session storage
-// WARNING: This is a security issue, we should NOT store a plain text password in session storage
-// But well, anyway :)
 export const STORAGE_KEY = 'translation-platform-store';
+
+// This value ensures compatibility when updating the app's storage structure
+// It has to be incremented when the store structure is changed.
+export const STORE_VERSION = "v1"
 
 // Error messages taken from oddo API
 export const RPC_FAULT_CODE_CLIENT_ERROR = 1

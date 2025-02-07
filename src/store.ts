@@ -2,6 +2,7 @@ import { reactive, useState } from '@odoo/owl';
 import {STORAGE_KEY} from "./constants";
 
 type Store = {
+  version?: string;
   username?: string;
   // AuthData
   // Set only on the currently authenticated user
@@ -12,6 +13,7 @@ type Store = {
 };
 
 const baseStore: Store = {
+  version: undefined,
   username: undefined,
   userId: undefined,
   accessToken: undefined,

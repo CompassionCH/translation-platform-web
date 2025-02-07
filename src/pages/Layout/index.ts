@@ -9,6 +9,7 @@ import useCurrentTranslator from '../../hooks/useCurrentTranslator';
 import Menu from './Menu';
 import _ from '../../i18n';
 import { ConfirmModal } from '../../hooks/useAlerts';
+import { STORE_VERSION } from "../../constants";
 
 /**
  * The Layout component is the root component of the application.
@@ -45,8 +46,8 @@ export default class Layout extends Component {
   }
 
   checkStore() {
-    if (!store.username || !store.userId || !store.accessToken) {
-      navigateTo("/login");
+    if (store.version != STORE_VERSION || !store.username || !store.userId || !store.accessToken) {
+      navigateTo("/logout");
     } else if (!this.currentTranslator.data) {
       this.refreshCurrentTranslator();
     }
