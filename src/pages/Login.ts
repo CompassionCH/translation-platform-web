@@ -1,4 +1,4 @@
-import { Component, useRef, useState, xml } from "@odoo/owl";
+import { Component, useEffect, useRef, useState, xml } from "@odoo/owl";
 import Button from "../components/Button";
 import OdooAPI from "../models/OdooAPI";
 import notyf from "../notifications";
@@ -39,13 +39,18 @@ class Login extends Component {
                 </svg>
               </button>
             </span>
+            <input t-if="state.use2FA" t-ref="input-2fa" class="compassion-input text-sm mb-3" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="6-digits 2FA code" t-model="state.totp" />
             <Button color="'compassion'" class="'w-full mb-2'" size="'sm'">Login</Button>
             <div class="flex justify-between mt-2">
+              <div class="flex justify-left items-center">
+                <input id="2fa-checkbox" t-model="state.use2FA" type="checkbox" value="" class="w-4 h-4 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"/>
+                <label for="2fa-checkbox" class="ms-2 ml-2 text-sm select-none font-medium text-compassion">Use 2FA</label>
+              </div>
               <a href="#" class="text-sm font-medium text-compassion hover:text-slate-900 transition-colors" t-on-click="() => state.settingsModal = true">Switch language</a>
             </div>
           </form>
         </div>
-        <img t-att-src="webPath('/splash.jpg')" class="object-cover w-128 shadow-inner" />
+        <img t-att-src="webPath('/splash.jpg')" class="object-cover w-128 shadow-inner hidden md:block" />
         <Transition active="state.loading" t-slot-scope="scope">
           <div class="absolute top-0 left-0 bg-white-20 w-full h-full flex items-center justify-center" t-att-class="scope.itemClass">
             <div class="bg-white p-10 shadow-2xl rounded-sm">
@@ -66,8 +71,10 @@ class Login extends Component {
   state = useState({
     username: '',
     password: '',
+    totp: '',
     loading: false,
     settingsModal: false,
+    use2FA: false,
     showPassword: false,
   });
 
@@ -78,12 +85,29 @@ class Login extends Component {
     SettingsModal,
   };
 
+  inputField2FA = useRef('input-2fa');
+
+  setup(): void {
+    // Autofocus 2FA field when it appears.
+    useEffect(el => el?.focus(),
+      () => [this.inputField2FA.el])
+  }
+
   async login() {
     this.state.loading = true;
-    const { username, password } = this.state;
-    const res = await OdooAPI.authenticate(username, password)
-    if (!res) {
-      notyf.error(_('Failed to log in, incorrect credentials'));
+    const { username, password, totp } = this.state;
+    const res = await OdooAPI.authenticate(username, password, totp)
+    if (res !== true) {
+      if (res?.name?.endsWith?.('InvalidTotp') && this.state.use2FA === false) {
+        this.state.use2FA = true;
+        notyf.error(_('This account requires 2FA'));
+      }
+      else if (res?.message?.startsWith('Too many login failures')) {
+        notyf.error(_('Too many login attempts. Please, retry later'));
+      }
+      else {
+        notyf.error(_('Failed to log in, incorrect credentials'));
+      }
       this.state.loading = false;
     } else {
       // Provide user to all next components, better UI, minimize number of loaders

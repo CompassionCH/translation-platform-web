@@ -266,5 +266,8 @@
     "The number may vary depending on letter checks. Don't worry, we record each of your interactions with the translations": "Die Zahl kann je nach Überprüfung der Buchstaben variieren. Keine Sorge, wir erfassen jede deiner Interaktionen mit den Übersetzungen",
     "Your verification letter is awaiting approval. Once approved by our staff, you will be able to start translating in this skill": "Dein Bestätigungsbrief wartet auf Genehmigung. Sobald er von unserem Team genehmigt wurde, kannst du mit der Übersetzung in dieser Sprache beginnen",
     "Awaiting approval": "Wartet auf Validierung",
-    "Waiting for your verification letter": "Warten auf deinen Bestätigungsbrief"
+    "Waiting for your verification letter": "Warten auf deinen Bestätigungsbrief",
+    "Use 2FA": "2FA verwenden",
+    "6-digits 2FA code": "6-stelliger 2FA-Code",
+    "This account requires 2FA": "Dieses Konto erfordert 2FA"
 }
