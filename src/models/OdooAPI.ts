@@ -16,7 +16,6 @@ import _ from "../i18n";
 import {
   RPC_FAULT_CODE_ACCESS_DENIED,
   RPC_FAULT_CODE_ACCESS_ERROR,
-  RPC_FAULT_CODE_APPLICATION_ERROR,
   STORAGE_KEY
 } from "../constants";
 
