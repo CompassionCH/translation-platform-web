@@ -92,6 +92,7 @@ class LetterEdit extends Component {
     await this.currentTranslator.loadIfNotInitialized();
 
     this.state.internalLoading = true;
+    clearTimeout(this.state.saveTimeout);
     const res = await models.letters.submit({
       ...this.state.letter as Letter,
     });
@@ -115,7 +116,7 @@ class LetterEdit extends Component {
   }
 
   async save(background = false) {
-    if (!this.state.letter?.translatedElements || this.state.saveLoading) {
+    if (!this.state.letter?.translatedElements || this.state.saveLoading || this.state.internalLoading) {
       return;
     }
 
