@@ -63,7 +63,7 @@
       <p t-on-click="() => this.clearFilters()" t-if="filters.search.length > 0 || filters.sortBy !== undefined" class="text-sm text-red-700 hover:text-red-900 cursor-pointer ml-2">Clear filters</p>
     </div>
     <div>
-      <PageSelector page="filters.pageNumber" total="state.total" pageSize="filters.pageSize" onPageChange="(page) => this.changePage(page)" />
+      <PageSelector page="filters.pageNumber" total="state.total || 0" pageSize="filters.pageSize" onPageChange="(page) => this.changePage(page)" />
     </div>
   </div>
   <Transition active="state.loading" t-slot-scope="scope">
