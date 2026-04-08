@@ -23,6 +23,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         stream: "stream-browserify",
         events: "events",
+        util: "util",
       },
     },
     optimizeDeps: {
