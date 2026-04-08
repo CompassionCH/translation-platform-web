@@ -61,9 +61,9 @@ export default class Home extends Component {
     },
     {
       // Defined, tutorial is called from within setup, post refresh, meaning the translator is fetched
-      text: this.currentTranslator.data?.skills.length === 0
-        ? _('You currently have no skills defined, let us begin by registering one or more')
-        : _('It seems you already have translation skills defined, let us see how you can manage them'),
+      text: (this.currentTranslator.data?.skills?.length ?? 0) === 0
+          ? _('You currently have no skills defined, let us begin by registering one or more')
+          : _('It seems you already have translation skills defined, let us see how you can manage them')
     },
     {
       beforeShowPromise: () => new Promise((resolve) => {
@@ -109,7 +109,7 @@ export default class Home extends Component {
     this.state.loading = true;
 
     if (!this.currentTranslator.data) {
-      this.currentTranslator.refresh();
+      await this.currentTranslator.refresh();
     }
 
     await Promise.all([
@@ -160,50 +160,52 @@ export default class Home extends Component {
 
     if (!this.currentTranslator.data) return;
 
-    // Retrieve letters to validate for each skill of the current translator
-    const lettersToValidate = await Promise.all(this.currentTranslator.data.skills.map(async (skill) => {
-      const lettersToValidate = await models.letters.list({
-        search: [
-          { column: 'status', term: 'to validate' },
-          { column: 'source', term: skill.source },
-          { column: 'target', term: skill.target },
-        ],
-      });
+    const lettersToValidate = await Promise.all(
+        (this.currentTranslator.data.skills || []).map(async (skill) => {
+          const lettersToValidate = await models.letters.list({
+            search: [
+              { column: 'status', term: 'to validate' },
+              { column: 'source', term: skill.source },
+              { column: 'target', term: skill.target },
+            ],
+          });
 
-      return {
-        skill,
-        letters: lettersToValidate.data,
-      }
-    }));
+          return {
+            skill,
+            letters: lettersToValidate.data,
+          };
+        })
+    );
 
-    // Sort the letters to have only the one that have a skill as unverified and a letter already waiting to be validated
-    this.state.lettersAwaitingValidation = lettersToValidate.filter((item) => {
-      return (!item.skill.verified);
-    }).filter(item => item.letters.length > 0);
-
-  };
+    this.state.lettersAwaitingValidation = lettersToValidate
+        .filter(item => !item.skill.verified)
+        .filter(item => item.letters.length > 0);
+  }
 
   async fetchLetters() {
     if (!this.currentTranslator.data) return;
-    const skillLetters = await Promise.all(this.currentTranslator.data.skills.map(async (skill) => {
-      const skillLetters = await models.letters.list({
-        sortBy: ['priority desc','date asc'],
-        pageSize: 5,
-        pageNumber: 0,
-        search: [
-          { column: 'status', term: 'to do' },
-          { column: 'source', term: skill.source },
-          { column: 'target', term: skill.target },
-          { column: 'translationIssue', term: false, operator: '=' },
-        ],
-      });
 
-      return {
-        skill,
-        total: skillLetters.total,
-        letters: skillLetters.data,
-      };
-    }));
+    const skillLetters = await Promise.all(
+        (this.currentTranslator.data.skills || []).map(async (skill) => {
+          const skillLetters = await models.letters.list({
+            sortBy: ['priority desc','date asc'],
+            pageSize: 5,
+            pageNumber: 0,
+            search: [
+              { column: 'status', term: 'to do' },
+              { column: 'source', term: skill.source },
+              { column: 'target', term: skill.target },
+              { column: 'translationIssue', term: false, operator: '=' },
+            ],
+          });
+
+          return {
+            skill,
+            total: skillLetters.total,
+            letters: skillLetters.data,
+          };
+        })
+    );
 
     this.state.skillLetters = skillLetters.sort((a, b) => {
       if (a.skill.verified) return 1;
