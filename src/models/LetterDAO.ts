@@ -7,18 +7,18 @@ type Priority = 0 | 1 | 2 | 3 | 4;
 interface BaseElement {
     type: 'paragraph' | 'pageBreak';
     id: number | string;
-};
+}
 
 export interface Paragraph extends BaseElement {
     type: 'paragraph';
     content: string;
     source: string;
     comments?: string;
-};
+}
 
 export interface PageBreak extends BaseElement {
     type: 'pageBreak';
-};
+}
 
 export type Element = Paragraph | PageBreak;
 
@@ -137,26 +137,20 @@ const LetterDAO: BaseDAO<Letter> & LetterDAOApi = {
     async list(params) {
         const searchParams = generateSearchQuery<Letter>(params, letterFieldsMapping);
 
-        // 1. Sécuriser l'ajout du domaine obligatoire (évite l'erreur 500 sur un push invalide)
         if (!Array.isArray(searchParams[0])) {
             searchParams[0] = [];
         }
 
-        // Add global state
         searchParams[0].push(['state', '=', 'Global Partner translation queue']);
 
-        // Domaine seul pour l'appel de comptage
         const domainOnly = [searchParams[0]];
 
         try {
             const [letterIds, total] = await Promise.all([
                 OdooAPI.execute_kw('correspondence', 'search', searchParams),
-                // 2. Utilisation de 'search_count' pour Odoo 18 au lieu de 'search' avec un booléen
                 OdooAPI.execute_kw('correspondence', 'search_count', domainOnly) as Promise<number>
             ]);
 
-            // 3. Sécurité : Si la recherche ne retourne aucun ID, on retourne un résultat vide
-            // sans appeler `list_letters` ce qui provoquerait une autre erreur 500
             if (!letterIds || (letterIds as number[]).length === 0) {
                 return { data: [], total: total || 0 };
             }
