@@ -65,23 +65,41 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async find(id) {
     return this.cleanTranslator(
-      await OdooAPI.execute_kw<Translator>('translation.user', 'get_user_info', [id])
+        await OdooAPI.execute_kw<Translator>('translation.user', 'get_user_info', [id])
     );
   },
 
   async list(params) {
     const searchParams = generateSearchQuery<Translator>(params, translatorFieldsMapping);
-    const [translatorIds, total] = await Promise.all([
-      OdooAPI.execute_kw('translation.user', 'search', searchParams),
-      OdooAPI.execute_kw('translation.user', 'search', [...searchParams, true]) as Promise<number>
-    ]);
 
-    const rawTranslators = await OdooAPI.execute_kw<Translator[]>('translation.user', 'list_users', [translatorIds]);
-    const data = (rawTranslators || []).map(it => this.cleanTranslator(it)).filter(it => it !== undefined) as Translator[];
-    return {
-      total,
-      data,
-    };
+    // 1. Sécuriser le domaine de recherche
+    if (!Array.isArray(searchParams[0])) {
+      searchParams[0] = [];
+    }
+
+    const domainOnly = [searchParams[0]];
+
+    try {
+      const [translatorIds, total] = await Promise.all([
+        OdooAPI.execute_kw('translation.user', 'search', searchParams),
+        OdooAPI.execute_kw('translation.user', 'search_count', domainOnly) as Promise<number>
+      ]);
+
+      if (!translatorIds || (translatorIds as number[]).length === 0) {
+        return { data: [], total: total || 0 };
+      }
+
+      const rawTranslators = await OdooAPI.execute_kw<Translator[]>('translation.user', 'list_users', [translatorIds]);
+      const data = (rawTranslators || []).map(it => this.cleanTranslator(it)).filter(it => it !== undefined) as Translator[];
+
+      return {
+        total: total || 0,
+        data,
+      };
+    } catch (error) {
+      console.error("Error fetching translators list:", error);
+      throw error;
+    }
   },
 
   async listIds(params) {
