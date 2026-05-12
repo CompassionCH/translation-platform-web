@@ -71,9 +71,10 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async list(params) {
     const searchParams = generateSearchQuery<Translator>(params, translatorFieldsMapping);
+    const countParams = [searchParams[0]];
     const [translatorIds, total] = await Promise.all([
       OdooAPI.execute_kw('translation.user', 'search', searchParams),
-      OdooAPI.execute_kw('translation.user', 'search', [...searchParams, true]) as Promise<number>
+      OdooAPI.execute_kw('translation.user', 'search_count', countParams) as Promise<number>,
     ]);
 
     const rawTranslators = await OdooAPI.execute_kw<Translator[]>('translation.user', 'list_users', [translatorIds]);
