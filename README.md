@@ -63,13 +63,13 @@ VITE_ODOO_DBNAME="<your test db>"
 
 Then `npm run dev` and open <http://localhost:3000>.
 
-**3. Cross-origin hosting (non-default).** If you genuinely need the
-SPA to be served from a different host than Odoo, you have to enable
-CORS on `/xmlrpc/2/*` (stock v18 declares `cors=` only on `/auth/*`).
-The simplest in-tree fix is to add a re-declaration of the XMLRPC
-routes inside `auth_external` (or another module you control) with
-`cors="*"`; the legacy Odoo-source patch shown further down is the
-manual equivalent on v14 and earlier.
+**3. Cross-origin hosting (non-default).** If you ever need the SPA
+to live on a different host from Odoo, you have to enable CORS on
+`/xmlrpc/2/*` (stock v18 declares `cors=` only on `/auth/*`). Do it
+narrowly, set the `cors=` value to the exact origin of the SPA, not
+`"*"`, and only on that endpoint. Neither of the two recommended
+deployments above triggers a CORS preflight (both are same-origin),
+so we don't ship such an override.
 
 ## Environment files
 Please read the [vite documentation](https://vitejs.dev/guide/env-and-mode.html#modes). Mainly, environment files are loaded based
