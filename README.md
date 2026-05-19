@@ -14,6 +14,63 @@ built with [Owl](https://github.com/odoo/owl) and [Vite](https://vitejs.dev/). I
 2. Run `npm run build`, it will build static files in the `/dist` directory
 3. Copy those files wherever you want
 
+## Running against Odoo 18
+
+The backend module is `auth_external` (in
+`compassion-switzerland/compassion-switzerland/auth_external`). It
+exposes:
+
+- `POST /auth/login {login, password, totp}` → `{user_id, auth_tokens: {access_token, refresh_token, expires_at}}`
+- `POST /auth/refresh {refresh_token}` → rotated `auth_tokens`
+- `POST /auth/logout {refresh_token}` → revoke family
+
+Subsequent XML-RPC calls authenticate via the `Authorization: Bearer
+<access_token>` header (set automatically by `OdooAPI.ts`) with
+`password='None'` in the `execute_kw` arguments. The Odoo-side
+`res.users.check` override in `auth_external` validates the header.
+
+### Deployment modes
+
+**1. Served by Odoo (production / staging).** Run `npm run build` and
+copy `dist/*` into `sbc_translation/static/tp/`. The
+`TranslationPlatformController` in `sbc_translation/controllers/main.py`
+serves the SPA at `/translation-platform`. The SPA and the Odoo API
+share the same origin, so no CORS concerns.
+
+Set in `.env.production.local`:
+
+```
+SERVE_URL="/translation-platform/"
+VITE_ODOO_URL=""
+VITE_ODOO_DBNAME="<prod db>"
+```
+
+**2. `npm run dev` against a local Odoo (local development).** This
+is the recommended dev workflow. The Vite dev server proxies the
+`/auth/*` and `/xmlrpc/*` paths to your local Odoo, so the browser
+sees same-origin requests and there is no CORS preflight to deal
+with.
+
+Set in `.env.local`:
+
+```
+SERVE_URL="/"
+VITE_ODOO_URL=""
+VITE_ODOO_DBNAME="<your test db>"
+# Only override if Odoo isn't on the default port/host:
+# VITE_DEV_PROXY_TARGET="http://localhost:8069"
+```
+
+Then `npm run dev` and open <http://localhost:3000>.
+
+**3. Cross-origin hosting (non-default).** If you ever need the SPA
+to live on a different host from Odoo, you have to enable CORS on
+`/xmlrpc/2/*` (stock v18 declares `cors=` only on `/auth/*`). Do it
+narrowly, set the `cors=` value to the exact origin of the SPA, not
+`"*"`, and only on that endpoint. Neither of the two recommended
+deployments above triggers a CORS preflight (both are same-origin),
+so we don't ship such an override.
+
 ## Environment files
 Please read the [vite documentation](https://vitejs.dev/guide/env-and-mode.html#modes). Mainly, environment files are loaded based
 on their name given the running mode:
@@ -86,7 +143,12 @@ Whenever a missing translation is found it will be logged to the browser's conso
 the various missing translations by running `dumpMissingTranslations()` in your browser console, which will
 log a JSON object containing them.
 
-#### ODOO Dev environment and CORS requests
+#### ODOO Dev environment and CORS requests (legacy v12/v14)
+
+> **For v18:** prefer the Vite dev proxy described in the "Running
+> against Odoo 18" section above — it sidesteps CORS entirely without
+> touching Odoo's source. The patch below is kept for historical
+> reference and for v12/v14 setups only.
 
 When running the platform in dev environment, you will very probably run into a cross-origin requests
 problem. To fix it quick and dirty, edit the `/odoo/service/wsgi_server.py` in Odoo's source code.
