@@ -6,6 +6,9 @@
       <h3 class="text-slate-600 font-light text-2xl text-center">Compassion</h3>
       <h1 class="text-slate-700 font-light text-5xl text-center">Translation Platform</h1>
     </div>
+    <div class="mt-10">
+      <AnnouncementHero/>
+    </div>
     <t t-if="state.skillLetters.length gt 0">
       <p class="text-slate-700 text-center mt-10 mb-5">
         Welcome <t t-esc="currentTranslator.data?.preferredName" />. Here is the list of texts waiting to be translated, <br/>

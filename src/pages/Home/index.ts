@@ -7,6 +7,7 @@ import { ListResponse } from '../../models/BaseDAO';
 import { Letter, models, Translator } from "../../models";
 import { BlurLoader } from '../../components/Loader';
 import LanguagesPickModal from './LanguagesPickModal';
+import AnnouncementHero from './AnnouncementHero';
 import Helper from "../../components/Helper";
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 import _ from "../../i18n";
@@ -39,6 +40,7 @@ export default class Home extends Component {
     LanguagesPickModal,
     BlurLoader,
     Helper,
+    AnnouncementHero,
   };
 
   currentTranslator = useCurrentTranslator();
