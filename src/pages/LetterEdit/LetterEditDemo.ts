@@ -200,7 +200,7 @@ class LetterEditDemo extends Component {
             this.state.signalProblemModal = true;
             setTimeout(resolve, 300);
           }),
-          text: _('Once clicking it, you will be brought here where your can select a problem and provide additional details to the Compassion team'),
+          text: _('Once clicking it, you will be brought here where you can select a problem and provide additional details to the Compassion team'),
           attachTo: {
             element: '.modal',
             on: 'bottom',
