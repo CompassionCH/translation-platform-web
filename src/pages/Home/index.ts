@@ -61,9 +61,9 @@ export default class Home extends Component {
     },
     {
       // Defined, tutorial is called from within setup, post refresh, meaning the translator is fetched
-      text: this.currentTranslator.data?.skills.length === 0
-        ? _('You currently have no skills defined, let us begin by registering one or more')
-        : _('It seems you already have translation skills defined, let us see how you can manage them'),
+      text: this.currentTranslator.data?.skills?.length === 0
+          ? _('You currently have no skills defined, let us begin by registering one or more')
+          : _('It seems you already have translation skills defined, let us see how you can manage them'),
     },
     {
       beforeShowPromise: () => new Promise((resolve) => {
@@ -138,7 +138,7 @@ export default class Home extends Component {
   async postSkillsModal() {
     if (showTutorial()) {
       this.tutorial.getCurrentStep()?.hide();
-      setTimeout(() => this.tutorial.getById('post-manage-skills')?.show(), 300);
+      setTimeout(() => this.tutorial.getById('step-badges')?.show(), 300);
     }
   }
 
@@ -179,7 +179,7 @@ export default class Home extends Component {
     // Sort the letters to have only the one that have a skill as unverified and a letter already waiting to be validated
     this.state.lettersAwaitingValidation = lettersToValidate.filter((item) => {
       return (!item.skill.verified);
-    }).filter(item => item.letters.length > 0);
+    }).filter(item => item.letters && item.letters.length > 0);
 
   };
 
