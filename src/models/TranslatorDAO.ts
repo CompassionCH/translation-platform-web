@@ -8,6 +8,25 @@ export type TranslationSkill = {
   verified: boolean;
 };
 
+export type TranslatorBadge = {
+  id: number;
+  name: string;
+  description: string;
+  icon_url: string;
+  type: string;
+  is_unlocked: boolean;
+  progress: number;
+  threshold: number;
+  days_left: number | boolean;
+  days_until_start: number | boolean;
+  start_date: string | boolean;
+};
+
+export type BadgeCategory = {
+  category: string;
+  badges: TranslatorBadge[];
+};
+
 export type Translator = {
   translatorId: number;
   email?: string;
@@ -19,6 +38,7 @@ export type Translator = {
   year?: number;
   lastYear?: number;
   skills: TranslationSkill[];
+  badges: BadgeCategory[];
 };
 
 /**
@@ -65,7 +85,7 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async find(id) {
     return this.cleanTranslator(
-      await OdooAPI.execute_kw<Translator>('translation.user', 'get_user_info', [id])
+        await OdooAPI.execute_kw<Translator>('translation.user', 'get_user_info', [id])
     );
   },
 
@@ -79,21 +99,13 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
     const rawTranslators = await OdooAPI.execute_kw<Translator[]>('translation.user', 'list_users', [translatorIds]);
     const data = (rawTranslators || []).map(it => this.cleanTranslator(it)).filter(it => it !== undefined) as Translator[];
-    return {
-      total,
-      data,
-    };
+    return { total, data };
   },
 
   async listIds(params) {
     const searchParams = generateSearchDomain(params.search, translatorFieldsMapping);
     const ids = await OdooAPI.execute_kw<number[]>('translation.user', 'search', searchParams);
-    if (!ids) {
-      console.error('Unable to retrieve ids', params.search);
-      return [];
-    } else {
-      return ids;
-    }
+    return ids || [];
   },
 
   async registerSkills(translatorId, skills) {
@@ -113,11 +125,7 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
 
   async current() {
     const data = await OdooAPI.execute_kw<Translator>('translation.user', 'get_my_info', []);
-    if (!data) {
-      console.error('Unable to find current authenticated user!');
-      throw new Error('A Critical error occured');
-    }
-    
+    if (!data) throw new Error('A Critical error occured');
     return this.cleanTranslator(data) as Translator;
   },
 
@@ -133,6 +141,7 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
       year: OdooAPI.ifNoneElse(data.year, 0),
       lastYear: OdooAPI.ifNoneElse(data.lastYear, 0),
       skills: OdooAPI.ifNoneElse(data.skills, [] as TranslationSkill[]),
+      badges: OdooAPI.ifNoneElse(data.badges, [] as BadgeCategory[]),
     };
   }
 }
