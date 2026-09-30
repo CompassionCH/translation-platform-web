@@ -34,12 +34,6 @@
 
                     <div class="flex items-center gap-4 mb-5">
 
-                        <div
-                                class="flex items-center justify-center w-10 h-10 rounded-sm bg-white border border-slate-200 shadow-sm"
-                        >
-                            <i class="fas fa-medal text-slate-500"></i>
-                        </div>
-
                         <div class="flex-1">
                             <h2 class="text-xl font-light text-slate-700">
                                 <t t-esc="catGroup.category"/>
@@ -50,7 +44,7 @@
 
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                    <div class="badges-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
                         <t
                                 t-foreach="catGroup.badges"
@@ -81,18 +75,7 @@
                                         <span
                                                 class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-slate-100 text-compassion text-xs font-medium"
                                         >
-                                            <i class="fas fa-check-circle text-compassion"></i>
                                             Unlocked
-                                        </span>
-
-                                    </t>
-
-                                    <t t-else="">
-
-                                        <span
-                                                class="inline-flex items-center justify-center w-8 h-8 rounded-sm bg-slate-100 text-slate-400"
-                                        >
-                                            <i class="fas fa-lock text-xs"></i>
                                         </span>
 
                                     </t>
@@ -173,7 +156,6 @@
                                         <div class="h-px bg-slate-100 mb-3"></div>
 
                                         <span class="text-xs font-medium text-compassion">
-                                            <i class="fas fa-star mr-1"></i>
                                             Achievement unlocked
                                         </span>
 
@@ -190,7 +172,6 @@
                                             <div class="h-px bg-slate-200 mb-3"></div>
 
                                             <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
-                                                <i class="fas fa-calendar-alt"></i>
                                                 Starts on
                                                 <t t-esc="badge.start_date"/>
                                             </span>
@@ -207,7 +188,6 @@
 
                                             <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
 
-                                                <i class="fas fa-clock"></i>
 
                                                 <t t-if="badge.days_left > 0">
                                                     <t t-esc="badge.days_left"/>
@@ -233,7 +213,6 @@
                                                 <div class="h-px bg-slate-200 mb-3"></div>
 
                                                 <span class="text-xs font-medium text-slate-400">
-                                                    <i class="fas fa-lock mr-1"></i>
                                                     Locked
                                                 </span>
 
@@ -261,12 +240,6 @@
                 t-else=""
                 class="bg-white border border-slate-200 rounded-sm py-16 px-6 text-center shadow-lg mb-10"
         >
-
-            <div
-                    class="flex items-center justify-center w-16 h-16 rounded-full bg-slate-50 mx-auto mb-5"
-            >
-                <i class="fas fa-trophy text-2xl text-slate-300"></i>
-            </div>
 
             <h2 class="text-lg font-medium text-slate-700 mb-2">
                 No achievements yet

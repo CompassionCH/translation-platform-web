@@ -138,8 +138,7 @@ export default class Home extends Component {
   async postSkillsModal() {
     if (showTutorial()) {
       this.tutorial.getCurrentStep()?.hide();
-      setTimeout(() => this.tutorial.getById('step-badges')?.show(), 300);
-    }
+      setTimeout(() => this.tutorial.getById('post-manage-skills')?.show(), 300);    }
   }
 
   async fetchSaved() {

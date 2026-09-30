@@ -48,7 +48,7 @@ class Badges extends Component {
             id: 'step-badges-grid',
             text: _('Your badges are grouped by categories. The colored badges are the ones you have unlocked. The gray ones are waiting for you!'),
             attachTo: {
-                element: '.flex.flex-wrap',
+                element: '.badges-grid',
                 on: 'top'
             },
         },
@@ -70,13 +70,14 @@ class Badges extends Component {
         this.state.loading = true;
         try {
             await this.currentTranslator.loadIfNotInitialized();
-
-            startTutorial(this.tutorial);
-
         } catch (error) {
             console.error("Error loading the translator:", error);
         }
         this.state.loading = false;
+
+        setTimeout(() => {
+            startTutorial(this.tutorial);
+        }, 0);
     }
 
     getBadgeCurrentValue(badge: BadgeItem): number {
