@@ -29,9 +29,8 @@ class Menu extends Component {
           <Icon prefix="'fas'" icon="'envelope'" class="'text-xl'" />
         </MenuButton>
       </RouterLink>
-      
       <RouterLink to="'/badges'" t-slot-scope="scope">
-        <MenuButton id="tutorial-badges-link" tooltip="'Badges'" active="scope.active">
+        <MenuButton tooltip="'Badges'" active="scope.active">
           <Icon prefix="'fas'" icon="'trophy'" class="'text-xl'" />
         </MenuButton>
       </RouterLink>

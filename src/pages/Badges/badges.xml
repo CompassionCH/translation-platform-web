@@ -1,13 +1,13 @@
 <div>
     <BlurLoader
-            active="state.loading or currentTranslator.loading"
+            active="currentTranslator.loading"
             fixed="true"
             class="'ml-10'"
     />
 
     <div
             class="container mx-auto px-10 lg:px-0"
-            t-if="!state.loading and !currentTranslator.loading"
+            t-if="!currentTranslator.loading"
     >
 
         <div class="py-10">
@@ -21,16 +21,16 @@
         </div>
 
         <div
-                t-if="currentTranslator.data and currentTranslator.data.badges and currentTranslator.data.badges.length > 0"
+                t-if="state.badgesCategories and state.badgesCategories.length > 0"
         >
 
             <t
-                    t-foreach="currentTranslator.data.badges"
+                    t-foreach="state.badgesCategories"
                     t-as="catGroup"
                     t-key="catGroup.category"
             >
 
-                <div class="mb-10">
+                <div class="badges-category mb-10">
 
                     <div class="flex items-center gap-4 mb-5">
 
@@ -44,7 +44,7 @@
 
                     </div>
 
-                    <div class="badges-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
                         <t
                                 t-foreach="catGroup.badges"
@@ -59,14 +59,19 @@
                   p-6
                   rounded-sm
                   border
-                  bg-white
                   transition-all duration-200
                   {{ badge.is_unlocked
-                    ? 'border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md'
-                    : 'border-slate-200 bg-slate-50 opacity-65' }}
+                    ? 'border-slate-200 bg-white shadow-sm hover:-translate-y-1 hover:shadow-md'
+                    : 'border-slate-200 bg-slate-50 opacity-70' }}
                 "
                                     t-att-title="badge.description"
                             >
+
+                                <div class="absolute top-4 left-4" t-if="badge.type === 'campaign'">
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm bg-amber-100 text-amber-700 text-[10px] font-bold uppercase tracking-wider">
+                                        <i class="fas fa-star"></i> Event
+                                    </span>
+                                </div>
 
                                 <div class="absolute top-4 right-4">
 
@@ -89,9 +94,10 @@
                       flex items-center justify-center
                       w-24 h-24
                       rounded-full
+                      overflow-hidden
                       transition-transform duration-200
                       {{ badge.is_unlocked
-                        ? 'bg-slate-50 group-hover:scale-105'
+                        ? (badge.type === 'campaign' ? 'bg-gradient-to-tr from-amber-100 to-yellow-50 group-hover:scale-105 shadow-inner' : 'bg-slate-50 group-hover:scale-105')
                         : 'bg-slate-100' }}
                     "
                                     >
@@ -99,7 +105,7 @@
                                         <img
                                                 t-att-src="badge.icon_url"
                                                 t-att-alt="badge.name"
-                                                class="w-16 h-16 object-contain"
+                                                t-attf-class="w-full h-full object-cover rounded-full {{ badge.is_unlocked ? '' : 'grayscale' }}"
                                         />
 
                                     </div>
@@ -110,13 +116,13 @@
                                     <t t-esc="badge.name"/>
                                 </h3>
 
-                                <p class="text-sm text-slate-500 text-center leading-relaxed line-clamp-2 min-h-[40px]">
+                                <p class="text-sm text-slate-500 text-center leading-relaxed min-h-[40px]">
                                     <t t-esc="badge.description"/>
                                 </p>
 
                                 <t t-if="!badge.is_unlocked and badge.threshold > 0">
 
-                                    <div class="mt-auto pt-5">
+                                    <div class="badge-progress mt-auto pt-5">
 
                                         <div class="flex justify-between items-center mb-2">
 
@@ -125,7 +131,7 @@
                                             </span>
 
                                             <span class="text-xs font-medium text-slate-700">
-                                                <t t-esc="getBadgeCurrentValue(badge)"/>
+                                                <t t-esc="badge.current"/>
                                                 /
                                                 <t t-esc="badge.threshold"/>
                                             </span>

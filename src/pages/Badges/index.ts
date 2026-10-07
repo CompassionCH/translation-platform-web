@@ -1,25 +1,20 @@
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, onWillStart, onMounted } from "@odoo/owl";
 import template from './badges.xml';
 import { BlurLoader } from '../../components/Loader';
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
-
-
 import _ from "../../i18n";
-import { buildTutorial, startTutorial } from "../../tutorial";
+import { buildTutorial, hideTutorial, startTutorial } from "../../tutorial";
+import { models } from "../../models";
+import { BadgeCategory } from "../../models/TranslatorDAO";
 
-type BadgeItem = {
-    id: number;
-    name: string;
-    description: string;
-    icon_url: string;
-    type: string;
-    is_unlocked: boolean;
-    progress: number;
-    threshold: number;
-};
+/**
+ * The badges tutorial has its own key, so it is shown once even to users who
+ * already finished or exited the main tutorial, without showing the main one again
+ */
+const BADGES_TUTORIAL_KEY = 'show-badges-tutorial';
 
 type State = {
-    loading: boolean;
+    badgesCategories: BadgeCategory[];
 };
 
 class Badges extends Component {
@@ -32,7 +27,7 @@ class Badges extends Component {
     _ = _;
 
     state = useState<State>({
-        loading: false,
+        badgesCategories: [],
     });
 
     tutorial = buildTutorial([
@@ -48,40 +43,41 @@ class Badges extends Component {
             id: 'step-badges-grid',
             text: _('Your badges are grouped by categories. The colored badges are the ones you have unlocked. The gray ones are waiting for you!'),
             attachTo: {
-                element: '.badges-grid',
+                element: '.badges-category',
                 on: 'top'
             },
         },
         {
             id: 'step-badges-progress',
-            text: _('Keep an eye on the progress bar for locked badges. It shows you exactly how many translations you need to unlock your next reward. Happy translating!'),
+            text: _('Keep an eye on the progress bar for locked badges. It shows you how close you are to unlocking your next reward. Happy translating!'),
+            attachTo: {
+                element: '.badge-progress',
+                on: 'top'
+            },
             classes: 'no-next',
             buttons: [{
                 classes: 'bg-compassion text-white',
                 text: _('Got it!'),
                 action: () => {
                     this.tutorial.complete();
+                    hideTutorial(BADGES_TUTORIAL_KEY);
                 },
             }],
         }
-    ]);
+    ], BADGES_TUTORIAL_KEY);
 
-    async setup() {
-        this.state.loading = true;
-        try {
+    setup() {
+        onWillStart(async () => {
             await this.currentTranslator.loadIfNotInitialized();
-        } catch (error) {
-            console.error("Error loading the translator:", error);
-        }
-        this.state.loading = false;
+            this.state.badgesCategories = await models.translators.myBadges();
+        });
 
-        setTimeout(() => {
-            startTutorial(this.tutorial);
-        }, 0);
-    }
-
-    getBadgeCurrentValue(badge: BadgeItem): number {
-        return Math.round(badge.progress * badge.threshold);
+        onMounted(() => {
+            // The tutorial describes the badges, so skip it when there is none to show
+            if (this.state.badgesCategories.length > 0) {
+                startTutorial(this.tutorial, BADGES_TUTORIAL_KEY);
+            }
+        });
     }
 }
 
