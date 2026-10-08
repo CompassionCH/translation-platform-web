@@ -201,7 +201,7 @@
 
                                     </t>
 
-                                    <t t-elif="badge.days_left !== false">
+                                    <t t-elif="badge.is_finished or badge.days_left !== false">
 
                                         <div class="mt-auto pt-5 text-center">
 
