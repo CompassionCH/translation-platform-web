@@ -83,7 +83,7 @@ type TranslatorDAOApi = {
   /**
    * Returns the badges of the currently authenticated user, grouped by category
    */
-  myBadges(): Promise<BadgeCategory[]>;
+  myBadges(): Promise<BadgeCategory[] | undefined>;
 };
 
 const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
@@ -146,9 +146,12 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
     return this.cleanTranslator(data) as Translator;
   },
 
+  /**
+   * Returns undefined when the badges could not be retrieved, so that callers
+   * can tell an error apart from a translator who has no badges yet
+   */
   async myBadges() {
-    const badges = await OdooAPI.execute_kw<BadgeCategory[]>('translation.user', 'get_my_badges', []);
-    return badges || [];
+    return await OdooAPI.execute_kw<BadgeCategory[]>('translation.user', 'get_my_badges', []);
   },
 
   cleanTranslator(data: Translator | undefined): Translator | undefined {

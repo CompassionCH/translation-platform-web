@@ -21,7 +21,22 @@
         </div>
 
         <div
-                t-if="state.badgesCategories and state.badgesCategories.length > 0"
+                t-if="state.loadError"
+                class="bg-white border border-slate-200 rounded-sm py-16 px-6 text-center shadow-lg mb-10"
+        >
+
+            <h2 class="text-lg font-medium text-slate-700 mb-2">
+                Unable to load your achievements
+            </h2>
+
+            <p class="text-sm text-slate-400 max-w-md mx-auto">
+                An error occurred while retrieving your badges. Please try again later.
+            </p>
+
+        </div>
+
+        <div
+                t-elif="state.badgesCategories and state.badgesCategories.length > 0"
         >
 
             <t
