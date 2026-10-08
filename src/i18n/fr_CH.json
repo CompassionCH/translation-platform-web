@@ -285,5 +285,11 @@
     "Ends today!": "Se termine aujourd'hui !",
     "Locked": "Verrouillé",
     "No achievements yet": "Aucune réussite pour le moment",
-    "Start translating to unlock your first badges and track your progress.": "Commence à traduire pour débloquer tes premiers badges et suivre ta progression."
+    "No badges available yet. Come back soon!": "Aucun badge disponible pour le moment. Reviens bientôt !",
+    "Ended": "Terminé",
+    "Volume": "Volume",
+    "Engagement": "Engagement",
+    "Campaign": "Campagne",
+    "Unable to load your achievements": "Impossible de charger tes réussites",
+    "An error occurred while retrieving your badges. Please try again later.": "Une erreur est survenue lors de la récupération de tes badges. Réessaie plus tard."
 }

@@ -285,5 +285,11 @@
     "Ends today!": "Endet heute!",
     "Locked": "Gesperrt",
     "No achievements yet": "Noch keine Erfolge",
-    "Start translating to unlock your first badges and track your progress.": "Beginne zu übersetzen, um deine ersten Abzeichen freizuschalten und deinen Fortschritt zu verfolgen."
+    "No badges available yet. Come back soon!": "Noch keine Abzeichen verfügbar. Schau bald wieder vorbei!",
+    "Ended": "Beendet",
+    "Volume": "Volumen",
+    "Engagement": "Engagement",
+    "Campaign": "Kampagne",
+    "Unable to load your achievements": "Deine Erfolge konnten nicht geladen werden",
+    "An error occurred while retrieving your badges. Please try again later.": "Beim Abrufen deiner Abzeichen ist ein Fehler aufgetreten. Bitte versuche es später erneut."
 }

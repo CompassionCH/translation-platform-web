@@ -51,7 +51,7 @@
 
                         <div class="flex-1">
                             <h2 class="text-xl font-light text-slate-700">
-                                <t t-esc="catGroup.category"/>
+                                <t t-esc="_(catGroup.category)"/>
                             </h2>
 
                             <div class="h-px bg-slate-200 mt-3"></div>
@@ -84,7 +84,7 @@
 
                                 <div class="absolute top-4 left-4" t-if="badge.type === 'campaign'">
                                     <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm bg-amber-100 text-amber-700 text-[10px] font-bold uppercase tracking-wider">
-                                        <i class="fas fa-star"></i> Event
+                                        <Icon icon="'star'"/> Event
                                     </span>
                                 </div>
 
@@ -210,12 +210,16 @@
                                             <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
 
 
-                                                <t t-if="badge.days_left > 0">
+                                                <t t-if="badge.is_finished">
+                                                    Ended
+                                                </t>
+
+                                                <t t-elif="badge.days_left > 0">
                                                     <t t-esc="badge.days_left"/>
                                                     days left
                                                 </t>
 
-                                                <t t-if="badge.days_left === 0">
+                                                <t t-else="">
                                                     Ends today!
                                                 </t>
 
@@ -267,7 +271,7 @@
             </h2>
 
             <p class="text-sm text-slate-400 max-w-md mx-auto">
-                Start translating to unlock your first badges and track your progress.
+                No badges available yet. Come back soon!
             </p>
 
         </div>

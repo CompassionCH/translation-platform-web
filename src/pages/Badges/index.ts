@@ -2,6 +2,7 @@ import { Component, useState, onWillStart, onMounted } from "@odoo/owl";
 import Shepherd from "shepherd.js";
 import template from './badges.xml';
 import { BlurLoader } from '../../components/Loader';
+import Icon from '../../components/Icon';
 import useCurrentTranslator from "../../hooks/useCurrentTranslator";
 import _ from "../../i18n";
 import { buildTutorial, hideTutorial, startTutorial } from "../../tutorial";
@@ -23,6 +24,7 @@ class Badges extends Component {
     static template = template;
     static components = {
         BlurLoader,
+        Icon,
     };
 
     currentTranslator = useCurrentTranslator();

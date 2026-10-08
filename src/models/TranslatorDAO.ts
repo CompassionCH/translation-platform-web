@@ -21,6 +21,7 @@ export type TranslatorBadge = {
   days_left: number | boolean;
   days_until_start: number | boolean;
   start_date: string | boolean;
+  is_finished: boolean;
 };
 
 export type BadgeCategory = {
