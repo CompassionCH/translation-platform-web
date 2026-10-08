@@ -6,9 +6,14 @@ import _ from './i18n';
  * Settings are saved in local storage
  */
 const TUTORIAL_DISPLAY_KEY = 'show-tutorial';
-export const showTutorial = () => (window.localStorage.getItem(TUTORIAL_DISPLAY_KEY) || '1') === '1';
+export const showTutorial = (displayKey = TUTORIAL_DISPLAY_KEY) => (window.localStorage.getItem(displayKey) || '1') === '1';
+export const hideTutorial = (displayKey = TUTORIAL_DISPLAY_KEY) => window.localStorage.setItem(displayKey, '0');
 
-export function buildTutorial(steps: Shepherd.Step.StepOptions[]) {
+/**
+ * Builds a tutorial. A specific displayKey can be given so that the tutorial
+ * is shown and hidden independently from the main one
+ */
+export function buildTutorial(steps: Shepherd.Step.StepOptions[], displayKey = TUTORIAL_DISPLAY_KEY) {
   const tutorial = new Shepherd.Tour({
     useModalOverlay: true,
   });
@@ -22,7 +27,7 @@ export function buildTutorial(steps: Shepherd.Step.StepOptions[]) {
         classes: 'bg-slate-700 text-white',
         action: () => {
           tutorial.cancel();
-          window.localStorage.setItem(TUTORIAL_DISPLAY_KEY, '0');
+          hideTutorial(displayKey);
         },
         text: _('Exit'),
       });
@@ -46,9 +51,10 @@ export function buildTutorial(steps: Shepherd.Step.StepOptions[]) {
 /**
  * Starts the given tutorial only if the user has no settings saying otherwise
  * @param tutorial 
+ * @param displayKey the key used when building the tutorial
  */
-export const startTutorial = (tutorial: Shepherd.Tour) => {
-  if (showTutorial()) {
+export const startTutorial = (tutorial: Shepherd.Tour, displayKey = TUTORIAL_DISPLAY_KEY) => {
+  if (showTutorial(displayKey)) {
     tutorial.start();
   }
 };

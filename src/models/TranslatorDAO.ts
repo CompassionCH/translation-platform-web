@@ -8,6 +8,27 @@ export type TranslationSkill = {
   verified: boolean;
 };
 
+export type TranslatorBadge = {
+  id: number;
+  name: string;
+  description: string;
+  icon_url: string;
+  type: 'count' | 'streak' | 'campaign';
+  is_unlocked: boolean;
+  current: number;
+  progress: number;
+  threshold: number;
+  days_left: number | boolean;
+  days_until_start: number | boolean;
+  start_date: string | boolean;
+  is_finished: boolean;
+};
+
+export type BadgeCategory = {
+  category: string;
+  badges: TranslatorBadge[];
+};
+
 export type Translator = {
   translatorId: number;
   email?: string;
@@ -59,6 +80,11 @@ type TranslatorDAOApi = {
     * authenticated user
     */
   current(): Promise<Translator>;
+
+  /**
+   * Returns the badges of the currently authenticated user, grouped by category
+   */
+  myBadges(): Promise<BadgeCategory[] | undefined>;
 };
 
 const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
@@ -119,6 +145,14 @@ const TranslatorDAO: BaseDAO<Translator> & TranslatorDAOApi = {
     }
     
     return this.cleanTranslator(data) as Translator;
+  },
+
+  /**
+   * Returns undefined when the badges could not be retrieved, so that callers
+   * can tell an error apart from a translator who has no badges yet
+   */
+  async myBadges() {
+    return await OdooAPI.execute_kw<BadgeCategory[]>('translation.user', 'get_my_badges', []);
   },
 
   cleanTranslator(data: Translator | undefined): Translator | undefined {
