@@ -29,6 +29,11 @@ class Menu extends Component {
           <Icon prefix="'fas'" icon="'envelope'" class="'text-xl'" />
         </MenuButton>
       </RouterLink>
+      <RouterLink to="'/badges'" t-slot-scope="scope">
+        <MenuButton tooltip="'Badges'" active="scope.active">
+          <Icon prefix="'fas'" icon="'trophy'" class="'text-xl'" />
+        </MenuButton>
+      </RouterLink>
       <div class="mt-auto">
         <MenuButton tooltip="'Child Protection'" class="'cursor-pointer child-menu-icon'" t-on-click="() => this.state.childModal = true">
           <Icon prefix="'fas'" icon="'child'" class="'text-xl'" />

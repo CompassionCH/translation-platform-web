@@ -57,6 +57,11 @@ const routes: Route[] = [
     path: '/letters',
   },
   {
+    component: () => import('./pages/Badges'),
+    name: 'Badges',
+    path: '/badges',
+  },
+  {
     component: () => import('./pages/Login'),
     name: 'Login',
     path: '/login',
