@@ -40,6 +40,7 @@ export type Translator = {
   year?: number;
   lastYear?: number;
   skills: TranslationSkill[];
+  leaderboardVisibility?: 'public' | 'anonymous';
 };
 
 /**
