@@ -3,6 +3,7 @@ import template from './home.xml';
 
 import Button from "../../components/Button";
 import TranslationCard from './TranslationCard';
+import LeaderboardSummaryCard from './LeaderboardSummaryCard';
 import { ListResponse } from '../../models/BaseDAO';
 import { Letter, models, Translator } from "../../models";
 import { BlurLoader } from '../../components/Loader';
@@ -36,6 +37,7 @@ export default class Home extends Component {
   static components = {
     Button,
     TranslationCard,
+    LeaderboardSummaryCard,
     LanguagesPickModal,
     BlurLoader,
     Helper,

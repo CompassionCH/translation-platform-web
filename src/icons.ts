@@ -35,12 +35,14 @@ import {
   faCheck,
   faInfo,
   faChild,
-  faTrophy
+  faTrophy,
+  faRankingStar,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
   faTrash,
   faTrophy,
+  faRankingStar,
   faPlus,
   faLock,
   faAngleUp,
