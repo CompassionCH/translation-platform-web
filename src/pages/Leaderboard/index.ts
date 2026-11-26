@@ -62,6 +62,7 @@ class Leaderboard extends Component {
   });
 
   timers: number[] = [];
+  lastRequestId = 0;
 
   setup() {
     onWillStart(async () => {
@@ -96,28 +97,24 @@ class Leaderboard extends Component {
   }
 
   async select(leaderboardId: number) {
+    // Only the latest request may update the ranking and clear the loading cover,
+    // so a late response from a previous tab cannot reveal stale standings
+    const requestId = ++this.lastRequestId;
     this.state.selectedId = leaderboardId;
     this.state.rankingLoading = true;
-    try {
-      await this.reload();
-    } finally {
-      this.state.rankingLoading = false;
-    }
-  }
-
-  async reload() {
-    const leaderboardId = this.state.selectedId;
-    if (leaderboardId === undefined) return;
 
     try {
       const ranking = await models.leaderboards.standings(leaderboardId);
-      // Ignore late responses when the user switched tab in-between
-      if (this.state.selectedId === leaderboardId) {
+      if (requestId === this.lastRequestId) {
         this.state.ranking = ranking;
         this.state.now = Date.now();
       }
     } catch (e) {
       console.error('Unable to load leaderboard ranking', e);
+    } finally {
+      if (requestId === this.lastRequestId) {
+        this.state.rankingLoading = false;
+      }
     }
   }
 
